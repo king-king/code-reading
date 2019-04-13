@@ -1,0 +1,7 @@
+{
+  "name": "happypack-test-vendor__webpack2",
+  "private": true,
+  "dependencies": {
+    "webpack": "2.7.0"
+  }
+}

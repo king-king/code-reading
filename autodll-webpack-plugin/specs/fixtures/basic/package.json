@@ -1,0 +1,21 @@
+{
+  "name": "basic",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "ava --serial specs/*.integration.js"
+  },
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "html-webpack-plugin": "^3.0.6",
+    "webpack": "^4.0.0",
+    "webpack-dev-server": "^3.0.0"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "basic@1.0.0"
+}

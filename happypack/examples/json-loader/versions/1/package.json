@@ -1,0 +1,7 @@
+{
+  "name": "@happypack-examples/json-loader--webpack-1",
+  "private": true,
+  "dependencies": {
+    "json-loader": "0.5.4"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "happypack-test-vendor__webpack3",
+  "private": true,
+  "dependencies": {
+    "webpack": "3.11.0"
+  }
+}
