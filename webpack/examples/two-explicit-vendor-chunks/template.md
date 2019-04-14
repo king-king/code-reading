@@ -1,37 +1,37 @@
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
-# dist/vendor1.js
+# js/vendor1.js
 
-```javascript
-_{{dist/vendor1.js}}_
+``` javascript
+{{js/vendor1.js}}
 ```
 
-# dist/vendor2.js
+# js/vendor2.js
 
-```javascript
-_{{dist/vendor2.js}}_
+``` javascript
+{{js/vendor2.js}}
 ```
 
-# dist/pageA.js
+# js/pageA.js
 
-```javascript
-_{{dist/pageA.js}}_
+``` javascript
+{{js/pageA.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

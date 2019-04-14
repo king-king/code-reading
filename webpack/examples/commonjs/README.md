@@ -8,16 +8,16 @@ You can also see the info messages webpack prints to console (for both normal an
 
 # example.js
 
-```javascript
-const inc = require('./increment').increment;
-const a = 1;
+``` javascript
+var inc = require('./increment').increment;
+var a = 1;
 inc(a); // 2
 ```
 
 # increment.js
 
-```javascript
-const add = require('./math').add;
+``` javascript
+var add = require('./math').add;
 exports.increment = function(val) {
     return add(val, 1);
 };
@@ -25,7 +25,7 @@ exports.increment = function(val) {
 
 # math.js
 
-```javascript
+``` javascript
 exports.add = function() {
     var sum = 0, i = 0, args = arguments, l = args.length;
     while (i < l) {
@@ -35,11 +35,11 @@ exports.add = function() {
 };
 ```
 
-# dist/output.js
+# js/output.js
 
 <details><summary><code>/******/ (function(modules) { /* webpackBootstrap */ })</code></summary>
 
-```javascript
+``` javascript
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -78,32 +78,12 @@ exports.add = function() {
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -119,8 +99,7 @@ exports.add = function() {
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "dist/";
-/******/
+/******/ 	__webpack_require__.p = "js/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
@@ -130,40 +109,41 @@ exports.add = function() {
 
 </details>
 
-```javascript
+``` javascript
 /******/ ([
 /* 0 */
 /*!********************!*\
   !*** ./example.js ***!
   \********************/
-/*! no static exports found */
+/*! dynamic exports provided */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-const inc = __webpack_require__(/*! ./increment */ 1).increment;
-const a = 1;
+var inc = __webpack_require__(/*! ./increment */ 1).increment;
+var a = 1;
 inc(a); // 2
-
 
 /***/ }),
 /* 1 */
 /*!**********************!*\
   !*** ./increment.js ***!
   \**********************/
-/*! no static exports found */
+/*! dynamic exports provided */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-const add = __webpack_require__(/*! ./math */ 2).add;
+var add = __webpack_require__(/*! ./math */ 2).add;
 exports.increment = function(val) {
     return add(val, 1);
 };
-
 
 /***/ }),
 /* 2 */
 /*!*****************!*\
   !*** ./math.js ***!
   \*****************/
-/*! no static exports found */
+/*! dynamic exports provided */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports.add = function() {
@@ -180,38 +160,36 @@ exports.add = function() {
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-Hash: 0a1b2c3d4e5f6a7b8c9d
-Version: webpack 4.29.6
+Hash: 9407d8cd068b1845b368
+Version: webpack 3.11.0
     Asset     Size  Chunks             Chunk Names
-output.js  4.4 KiB       0  [emitted]  main
+output.js  3.39 kB       0  [emitted]  main
 Entrypoint main = output.js
-chunk    {0} output.js (main) 326 bytes [entry] [rendered]
-    > ./example.js main
- [0] ./example.js 72 bytes {0} [built]
-     single entry ./example.js  main
- [1] ./increment.js 98 bytes {0} [built]
-     cjs require ./increment [0] ./example.js 1:12-34
- [2] ./math.js 156 bytes {0} [built]
-     cjs require ./math [1] ./increment.js 1:12-29
+chunk    {0} output.js (main) 329 bytes [entry] [rendered]
+    > main [0] ./example.js 
+    [0] ./example.js 69 bytes {0} [built]
+    [1] ./increment.js 98 bytes {0} [built]
+        cjs require ./increment [0] ./example.js 1:10-32
+    [2] ./math.js 162 bytes {0} [built]
+        cjs require ./math [1] ./increment.js 1:10-27
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-Hash: 0a1b2c3d4e5f6a7b8c9d
-Version: webpack 4.29.6
-    Asset     Size  Chunks             Chunk Names
-output.js  1.1 KiB       0  [emitted]  main
+Hash: 9407d8cd068b1845b368
+Version: webpack 3.11.0
+    Asset       Size  Chunks             Chunk Names
+output.js  672 bytes       0  [emitted]  main
 Entrypoint main = output.js
-chunk    {0} output.js (main) 326 bytes [entry] [rendered]
-    > ./example.js main
- [0] ./example.js 72 bytes {0} [built]
-     single entry ./example.js  main
- [1] ./increment.js 98 bytes {0} [built]
-     cjs require ./increment [0] ./example.js 1:12-34
- [2] ./math.js 156 bytes {0} [built]
-     cjs require ./math [1] ./increment.js 1:12-29
+chunk    {0} output.js (main) 329 bytes [entry] [rendered]
+    > main [0] ./example.js 
+    [0] ./example.js 69 bytes {0} [built]
+    [1] ./increment.js 98 bytes {0} [built]
+        cjs require ./increment [0] ./example.js 1:10-32
+    [2] ./math.js 162 bytes {0} [built]
+        cjs require ./math [1] ./increment.js 1:10-27
 ```

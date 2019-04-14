@@ -7,10 +7,10 @@ module.exports = {
 			content: {
 				"./module": {
 					id: 1,
-					buildMeta: {
-						exportsType: "namespace",
-						providedExports: ["default"]
-					}
+					meta: {
+						harmonyModule: true
+					},
+					exports: ["default"]
 				}
 			}
 		}),

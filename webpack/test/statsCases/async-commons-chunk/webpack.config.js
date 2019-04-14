@@ -1,15 +1,16 @@
+var webpack = require("../../../");
+
 module.exports = {
-	mode: "production",
 	entry: "./",
-	optimization: {
-		splitChunks: {
-			minSize: 0
-		}
-	},
+	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "main",
+			async: true
+		})
+	],
 	stats: {
 		hash: false,
 		timings: false,
-		builtAt: false,
 		assets: false,
 		chunks: true,
 		chunkOrigins: true,

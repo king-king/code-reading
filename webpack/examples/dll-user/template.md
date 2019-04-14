@@ -6,32 +6,32 @@ This is the _user_ bundle, which uses the manifest from [dll-reference example](
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

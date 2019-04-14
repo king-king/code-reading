@@ -1,4 +1,4 @@
-var asyncLib = require("neo-async");
+var asyncLib = require("async");
 module.exports = function(content) {
 	var cb = this.async();
 	var json = JSON.parse(content);
@@ -9,8 +9,8 @@ module.exports = function(content) {
 				if(err) {
 					return callback(err);
 				}
-				callback(null, JSON.parse(source));
-			});
+				callback(null, this.exec(source, url));
+			}.bind(this));
 		}.bind(this),
 		function(err, results) {
 			if(err) {

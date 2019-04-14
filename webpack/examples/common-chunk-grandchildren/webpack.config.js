@@ -1,19 +1,41 @@
 "use strict";
+const webpack = require("../../");
 const path = require("path");
 
-module.exports = {
-	// mode: "development || "production",
-	entry: {
-		main: ["./example.js"]
-	},
-	optimization: {
-		splitChunks: {
-			minSize: 0 // This example is too small, in practice you can use the defaults
+module.exports = [
+	{
+		entry: {
+			main: ["./example.js"]
 		},
-		occurrenceOrder: true // To keep filename consistent between different modes (for example building only)
+		output: {
+			path: path.resolve(__dirname, "js"),
+			filename: "output.js"
+		},
+		plugins: [
+			new webpack.optimize.CommonsChunkPlugin({
+				name: "main",
+				minChunks: 2,
+				children: true,
+				deepChildren: true,
+			})
+		]
 	},
-	output: {
-		path: path.resolve(__dirname, "dist"),
-		filename: "output.js"
+	{
+		entry: {
+			main: ["./example.js"]
+		},
+		output: {
+			path: path.resolve(__dirname, "js"),
+			filename: "asyncoutput.js"
+		},
+		plugins: [
+			new webpack.optimize.CommonsChunkPlugin({
+				name: "main",
+				minChunks: 2,
+				async: true,
+				children: true,
+				deepChildren: true,
+			})
+		]
 	}
-};
+];

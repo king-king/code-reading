@@ -1,100 +1,124 @@
-This example illustrates how common modules from deep ancestors of an entry point can be split into a separate common chunk
+This example illustrates how common modules from deep ancestors of an entry point can be split into a seperate common chunk
 
-- `pageA` and `pageB` are dynamically required
-- `pageC` and `pageA` both require the `reusableComponent`
-- `pageB` dynamically requires `PageC`
+* `pageA` and `pageB` are dynamically required
+* `pageC` and `pageA` both require the `reusableComponent`
+* `pageB` dynamically requires `PageC`
 
-You can see that webpack outputs five files/chunks:
+You can see that webpack outputs four files/chunks:
 
-- `output.js` is the entry chunk and contains
-  - the module system
-  - chunk loading logic
-  - the entry point `example.js`
-- `0.output.js` is an additional chunk
-  - module `reusableComponent`
-- `1.output.js` is an additional chunk
-  - module `pageB`
-- `2.output.js` is an additional chunk
-  - module `pageA`
-- `3.output.js` is an additional chunk
-  - module `pageC`
+* `output.js` is the entry chunk and contains
+  * the module system
+  * chunk loading logic
+  * the entry point `example.js`
+  * module `reusableComponent`
+* `0.output.js` is an additional chunk
+  * module `pageC`
+* `1.output.js` is an additional chunk
+  * module `pageB`
+* `2.output.js` is an additional chunk
+  * module `pageA`
+
 
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # pageA.js
 
-```javascript
-_{{pageA.js}}_
+``` javascript
+{{pageA.js}}
 ```
 
 # pageB.js
 
-```javascript
-_{{pageB.js}}_
+``` javascript
+{{pageB.js}}
 ```
 
 # pageC.js
 
-```javascript
-_{{pageC.js}}_
+``` javascript
+{{pageC.js}}
 ```
 
 # reusableComponent.js
 
-```javascript
-_{{reusableComponent.js}}_
+``` javascript
+{{reusableComponent.js}}
 ```
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
-# dist/0.output.js
+# js/0.output.js
 
-```javascript
-_{{dist/0.output.js}}_
+``` javascript
+{{js/0.output.js}}
 ```
 
-# dist/2.output.js
+# js/1.output.js
 
-```javascript
-_{{dist/2.output.js}}_
+``` javascript
+{{js/1.output.js}}
 ```
 
-# dist/3.output.js
+# js/2.output.js
 
-```javascript
-_{{dist/3.output.js}}_
+``` javascript
+{{js/2.output.js}}
 ```
 
-# dist/4.output.js
+# js/asyncoutput.js
 
-```javascript
-_{{dist/4.output.js}}_
+``` javascript
+{{js/asyncoutput.js}}
+```
+
+# js/0.asyncoutput.js
+
+``` javascript
+{{js/0.asyncoutput.js}}
+```
+
+# js/1.asyncoutput.js
+
+``` javascript
+{{js/1.asyncoutput.js}}
+```
+
+# js/2.asyncoutput.js
+
+``` javascript
+{{js/2.asyncoutput.js}}
+```
+
+# js/3.asyncoutput.js
+
+``` javascript
+{{js/3.asyncoutput.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

@@ -4,44 +4,44 @@ You see that everything is working nicely together.
 
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # amd.js
 
-```javascript
-_{{amd.js}}_
+``` javascript
+{{amd.js}}
 ```
 
 # commonjs.js
 
-```javascript
-_{{commonjs.js}}_
+``` javascript
+{{commonjs.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
-# dist/1.output.js
+# js/0.output.js
 
-```javascript
-_{{dist/1.output.js}}_
+``` javascript
+{{js/0.output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

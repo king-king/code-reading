@@ -9,5 +9,5 @@ delete require.cache[aId];
 // require module again, it should be reexecuted
 var a2 = require("./a");
 
-// verify it
+// vertify it
 if(a == a2) throw new Error("Cache clear failed :(");

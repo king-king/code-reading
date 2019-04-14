@@ -4,34 +4,35 @@
 
 This is the _reference_ bundle (with the manifests) for [dll user example](https://github.com/webpack/webpack/tree/master/examples/dll-user)
 
+
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
-# dist/MyDll.alpha.js
+# js/MyDll.alpha.js
 
-```javascript
-_{{dist/MyDll.alpha.js}}_
+``` javascript
+{{js/MyDll.alpha.js}}
 ```
 
-# dist/alpha-manifest.json
+# js/alpha-manifest.json
 
-```javascript
-_{{dist/alpha-manifest.json}}_
+``` javascript
+{{js/alpha-manifest.json}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

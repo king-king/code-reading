@@ -14,12 +14,6 @@ export default class {
 	constructor() {
 		this.a = require("./a");
 	}
-	b() {
-		return require("./a");
-	}
-	static c() {
-		return require("./a");
-	}
 };
 
 export {

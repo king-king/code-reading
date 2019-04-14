@@ -4,11 +4,9 @@
 /test/fixtures/temp-cache-fixture
 /benchmark/js
 /benchmark/fixtures
-/examples/**/dist
+/examples/**/js
 /coverage
 .DS_Store
 *.log
 .idea
 .vscode
-.eslintcache
-package-lock.json

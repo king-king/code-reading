@@ -1,5 +1,4 @@
 module.exports = {
-	mode: "development",
 	output: {
 		devtoolLineToLine: true
 	},

@@ -1,31 +1,32 @@
+
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # increment.js
 
-```javascript
-_{{increment.js}}_
+``` javascript
+{{increment.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

@@ -1,47 +1,35 @@
+var CommonsChunkPlugin = require("../../../lib/optimize/CommonsChunkPlugin");
+var NamedModulesPlugin = require("../../../lib/NamedModulesPlugin");
+
 // should generate vendor chunk with the same chunkhash for both entries
-module.exports = [
-	{
-		mode: "production",
-		output: {
-			chunkFilename: "[name].[chunkhash].js"
-		},
-		entry: {
-			app: "./entry-1.js"
-		},
-		optimization: {
-			splitChunks: {
-				cacheGroups: {
-					vendor: {
-						name: "vendor",
-						chunks: "initial",
-						enforce: true,
-						test: /constants/
-					}
-				}
-			},
-			namedModules: true
-		}
+module.exports = [{
+	entry: {
+		app: "./entry-1.js"
 	},
-	{
-		mode: "production",
-		output: {
-			chunkFilename: "[name].[chunkhash].js"
-		},
-		entry: {
-			app: "./entry-2.js"
-		},
-		optimization: {
-			splitChunks: {
-				cacheGroups: {
-					vendor: {
-						name: "vendor",
-						chunks: "initial",
-						enforce: true,
-						test: /constants/
-					}
-				}
-			},
-			namedModules: true
-		}
-	}
-];
+	plugins: [
+		new NamedModulesPlugin(),
+		new CommonsChunkPlugin({
+			name: "vendor",
+			filename: "[name].[chunkhash].js",
+			minChunks: m => /constants/.test(m.resource)
+		}),
+		new CommonsChunkPlugin({
+			name: "runtime"
+		})
+	]
+},{
+	entry: {
+		app: "./entry-2.js"
+	},
+	plugins: [
+		new NamedModulesPlugin(),
+		new CommonsChunkPlugin({
+			name: "vendor",
+			filename: "[name].[chunkhash].js",
+			minChunks: m => /constants/.test(m.resource)
+		}),
+		new CommonsChunkPlugin({
+			name: "runtime"
+		})
+	]
+}];

@@ -1,25 +1,25 @@
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
-# dist/MyLibrary.umd.js
+# js/MyLibrary.umd.js
 
-```javascript
-_{{dist/MyLibrary.umd.js}}_
+``` javascript
+{{js/MyLibrary.umd.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

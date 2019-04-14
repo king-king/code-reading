@@ -1,37 +1,38 @@
+
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # cup1.coffee
 
-```coffee-script
-_{{cup1.coffee}}_
+``` coffee-script
+{{cup1.coffee}}
 ```
 
 # cup2.coffee
 
-```coffee-script
-_{{cup2.coffee}}_
+``` coffee-script
+{{cup2.coffee}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

@@ -1,13 +1,16 @@
 var testPlugin = function() {
 	var counter = 1;
-	this.hooks.compilation.tap("TestPlugin", compilation => {
+	this.plugin("compilation", function(compilation) {
 		var nr = counter++;
-		compilation.hooks.needAdditionalPass.tap("TestPlugin", function() {
-			if (nr < 5) return true;
+		compilation.plugin("need-additional-pass", function() {
+			if(nr < 5)
+				return true;
 		});
 	});
 };
 
 module.exports = {
-	plugins: [testPlugin]
+	plugins: [
+		testPlugin
+	]
 };

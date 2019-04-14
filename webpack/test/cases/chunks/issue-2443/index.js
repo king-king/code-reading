@@ -1,9 +1,7 @@
 it("should be able to use expressions in import (directory)", function(done) {
 	function load(name, expected, callback) {
 		import("./dir/" + name + "/file.js").then(function(result) {
-			expect(result).toEqual(nsObj({
-				default: expected
-			}));
+			result.should.be.eql(expected);
 			callback();
 		}).catch(function(err) {
 			done(err);

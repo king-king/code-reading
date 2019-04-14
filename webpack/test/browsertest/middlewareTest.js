@@ -37,6 +37,7 @@ app.configure(function() {
 			chunkFilename: "[chunkhash].chunk.js"
 		},
 		plugins: [
+			new webpack.optimize.UglifyJsPlugin(),
 			new webpack.HotModuleReplacementPlugin()
 		]
 	}), {

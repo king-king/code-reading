@@ -2,88 +2,78 @@ This example demonstrates various types of source-maps.
 
 # example.coffee
 
-```coffeescript
-_{{example.coffee}}_
+``` coffeescript
+{{example.coffee}}
 ```
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
 # Generated source-maps
 
 ## source-map.js and source-map.js.map
-
-```javascript
-_{{dist/bundle-source-map.js}}_
+``` javascript
+{{js/bundle-source-map.js}}
 ```
 
-```javascript
-_{{dist/bundle-source-map.js.map}}_
+``` javascript
+{{js/bundle-source-map.js.map}}
 ```
 
 ## hidden-source-map.js and hidden-source-map.js.map
-
-```javascript
-_{{dist/bundle-hidden-source-map.js}}_
+``` javascript
+{{js/bundle-hidden-source-map.js}}
 ```
 
-```javascript
-_{{dist/bundle-hidden-source-map.js.map}}_
+``` javascript
+{{js/bundle-hidden-source-map.js.map}}
 ```
 
 ## inline-source-map.js
-
-```javascript
-_{{dist/bundle-inline-source-map.js}}_
+``` javascript
+{{js/bundle-inline-source-map.js}}
 ```
 
 ## nosources-source-map.js.map
-
-```javascript
-_{{dist/bundle-nosources-source-map.js.map}}_
+``` javascript
+{{js/bundle-nosources-source-map.js.map}}
 ```
 
 ## eval-source-map.js
-
-```javascript
-_{{dist/bundle-eval-source-map.js}}_
+``` javascript
+{{js/bundle-eval-source-map.js}}
 ```
 
 ## eval.js
-
-```javascript
-_{{dist/bundle-eval.js}}_
+``` javascript
+{{js/bundle-eval.js}}
 ```
 
 ## cheap-eval-source-map.js
-
-```javascript
-_{{dist/bundle-cheap-eval-source-map.js}}_
+``` javascript
+{{js/bundle-cheap-eval-source-map.js}}
 ```
 
 ## cheap-module-eval-source-map.js
-
-```javascript
-_{{dist/bundle-cheap-module-eval-source-map.js}}_
+``` javascript
+{{js/bundle-cheap-module-eval-source-map.js}}
 ```
 
 ## cheap-module-source-map.js.map
-
-```javascript
-_{{dist/bundle-cheap-module-source-map.js.map}}_
+``` javascript
+{{js/bundle-cheap-module-source-map.js.map}}
 ```
 
 ## cheap-source-map.js.map
-
-```javascript
-_{{dist/bundle-cheap-source-map.js.map}}_
+``` javascript
+{{js/bundle-cheap-source-map.js.map}}
 ```
 
 # webpack output
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```

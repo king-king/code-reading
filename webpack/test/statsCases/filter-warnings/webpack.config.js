@@ -1,56 +1,46 @@
-const TerserPlugin = require("terser-webpack-plugin");
+"use strict";
+const webpack = require("../../../");
+
 const baseConfig = {
-	mode: "production",
 	entry: "./index",
 	output: {
 		filename: "bundle.js"
 	},
-	optimization: {
-		minimize: true,
-		minimizer: [
-			new TerserPlugin({
-				sourceMap: true,
-				terserOptions: {
-					compress: {
-						warnings: true
-					},
-					mangle: false,
-					output: {
-						beautify: true,
-						comments: false
-					},
-					warnings: true
-				}
-			})
-		]
-	},
+	plugins: [new webpack.optimize.UglifyJsPlugin({
+		sourceMap: true,
+		compress: {
+			warnings: true,
+		},
+		mangle: false,
+		beautify: true,
+		comments: false
+	})],
 	stats: {
 		chunkModules: false,
 		modules: false,
 		providedExports: false,
-		usedExports: false
+		usedExports: false,
 	}
 };
 
 module.exports = [
 	undefined,
-	"Terser",
-	/Terser/,
+	"UglifyJs",
+	/UglifyJs/,
 	warnings => true,
-	["Terser"],
-	[/Terser/],
-	[warnings => true],
+	["UglifyJs"],
+	[/UglifyJs/],
+	[
+		warnings => true
+	],
 	"should not filter",
 	/should not filter/,
 	warnings => false,
 	["should not filter"],
 	[/should not filter/],
-	[warnings => false]
-].map(filter =>
-	Object.assign({}, baseConfig, {
-		name: Array.isArray(filter) ? `[${filter}]` : `${filter}`,
-		stats: Object.assign({}, baseConfig.stats, {
-			warningsFilter: filter
-		})
-	})
-);
+	[
+		warnings => false
+	]
+].map(filter => Object.assign({}, baseConfig, {
+	stats: Object.assign({}, baseConfig.stats, { warningsFilter: filter })
+}));

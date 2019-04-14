@@ -1,10 +1,13 @@
+var webpack = require("../../../../");
 module.exports = {
 	node: {
 		__dirname: false,
 		__filename: false
 	},
 	devtool: "source-map",
-	optimization: {
-		minimize: true
-	}
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin({
+			sourceMap: true
+		})
+	]
 };

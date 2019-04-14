@@ -1,4 +1,5 @@
-const webpack = require("../../");
+const webpack = require("webpack");
+const MemoryFs = require("memory-fs");
 const path = require("path");
 
 const testCase = process.argv[2];
@@ -14,13 +15,11 @@ const config = {
 
 const compiler = webpack(config);
 compiler.run((err, stats) => {
-	if (err) {
+	if(err) {
 		console.error(err);
 	} else {
-		console.log(
-			stats.toString({
-				errorDetails: true
-			})
-		);
+		console.log(stats.toString({
+			errorDetails: true
+		}));
 	}
 });

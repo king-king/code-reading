@@ -1,43 +1,41 @@
 it("should not create a context for typeof require", function() {
-	expect(require("./typeof")).toBe("function");
+	require("./typeof").should.be.eql("function");
 });
 
 it("should answer typeof require correctly", function() {
-	expect((typeof require)).toBe("function");
+	(typeof require).should.be.eql("function");
 });
 it("should answer typeof define correctly", function() {
-	expect((typeof define)).toBe("function");
+	(typeof define).should.be.eql("function");
 });
 it("should answer typeof require.amd correctly", function() {
-	expect((typeof require.amd)).toBe("object");
+	(typeof require.amd).should.be.eql("object");
 });
 it("should answer typeof define.amd correctly", function() {
-	expect((typeof define.amd)).toBe("object");
+	(typeof define.amd).should.be.eql("object");
 });
 it("should answer typeof module correctly", function() {
-	expect((typeof module)).toBe("object");
+	(typeof module).should.be.eql("object");
 });
 it("should answer typeof exports correctly", function() {
-	expect((typeof exports)).toBe("object");
+	(typeof exports).should.be.eql("object");
 });
 it("should answer typeof require.include correctly", function() {
-	expect((typeof require.include)).toBe("function");
+	(typeof require.include).should.be.eql("function");
 });
 it("should answer typeof require.ensure correctly", function() {
-	expect((typeof require.ensure)).toBe("function");
+	(typeof require.ensure).should.be.eql("function");
 });
 it("should answer typeof require.resolve correctly", function() {
-	expect((typeof require.resolve)).toBe("function");
+	(typeof require.resolve).should.be.eql("function");
 });
-it("should answer typeof __non_webpack_require__ correctly", function() {
-	var oldValue;
-	eval("oldValue = require;");
-	expect((typeof __non_webpack_require__)).toBe("function");
-	eval("require = undefined;");
-	expect((typeof __non_webpack_require__)).toBe("undefined");
-	eval("require = oldValue;");
-	expect((typeof __non_webpack_require__)).toBe("function");
+it("should answer typeof System correctly", function() {
+	(typeof System).should.be.eql("object");
 });
+it("should answer typeof System.import correctly", function() {
+	(typeof System.import).should.be.eql("function");
+});
+
 
 it("should not parse filtered stuff", function() {
 	if(typeof require != "function") require("fail");
@@ -52,6 +50,7 @@ it("should not parse filtered stuff", function() {
 	if(typeof module != "object") module = require("fail");
 	if(typeof exports == "undefined") exports = require("fail");
 	if(typeof System !== "object") exports = require("fail");
+	if(typeof System.import !== "function") exports = require("fail");
 	if(typeof require.include !== "function") require.include("fail");
 	if(typeof require.ensure !== "function") require.ensure(["fail"], function(){});
 });

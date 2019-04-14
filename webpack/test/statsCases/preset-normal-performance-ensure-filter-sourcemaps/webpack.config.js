@@ -1,5 +1,4 @@
 module.exports = {
-	mode: "production",
 	devtool: "sourcemap",
 	performance: {
 		hints: "warning"

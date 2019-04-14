@@ -1,27 +1,28 @@
 it("should change chunkhash of main chunk", function () {
 	const mainChunk = STATS_JSON.chunks.find((chunk) => chunk.names.indexOf("main") !== -1);
-	expect(mainChunk).toBeDefined();
+	(!mainChunk).should.be.false("Main chunk not found");
 	switch (WATCH_STEP) {
 		case "0":
 			STATE.hash = mainChunk.hash;
 			break;
 		case "1":
-			expect(mainChunk.hash).not.toBe(STATE.hash);
+			mainChunk.hash.should.be.not.eql(STATE.hash);
 			break;
 	}
 });
 
-it("should load additional chunk", function() {
+it("should load additional chunk", function (done) {
 	const step = WATCH_STEP;
-	return import(/* webpackChunkName: "dynamic" */ './dynamic')
+	import(/* webpackChunkName: "dynamic" */ './dynamic')
 		.then((dynamic) => {
 			switch (step) {
 				case "0":
-					expect(dynamic.default).toBe("Normal");
+					dynamic.should.be.eql("Normal");
 					break;
 				case "1":
-					expect(dynamic.default).toBe("Changed");
+					dynamic.should.be.eql("Changed");
 					break;
 			}
+			done();
 		});
 });

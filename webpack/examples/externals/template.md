@@ -9,7 +9,7 @@ In the simple case we just need to specify a string (`"add"`). Then it's resolve
 In the complex case we specify different values for each environment:
 
 | environment        | config value             | resolved as                  |
-| ------------------ | ------------------------ | ---------------------------- |
+|--------------------|--------------------------|------------------------------|
 | CommonJs (strict)  | `["./math", "subtract"]` | `require("./math").subtract` |
 | CommonJs (node.js) | `"./subtract"`           | `require("./subtract")`      |
 | AMD                | `"subtract"`             | `define(["subtract"], ...)`  |
@@ -17,32 +17,32 @@ In the complex case we specify different values for each environment:
 
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

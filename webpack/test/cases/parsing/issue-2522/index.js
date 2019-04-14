@@ -9,13 +9,13 @@ it("should import into object shorthand", function() {
 		b,
 		c
 	};
-	expect(o).toEqual({
+	o.should.be.eql({
 		a: 123,
 		aa: 123,
 		b: 456,
-		c: nsObj({
+		c: {
 			a: 123,
 			default: 456
-		})
+		}
 	});
 })

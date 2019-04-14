@@ -1,3 +1,4 @@
+
 function createFunctionArrayFromUseArray(useArray) {
 	return useArray.map(function(useItem) {
 		return function(data) {
@@ -25,28 +26,36 @@ var useArray = createFunctionArrayFromUseArray([
 module.exports = {
 	module: {
 		rules: [
-			{
-				oneOf: [
-					{
-						test: {
-							and: [/a.\.js$/, /b\.js$/]
-						},
-						loader: "./loader?first"
+			{ oneOf: [
+				{
+					test: {
+						and: [
+							/a.\.js$/,
+							/b\.js$/
+						]
 					},
-					{
-						test: [require.resolve("./a"), require.resolve("./c")],
-						issuer: require.resolve("./b"),
-						use: useArray
+					loader: "./loader?first"
+				},
+				{
+					test: [
+						require.resolve("./a"),
+						require.resolve("./c"),
+					],
+					issuer: require.resolve("./b"),
+					use: useArray
+				},
+				{
+					test: {
+						or: [
+							require.resolve("./a"),
+							require.resolve("./c"),
+						]
 					},
-					{
-						test: {
-							or: [require.resolve("./a"), require.resolve("./c")]
-						},
-						loader: "./loader",
-						options: "third"
-					}
-				]
-			}
+					loader: "./loader",
+					options: "third"
+				}
+			] }
 		]
 	}
 };
+

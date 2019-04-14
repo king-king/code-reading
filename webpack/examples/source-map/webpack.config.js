@@ -1,4 +1,5 @@
 var path = require("path");
+var webpack = require("../../");
 
 module.exports = [
 	"cheap-eval-source-map",
@@ -10,18 +11,17 @@ module.exports = [
 	"hidden-source-map",
 	"inline-source-map",
 	"nosources-source-map",
-	"source-map"
+	"source-map",
 ].map(devtool => ({
-	mode: "development",
 	entry: {
-		bundle: "coffee-loader!./example.coffee"
+		bundle: "coffee-loader!./example.coffee",
 	},
 	output: {
-		path: path.join(__dirname, "dist"),
-		filename: `./[name]-${devtool}.js`
+		path: path.join(__dirname, "js"),
+		filename: `./[name]-${devtool}.js`,
 	},
 	devtool,
-	optimization: {
-		runtimeChunk: true
-	}
+	plugins: [
+		new webpack.optimize.CommonsChunkPlugin(["manifest"]),
+	],
 }));

@@ -1,5 +1,5 @@
 if(module.hot) {
-	it("should run module.hot.accept(…)", function() {
+	it("should run module.hot.accept(...)", function() {
 		module.hot.accept("./a", function() {});
 	});
 	it("should run module.hot.accept()", function() {

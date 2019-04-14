@@ -4,40 +4,40 @@ The previously built vendor dll is used. The DllReferencePlugin reads the conten
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
 # example-app.js
 
-```javascript
-_{{example-app.js}}_
+``` javascript
+{{example-app.js}}
 ```
 
 # example.html
 
-```html
-_{{example.html}}_
+``` html
+{{example.html}}
 ```
 
-# dist/app.js
+# js/app.js
 
-```javascript
-_{{dist/app.js}}_
+``` javascript
+{{js/app.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```
 
 <!-- @TODO:

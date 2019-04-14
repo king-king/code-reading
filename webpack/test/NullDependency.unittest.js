@@ -1,49 +1,41 @@
 "use strict";
 
+const should = require("should");
+const sinon = require("sinon");
 const NullDependency = require("../lib/dependencies/NullDependency");
 
 describe("NullDependency", () => {
 	let env;
 
-	beforeEach(() => (env = {}));
+	beforeEach(() => env = {});
 
-	it("is a function", () => {
-		expect(NullDependency).toBeTypeOf("function");
-	});
+	it("is a function", () => NullDependency.should.be.a.Function());
 
 	describe("when created", () => {
-		beforeEach(() => (env.nullDependency = new NullDependency()));
+		beforeEach(() => env.nullDependency = new NullDependency());
 
-		it("has a null type", () => {
-			expect(env.nullDependency.type).toBe("null");
-		});
+		it("has a null type", () => env.nullDependency.type.should.be.exactly("null"));
 
-		it("has update hash function", () => {
-			expect(env.nullDependency.updateHash).toBeTypeOf("function");
-		});
+		it("is not an equal resource", () => env.nullDependency.isEqualResource().should.be.False());
+
+		it("has update hash function", () => env.nullDependency.updateHash.should.be.Function());
 
 		it("does not update hash", () => {
 			const hash = {
-				update: jest.fn()
+				update: sinon.stub()
 			};
 			env.nullDependency.updateHash(hash);
-			expect(hash.update).not.toHaveBeenCalled();
+			hash.update.called.should.be.false();
 		});
 	});
 
 	describe("Template", () => {
-		it("is a function", () => {
-			expect(NullDependency.Template).toBeTypeOf("function");
-		});
+		it("is a function", () => NullDependency.Template.should.be.a.Function());
 
 		describe("when created", () => {
-			beforeEach(() => {
-				env.nullDependencyTemplate = new NullDependency.Template();
-			});
+			beforeEach(() => env.nullDependencyTemplate = new NullDependency.Template());
 
-			it("has apply function", () => {
-				expect(env.nullDependencyTemplate.apply).toBeTypeOf("function");
-			});
+			it("has apply function", () => env.nullDependencyTemplate.apply.should.be.Function());
 		});
 	});
 });

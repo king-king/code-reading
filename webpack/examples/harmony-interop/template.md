@@ -1,49 +1,50 @@
+
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # fs.js
 
-```javascript
-_{{fs.js}}_
+``` javascript
+{{fs.js}}
 ```
 
 # reexport-commonjs.js
 
-```javascript
-_{{reexport-commonjs.js}}_
+``` javascript
+{{reexport-commonjs.js}}
 ```
 
 # example2.js
 
-```javascript
-_{{example2.js}}_
+``` javascript
+{{example2.js}}
 ```
 
 # harmony.js
 
-```javascript
-_{{harmony.js}}_
+``` javascript
+{{harmony.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

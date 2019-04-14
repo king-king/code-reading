@@ -2,38 +2,38 @@
 
 This example illustrates how to leverage the `import()` syntax to create ContextModules which are separated into separate chunks for each module in the `./templates` folder.
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # templates/
 
-- foo.js
-- baz.js
-- bar.js
+* foo.js
+* baz.js
+* bar.js
 
 All templates are of this pattern:
 
-```javascript
-_{{templates/foo.js}}_
+``` javascript
+{{templates/foo.js}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

@@ -1,14 +1,15 @@
 var webpack = require("../../../../");
 
 module.exports = {
-	performance: {
-		hints: false
-	},
-	optimization: {
-		splitChunks: {
-			minSize: 1,
-			name: true
-		}
-	},
-	plugins: [new webpack.NamedChunksPlugin()]
+	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			chunks: ["a+b", "a+b+c"],
+			async: "a+b",
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			chunks: ["a", "a+b"],
+			async: "a",
+		}),
+		new webpack.NamedChunksPlugin()
+	]
 };

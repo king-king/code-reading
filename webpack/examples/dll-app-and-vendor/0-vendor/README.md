@@ -1,47 +1,46 @@
 This is the vendor build part.
 
-It's built separately from the app part. The vendors dll is only built when the array of vendors has changed and not during the normal development cycle.
+It's built separatly from the app part. The vendors dll is only built when vendors has changed and not while the normal development cycle.
 
-The DllPlugin in combination with the `output.library` option exposes the internal require function as global variable in the target environment.
+The DllPlugin in combination with the `output.library` option exposes the internal require function as global variable in the target enviroment.
 
-A manifest is created which includes mappings from module names to internal ids.
+A manifest is creates which includes mappings from module names to internal ids.
 
 ### webpack.config.js
 
-```javascript
+``` javascript
 var path = require("path");
 var webpack = require("../../../");
 
 module.exports = {
-	// mode: "development || "production",
 	context: __dirname,
 	entry: ["example-vendor"],
 	output: {
 		filename: "vendor.js", // best use [hash] here too
-		path: path.resolve(__dirname, "dist"),
-		library: "vendor_lib_[hash]"
+		path: path.resolve(__dirname, "js"),
+		library: "vendor_lib_[hash]",
 	},
 	plugins: [
 		new webpack.DllPlugin({
 			name: "vendor_lib_[hash]",
-			path: path.resolve(__dirname, "dist/vendor-manifest.json")
-		})
-	]
+			path: path.resolve(__dirname, "js/vendor-manifest.json"),
+		}),
+	],
 };
 ```
 
 # example-vendor
 
-```javascript
+``` javascript
 export function square(n) {
 	return n * n;
 }
 ```
 
-# dist/vendor.js
+# js/vendor.js
 
-```javascript
-var vendor_lib_a132d30959ef28c3f004 =
+``` javascript
+var vendor_lib_6b1edee0549eb5092709 =
 ```
 <details><summary><code>/******/ (function(modules) { /* webpackBootstrap */ })</code></summary>
 
@@ -84,32 +83,12 @@ var vendor_lib_a132d30959ef28c3f004 =
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -125,8 +104,7 @@ var vendor_lib_a132d30959ef28c3f004 =
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "dist/";
-/******/
+/******/ 	__webpack_require__.p = "js/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
@@ -142,7 +120,7 @@ var vendor_lib_a132d30959ef28c3f004 =
 /*!****************!*\
   !*** dll main ***!
   \****************/
-/*! no static exports found */
+/*! dynamic exports provided */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -158,8 +136,8 @@ module.exports = __webpack_require__;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "square", function() { return square; });
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["square"] = square;
 function square(n) {
 	return n * n;
 }
@@ -169,42 +147,39 @@ function square(n) {
 /******/ ]);
 ```
 
-# dist/vendor-manifest.json
+# js/vendor-manifest.json
 
-```javascript
-{"name":"vendor_lib_a132d30959ef28c3f004","content":{"../node_modules/example-vendor.js":{"id":1,"buildMeta":{"exportsType":"namespace","providedExports":["square"]}}}}
+``` javascript
+{"name":"vendor_lib_6b1edee0549eb5092709","content":{"../node_modules/example-vendor.js":{"id":1,"meta":{"harmonyModule":true},"exports":["square"]}}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-Hash: 0a1b2c3d4e5f6a7b8c9d
-Version: webpack 4.29.6
-    Asset      Size  Chunks             Chunk Names
-vendor.js  4.28 KiB       0  [emitted]  main
+Hash: 6b1edee0549eb5092709
+Version: webpack 3.11.0
+    Asset     Size  Chunks             Chunk Names
+vendor.js  3.18 kB       0  [emitted]  main
 Entrypoint main = vendor.js
-chunk    {0} vendor.js (main) 57 bytes [entry] [rendered]
-    > main
- [0] dll main 12 bytes {0} [built]
-     dll entry 
-      DllPlugin
+chunk    {0} vendor.js (main) 60 bytes [entry] [rendered]
+    > main [0] dll main 
+    [0] dll main 12 bytes {0} [built]
      + 1 hidden module
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-Hash: 0a1b2c3d4e5f6a7b8c9d
-Version: webpack 4.29.6
-    Asset      Size  Chunks             Chunk Names
-vendor.js  1.06 KiB       0  [emitted]  main
+Hash: 6b1edee0549eb5092709
+Version: webpack 3.11.0
+    Asset       Size  Chunks             Chunk Names
+vendor.js  652 bytes       0  [emitted]  main
 Entrypoint main = vendor.js
-chunk    {0} vendor.js (main) 57 bytes [entry] [rendered]
-    > main
- [0] dll main 12 bytes {0} [built]
-     dll entry 
-      DllPlugin
+chunk    {0} vendor.js (main) 60 bytes [entry] [rendered]
+    > main [0] dll main 
+    [0] dll main 12 bytes {0} [built]
      + 1 hidden module
 ```
+

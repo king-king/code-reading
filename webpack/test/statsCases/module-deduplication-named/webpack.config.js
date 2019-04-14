@@ -1,5 +1,4 @@
 module.exports = {
-	mode: "production",
 	entry: {
 		e1: "./e1",
 		e2: "./e2",
@@ -11,7 +10,6 @@ module.exports = {
 	stats: {
 		hash: false,
 		timings: false,
-		builtAt: false,
 		chunks: true,
 		chunkModules: true,
 		modules: false

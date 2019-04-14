@@ -1,3 +1,3 @@
 module.exports = [
-	[/Module build failed( \(from [^)]+\))?:\nMessage\nStack/]
+	[/Module build failed: Message\nStack/]
 ];

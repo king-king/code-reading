@@ -1,19 +1,19 @@
 # pageA.js
 
-```javascript
-_{{pageA.js}}_
+``` javascript
+{{pageA.js}}
 ```
 
 # pageB.js
 
-```javascript
-_{{pageB.js}}_
+``` javascript
+{{pageB.js}}
 ```
 
 # pageC.js
 
-```javascript
-_{{pageC.js}}_
+``` javascript
+{{pageC.js}}
 ```
 
 # common.js
@@ -22,20 +22,20 @@ a big file...
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

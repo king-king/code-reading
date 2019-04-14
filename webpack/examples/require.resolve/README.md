@@ -12,7 +12,7 @@ delete require.cache[aId];
 // require module again, it should be reexecuted
 var a2 = require("./a");
 
-// verify it
+// vertify it
 if(a == a2) throw new Error("Cache clear failed :(");
 ```
 
@@ -23,7 +23,7 @@ if(a == a2) throw new Error("Cache clear failed :(");
 module.exports = Math.random();
 ```
 
-# dist/output.js
+# js/output.js
 
 <details><summary><code>/******/ (function(modules) { /* webpackBootstrap */ })</code></summary>
 
@@ -66,32 +66,12 @@ module.exports = Math.random();
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -107,11 +87,10 @@ module.exports = Math.random();
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "dist/";
-/******/
+/******/ 	__webpack_require__.p = "js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 ```
@@ -121,35 +100,37 @@ module.exports = Math.random();
 ``` javascript
 /******/ ([
 /* 0 */
+/*!**************!*\
+  !*** ./a.js ***!
+  \**************/
+/*! dynamic exports provided */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+module.exports = Math.random();
+
+/***/ }),
+/* 1 */
 /*!********************!*\
   !*** ./example.js ***!
   \********************/
-/*! no static exports found */
+/*! dynamic exports provided */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var a = __webpack_require__(/*! ./a */ 1);
+var a = __webpack_require__(/*! ./a */ 0);
 
 // get module id
-var aId = /*require.resolve*/(/*! ./a.js */ 1);
+var aId = /*require.resolve*/(/*! ./a.js */ 0);
 
 // clear module in require.cache
 delete __webpack_require__.c[aId];
 
 // require module again, it should be reexecuted
-var a2 = __webpack_require__(/*! ./a */ 1);
+var a2 = __webpack_require__(/*! ./a */ 0);
 
-// verify it
+// vertify it
 if(a == a2) throw new Error("Cache clear failed :(");
-
-/***/ }),
-/* 1 */
-/*!**************!*\
-  !*** ./a.js ***!
-  \**************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = Math.random();
 
 /***/ })
 /******/ ]);
@@ -157,38 +138,36 @@ module.exports = Math.random();
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-Hash: 0a1b2c3d4e5f6a7b8c9d
-Version: webpack 4.29.6
-    Asset      Size  Chunks             Chunk Names
-output.js  4.21 KiB       0  [emitted]  main
+Hash: 4ed342adc60583d992ab
+Version: webpack 3.11.0
+    Asset     Size  Chunks             Chunk Names
+output.js  3.18 kB       0  [emitted]  main
 Entrypoint main = output.js
-chunk    {0} output.js (main) 313 bytes [entry] [rendered]
-    > ./example.js main
- [0] ./example.js 282 bytes {0} [built]
-     single entry ./example.js  main
- [1] ./a.js 31 bytes {0} [built]
-     cjs require ./a [0] ./example.js 1:8-22
-     require.resolve ./a.js [0] ./example.js 4:10-35
-     cjs require ./a [0] ./example.js 10:9-23
+chunk    {0} output.js (main) 326 bytes [entry] [rendered]
+    > main [1] ./example.js 
+    [0] ./a.js 31 bytes {0} [built]
+        require.resolve ./a.js [1] ./example.js 4:10-35
+        cjs require ./a [1] ./example.js 1:8-22
+        cjs require ./a [1] ./example.js 10:9-23
+    [1] ./example.js 295 bytes {0} [built]
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-Hash: 0a1b2c3d4e5f6a7b8c9d
-Version: webpack 4.29.6
-    Asset      Size  Chunks             Chunk Names
-output.js  1.03 KiB       0  [emitted]  main
+Hash: 4ed342adc60583d992ab
+Version: webpack 3.11.0
+    Asset       Size  Chunks             Chunk Names
+output.js  599 bytes       0  [emitted]  main
 Entrypoint main = output.js
-chunk    {0} output.js (main) 313 bytes [entry] [rendered]
-    > ./example.js main
- [0] ./a.js 31 bytes {0} [built]
-     cjs require ./a [1] ./example.js 1:8-22
-     require.resolve ./a.js [1] ./example.js 4:10-35
-     cjs require ./a [1] ./example.js 10:9-23
- [1] ./example.js 282 bytes {0} [built]
-     single entry ./example.js  main
+chunk    {0} output.js (main) 326 bytes [entry] [rendered]
+    > main [1] ./example.js 
+    [0] ./a.js 31 bytes {0} [built]
+        require.resolve ./a.js [1] ./example.js 4:10-35
+        cjs require ./a [1] ./example.js 1:8-22
+        cjs require ./a [1] ./example.js 10:9-23
+    [1] ./example.js 295 bytes {0} [built]
 ```

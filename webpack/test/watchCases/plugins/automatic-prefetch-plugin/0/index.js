@@ -1,7 +1,9 @@
 it("should watch for changes", function() {
-	expect(require("./foo/" + WATCH_STEP)).toBe('This is only a test.' + WATCH_STEP);
+	require("./foo/" + WATCH_STEP).should.be.eql('This is only a test.' + WATCH_STEP);
 	if(+WATCH_STEP > 0) {
-		for(var m of STATS_JSON.modules.filter(m => /(a|b|c)\.js$/.test(m.identifier)))
-			expect(m.prefetched).toBe(true);
+		STATS_JSON.modules[0].prefetched.should.be.true();
+		STATS_JSON.modules[1].prefetched.should.be.true();
+		STATS_JSON.modules[2].prefetched.should.be.true();
+		STATS_JSON.modules[3].prefetched.should.be.true();
 	}
 });

@@ -1,10 +1,10 @@
 /* globals describe, it, beforeEach */
 "use strict";
-
+require("should");
 const DelegatedModule = require("../lib/DelegatedModule");
 
-describe("DelegatedModule", () => {
-	describe("#updateHash", () => {
+describe("DelegatedModule", function() {
+	describe("#updateHash", function() {
 		const sourceRequest = "dll-reference dll_e54c0fb67f8152792ad2";
 		const data = {
 			id: "/xg9"
@@ -13,26 +13,21 @@ describe("DelegatedModule", () => {
 		const userRequest = "./library.js";
 		let hashedText;
 		let hash;
-		beforeEach(() => {
+		beforeEach(function() {
 			hashedText = "";
 			hash = {
-				update: text => {
+				update: (text) => {
 					hashedText += text;
 				}
 			};
-			const delegatedModule = new DelegatedModule(
-				sourceRequest,
-				data,
-				type,
-				userRequest
-			);
+			const delegatedModule = new DelegatedModule(sourceRequest, data, type, userRequest);
 			delegatedModule.updateHash(hash);
 		});
-		it("updates hash with delegated module ID", () => {
-			expect(hashedText).toMatch("/xg9");
+		it("updates hash with delegated module ID", function() {
+			hashedText.should.containEql("/xg9");
 		});
-		it("updates hash with delegation type", () => {
-			expect(hashedText).toMatch("require");
+		it("updates hash with delegation type", function() {
+			hashedText.should.containEql("require");
 		});
 	});
 });

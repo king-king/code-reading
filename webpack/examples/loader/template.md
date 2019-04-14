@@ -1,31 +1,31 @@
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # file.js
 
-```javascript
-_{{file.js}}_
+``` javascript
+{{file.js}}
 ```
 
 # loader.js
 
-```javascript
-_{{loader.js}}_
+``` javascript
+{{loader.js}}
 ```
 
 # test.css
 
-```css
-_{{test.css}}_
+``` css
+{{test.css}}
 ```
 
-# dist/output.js
+# js/output.js
 
-```javascript
-_{{dist/output.js}}_
+``` javascript
+{{js/output.js}}
 ```
 
 # Console output
@@ -40,14 +40,14 @@ Prints in node.js (`enhanced-require example.js`) and in browser:
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

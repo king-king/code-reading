@@ -8,9 +8,9 @@ All modules except `cjs` are EcmaScript modules. `cjs` is a CommonJs module.
 
 The interesting thing here is that putting all modules in single scope won't work, because of multiple reasons:
 
-- Modules `lazy`, `c`, `d` and `cjs` need to be in a separate chunk
-- Module `shared` is accessed by two chunks (different scopes)
-- Module `cjs` is a CommonJs module
+* Modules `lazy`, `c`, `d` and `cjs` need to be in a separate chunk
+* Module `shared` is accessed by two chunks (different scopes)
+* Module `cjs` is a CommonJs module
 
 ![](graph2.png)
 
@@ -18,96 +18,101 @@ webpack therefore uses a approach called **"Partial Scope Hoisting"** or "Module
 
 ![](graph3.png)
 
-While module concatenation identifiers in modules are renamed to avoid conflicts and internal imports are simplified. External imports and exports from the root module use the existing ESM constructs.
+While module concatentation identifiers in modules are renamed to avoid conflicts and internal imports are simplified. External imports and exports from the root module use the existing ESM constructs.
 
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # lazy.js
 
-```javascript
-_{{lazy.js}}_
+``` javascript
+{{lazy.js}}
 ```
 
 # a.js
 
-```javascript
-_{{node_modules/a.js}}_
+``` javascript
+{{node_modules/a.js}}
 ```
 
 # b.js
 
-```javascript
-_{{node_modules/b.js}}_
+``` javascript
+{{node_modules/b.js}}
 ```
 
 # c.js
 
-```javascript
-_{{node_modules/c.js}}_
+``` javascript
+{{node_modules/c.js}}
 ```
 
 # d.js
 
-```javascript
-_{{node_modules/d.js}}_
+``` javascript
+{{node_modules/d.js}}
 ```
 
 # cjs.js
 
-```javascript
-_{{node_modules/cjs.js}}_
+``` javascript
+{{node_modules/cjs.js}}
 ```
 
 # shared.js
 
-```javascript
-_{{node_modules/shared.js}}_
+``` javascript
+{{node_modules/shared.js}}
 ```
 
 # shared2.js
 
-```javascript
-_{{node_modules/shared2.js}}_
+``` javascript
+{{node_modules/shared2.js}}
 ```
+
+
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
-# dist/output.js
 
-```javascript
-_{{dist/output.js}}_
+
+
+# js/output.js
+
+``` javascript
+{{js/output.js}}
 ```
 
-# dist/1.output.js
+# js/0.output.js
 
-```javascript
-_{{dist/1.output.js}}_
+``` javascript
+{{js/0.output.js}}
 ```
 
 Minimized
 
-```javascript
-_{{production:dist/1.output.js}}_
+``` javascript
+{{min:js/0.output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

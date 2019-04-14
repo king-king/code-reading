@@ -1,11 +1,7 @@
 module.exports = {
-	// mode: "development || "production",
 	module: {
-		rules: [
-			{
-				test: /\.coffee$/,
-				loader: "coffee-loader"
-			}
+		loaders: [
+			{ test: /\.coffee$/, loader: "coffee-loader" }
 		]
 	},
 	resolve: {

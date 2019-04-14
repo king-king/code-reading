@@ -1,5 +1,1 @@
-module.exports = {
-	optimization: {
-		minimize: false
-	}
-};
+module.exports = {};

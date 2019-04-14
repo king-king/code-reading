@@ -4,46 +4,47 @@ The `webpack.config.js` exports an array of all config combinations that should 
 
 The I18nPlugin replaces every occurrence of the i18n function `__(...)` with a const string. i. e. `__("Hello World")` with `"Hello World"` resp. `"Hallo Welt"`.
 
+
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
 # webpack.config.js
 
-```javascript
-_{{webpack.config.js}}_
+``` javascript
+{{webpack.config.js}}
 ```
 
 # de.json
 
-```javascript
-_{{de.json}}_
+``` javascript
+{{de.json}}
 ```
 
-# dist/de.output.js
+# js/de.output.js
 
-```javascript
-_{{dist/de.output.js}}_
+``` javascript
+{{js/de.output.js}}
 ```
 
-# dist/en.output.js
+# js/en.output.js
 
-```javascript
-_{{dist/en.output.js}}_
+``` javascript
+{{js/en.output.js}}
 ```
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

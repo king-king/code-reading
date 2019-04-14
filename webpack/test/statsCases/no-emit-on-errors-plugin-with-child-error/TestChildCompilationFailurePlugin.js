@@ -13,12 +13,12 @@ module.exports = class TestChildCompilationFailurePlugin {
 	}
 
 	apply(compiler) {
-		compiler.hooks.make.tapAsync("TestChildCompilationFailurePlugin", (compilation, cb) => {
+		compiler.plugin("make", (compilation, cb) => {
 			const child = compilation.createChildCompiler("child", this.output);
-			child.hooks.compilation.tap("TestChildCompilationFailurePlugin", childCompilation => {
+			child.plugin("compilation", childCompilation => {
 				childCompilation.errors.push(new Error("forced error"));
 			});
-			new SingleEntryPlugin(compiler.options.context, compiler.options.entry, "child").apply(child);
+			child.apply(new SingleEntryPlugin(compiler.options.context, compiler.options.entry, "child"));
 			child.runAsChild(cb);
 		});
 	}

@@ -1,24 +1,27 @@
 "use strict";
 
+const should = require("should");
+
 const Template = require("../lib/Template");
 
 describe("Template", () => {
-	it("should generate valid identifiers", () => {
-		expect(Template.toIdentifier("0abc-def9")).toBe("_0abc_def9");
-	});
+	it("should generate valid identifiers", () =>
+		Template.toIdentifier("0abc-def9").should.equal("_abc_def9"));
 	it("should generate valid number identifiers", () => {
 		const items = [];
 		let item;
-		for (let i = 0; i < 80; i += 1) {
+		for(let i = 0; i < 80; i += 1) {
 			item = Template.numberToIdentifer(i);
-			expect(item).not.toBe("");
-			expect(items).not.toContain(item);
-			items.push(item);
+			if(item === "") {
+				throw new Error("empty number identifier");
+			} else if(items.indexOf(item) > -1) {
+				throw new Error("duplicate number identifier");
+			} else {
+				items.push(item);
+			}
 		}
 	});
 	it("should generate sanitized path identifiers", () => {
-		expect(Template.toPath("path/to-sdfas/sadfome$$.js")).toBe(
-			"path-to-sdfas-sadfome$$-js"
-		);
+		Template.toPath("path/to-sdfas/sadfome$$.js").should.equal("path-to-sdfas-sadfome$$-js");
 	});
 });

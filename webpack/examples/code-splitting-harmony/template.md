@@ -8,26 +8,28 @@ Providing dynamic expressions to `import` is possible. The same limits as with d
 
 # example.js
 
-```javascript
-_{{example.js}}_
+``` javascript
+{{example.js}}
 ```
 
-# dist/output.js
 
-```javascript
-_{{dist/output.js}}_
+# js/output.js
+
+``` javascript
+{{js/output.js}}
 ```
+
 
 # Info
 
-## Unoptimized
+## Uncompressed
 
 ```
-_{{stdout}}_
+{{stdout}}
 ```
 
-## Production mode
+## Minimized (uglify-js, no zip)
 
 ```
-_{{production:stdout}}_
+{{min:stdout}}
 ```

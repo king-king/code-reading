@@ -1,9 +1,8 @@
 var path = require("path");
 module.exports = {
-	// mode: "development || "production",
 	entry: "./example",
 	output: {
-		path: path.join(__dirname, "dist"),
+		path: path.join(__dirname, "js"),
 		filename: "MyLibrary.umd.js",
 		library: "MyLibrary",
 		libraryTarget: "umd"

@@ -3,11 +3,13 @@ module.exports = {
 	performance: {
 		hints: false
 	},
+	module: {
+		loaders: [
+			{ test: /\.json$/, loader: "json-loader" }
+		]
+	},
 	node: {
 		__dirname: false,
 		__filename: false
-	},
-	optimization: {
-		minimize: false
 	}
 };

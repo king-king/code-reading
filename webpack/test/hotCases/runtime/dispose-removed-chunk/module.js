@@ -1,5 +1,5 @@
-export default import("./a");
+export default System.import("./a");
 ---
-export default import("./b");
+export default System.import("./b");
 ---
-export default import("./a");
+export default System.import("./a");

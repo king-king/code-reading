@@ -1,22 +1,18 @@
+var CommonsChunkPlugin = require("../../../lib/optimize/CommonsChunkPlugin");
 var NamedChunksPlugin = require("../../../lib/NamedChunksPlugin");
 var NamedModulesPlugin = require("../../../lib/NamedModulesPlugin");
 
 module.exports = {
-	mode: "production",
 	entry: {
-		entry: "./entry"
+		"entry": "./entry",
+		"vendor": ["./modules/a", "./modules/b"],
 	},
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				vendor: {
-					name: "vendor",
-					test: /modules[\\/][ab]/,
-					chunks: "all",
-					enforce: true
-				}
-			}
-		}
-	},
-	plugins: [new NamedChunksPlugin(), new NamedModulesPlugin()]
+	plugins: [
+		new CommonsChunkPlugin({
+			names: ["vendor", "manifest"],
+			minChunks: Infinity
+		}),
+		new NamedChunksPlugin(),
+		new NamedModulesPlugin(),
+	]
 };

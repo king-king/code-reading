@@ -1,46 +1,46 @@
-it("should be able to use eager mode", function() {
+it("should be able to use eager mode", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "eager" */ "./dir1/" + name);
 	}
-	return testChunkLoading(load, true, true);
+	testChunkLoading(load, true, true, done);
 });
 
-it("should be able to use lazy-once mode", function() {
+it("should be able to use lazy-once mode", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "lazy-once" */ "./dir2/" + name);
 	}
-	return testChunkLoading(load, false, true);
+	testChunkLoading(load, false, true, done);
 });
 
-it("should be able to use lazy-once mode with name", function() {
+it("should be able to use lazy-once mode with name", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "lazy-once", webpackChunkName: "name-lazy-once" */ "./dir3/" + name);
 	}
-	return testChunkLoading(load, false, true);
+	testChunkLoading(load, false, true, done);
 });
 
-it("should be able to use lazy mode", function() {
+it("should be able to use lazy mode", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "lazy" */ "./dir4/" + name);
 	}
-	return testChunkLoading(load, false, false);
+	testChunkLoading(load, false, false, done);
 });
 
-it("should be able to use lazy mode with name", function() {
+it("should be able to use lazy mode with name", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "lazy", webpackChunkName: "name-lazy" */ "./dir5/" + name);
 	}
-	return testChunkLoading(load, false, false);
+	testChunkLoading(load, false, false, done);
 });
 
-it("should be able to use lazy mode with name and placeholder", function() {
+it("should be able to use lazy mode with name and placeholder", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "lazy", webpackChunkName: "name-lazy-[request]" */ "./dir6/" + name);
 	}
-	return testChunkLoading(load, false, false);
+	testChunkLoading(load, false, false, done);
 });
 
-it("should be able to combine chunks by name", function() {
+it("should be able to combine chunks by name", function(done) {
 	function load(name) {
 		switch(name) {
 			case "a":
@@ -55,20 +55,20 @@ it("should be able to combine chunks by name", function() {
 				throw new Error("Unexcepted test data");
 		}
 	}
-	return testChunkLoading(load, false, true);
+	testChunkLoading(load, false, true, done);
 });
 
-it("should be able to use weak mode", function() {
+it("should be able to use weak mode", function(done) {
 	function load(name) {
 		return import(/* webpackMode: "weak" */ "./dir8/" + name);
 	}
 	require("./dir8/a") // chunks served manually by the user
 	require("./dir8/b")
 	require("./dir8/c")
-	return testChunkLoading(load, true, true);
+	testChunkLoading(load, true, true, done);
 });
 
-it("should be able to use weak mode (without context)", function() {
+it("should be able to use weak mode (without context)", function(done) {
 	function load(name) {
 		switch(name) {
 			case "a":
@@ -84,51 +84,47 @@ it("should be able to use weak mode (without context)", function() {
 	require("./dir9/a") // chunks served manually by the user
 	require("./dir9/b")
 	require("./dir9/c")
-	return testChunkLoading(load, true, true);
+	testChunkLoading(load, true, true, done);
 });
 
-it("should not find module when mode is weak and chunk not served elsewhere", function() {
+it("should not find module when mode is weak and chunk not served elsewhere", function(done) {
 	var name = "a";
-	return import(/* webpackMode: "weak" */ "./dir10/" + name)
+	import(/* webpackMode: "weak" */ "./dir10/" + name)
 		.catch(function(e) {
-			expect(e).toMatchObject({ message: /not available/, code: /MODULE_NOT_FOUND/ });
-		});
+			e.should.match(/not available/);
+			done();
+		})
 });
 
-it("should not find module when mode is weak and chunk not served elsewhere (without context)", function() {
-	return import(/* webpackMode: "weak" */ "./dir11/a")
+it("should not find module when mode is weak and chunk not served elsewhere (without context)", function(done) {
+	import(/* webpackMode: "weak" */ "./dir11/a")
 		.catch(function(e) {
-			expect(e).toMatchObject({ message: /not available/, code: /MODULE_NOT_FOUND/ });
-		});
+			e.should.match(/not available/);
+			done();
+		})
 });
 
-function testChunkLoading(load, expectedSyncInitial, expectedSyncRequested) {
+function testChunkLoading(load, expectedSyncInitial, expectedSyncRequested, done) {
 	var sync = false;
 	var syncInitial = true;
-	var p = Promise.all([load("a"), load("b")]).then(function() {
-		expect(syncInitial).toBe(expectedSyncInitial);
+	Promise.all([load("a"), load("b")]).then(function() {
+		syncInitial.should.be.eql(expectedSyncInitial);
 		sync = true;
-		var p = Promise.all([
+		Promise.all([
 			load("a").then(function(a) {
-				expect(a).toEqual(nsObj({
-					default: "a"
-				}));
-				expect(sync).toBe(true);
+				a.should.be.eql({ default: "a" });
+				sync.should.be.eql(true);
 			}),
 			load("c").then(function(c) {
-				expect(c).toEqual(nsObj({
-					default: "c"
-				}));
-				expect(sync).toBe(expectedSyncRequested);
+				c.should.be.eql({ default: "c" });
+				sync.should.be.eql(expectedSyncRequested);
 			})
-		]);
+		]).then(function() { done(); }, done);
 		Promise.resolve().then(function(){}).then(function(){}).then(function(){}).then(function(){
 			sync = false;
 		});
-		return p;
-	});
+	}).catch(done);
 	Promise.resolve().then(function(){}).then(function(){}).then(function(){}).then(function(){
 		syncInitial = false;
 	});
-	return p;
 }

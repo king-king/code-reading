@@ -1,8 +1,8 @@
 it("should support multiple reexports", function() {
-	expect(require("./x")).toEqual(nsObj({
+	require("./x").should.be.eql({
 		xa: "a",
 		xb: "b",
 		xc: "c",
 		xd: "d"
-	}));
+	});
 });
