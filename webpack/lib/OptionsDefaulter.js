@@ -32,7 +32,7 @@ class OptionsDefaulter {
 	process(options) {
 		// TODO: change this for webpack 4: options = Object.assign({}, options);
 		for(let name in this.defaults) {
-			switch(this.config[name]) {
+			switch (this.config[name]) {
 				case undefined:
 					if(getProperty(options, name) === undefined)
 						setProperty(options, name, this.defaults[name]);

@@ -23,11 +23,13 @@ function webpack(options, callback) {
 		compiler = new MultiCompiler(options.map(options => webpack(options)));
 	} else if(typeof options === "object") {
 		// TODO webpack 4: process returns options
+		// WQ 检测用户配置是否齐全，不齐全给补齐
 		new WebpackOptionsDefaulter().process(options);
-
+		// WQ Compiler是重点
 		compiler = new Compiler();
 		compiler.context = options.context;
-		compiler.options = options;
+        compiler.options = options;
+        // WQ 为compiler设置filesystem
 		new NodeEnvironmentPlugin().apply(compiler);
 		if(options.plugins && Array.isArray(options.plugins)) {
 			compiler.apply.apply(compiler, options.plugins);
