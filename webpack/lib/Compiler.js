@@ -400,7 +400,7 @@ class Compiler extends Tapable {
 
 				try {
 					this.records = JSON.parse(content.toString("utf-8"));
-				} catch(e) {
+				} catch (e) {
 					e.message = "Cannot parse records: " + e.message;
 					return callback(e);
 				}
