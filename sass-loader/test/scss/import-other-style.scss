@@ -1,0 +1,4 @@
+/* Importing a sass module does not require to set the extension explicitly... */
+@import "../sass/another/module";
+/* ...but it is allowed */
+@import "../sass/another/module.sass";
