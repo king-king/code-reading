@@ -98,9 +98,9 @@ This configuration allows you to require partial html from your main `index.html
 
 ## Custom template engines
 
-Maybe you prefer pug or blueimp over underscore - or your project is using pug for the front end part.
+Maybe you prefer jade or blueimp over underscore - or your project is using jade for the front end part.
 With 2.x you can use the webpack loaders either once only for the template as in the following example
-where we use pug (requires the [pug-loader](https://github.com/webpack/pug-loader)):
+where we use jade (requires the [jade-loader](https://github.com/webpack/jade-loader)):
 
 ```js
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -109,31 +109,31 @@ module.exports = {
     // ...
     plugins: [
         new HtmlWebpackPlugin({
-          template: 'pug!template.pug'
+          template: 'jade!template.jade'
         })
     ]
 };
 ```
 
-or by configuring webpack to handle all `.pug` files:
+or by configuring webpack to handle all `.jade` files:
 
 ```js
 module.exports = {
   // ...
   module: {
     loaders: [
-      { test: /\.pug$/, loader: 'pug' }
+      { test: /\.jade$/, loader: 'jade' }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'template.pug'
+      template: 'template.jade'
     })
   ]
 };
 ```
 
-Please note that if you specify the loader and use 'pug!template.pug' webpack will try to apply the pug loader twice and fail.
+Please note that if you specify the loader and use 'jade!template.jade' webpack will try to apply the jade loader twice and fail.
 
 ## Isomorph apps
 
@@ -164,8 +164,8 @@ Using loaders inside a template.js
 ```js
   // This function has to return a string or promised string:
   module.exports = function(templateParams) {
-      // Play around with the arguments and then use the webpack pug loader to load the pug:
-      return require('./template.pug')({assets: templateParams.htmlWebpackPlugin.files});
+      // Play around with the arguments and then use the webpack jade loader to load the jade:
+      return require('./template.jade')({assets: templateParams.htmlWebpackPlugin.files});
   };
 ```
 

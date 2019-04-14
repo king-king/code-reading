@@ -1,3 +1,3 @@
 module.exports = function (templateParams) {
-  return 'templateParams keys: "' + Object.keys(templateParams).join(',') + '"';
+  return 'templateParams.compilation exists: ' + !!templateParams.compilation;
 };

@@ -5,7 +5,7 @@
 The version 2.x which was introduced last year (Sep, 2015) changed the way the template is processed.
 Instead of forcing all users to use the [blueimp](https://github.com/blueimp/JavaScript-Templates) template engine it allowed to use any webpack loader:
 
-* [pug](https://github.com/pugjs/pug-loader)
+* [jade/pug](https://github.com/pugjs/pug-loader)
 * [ejs](https://github.com/okonet/ejs-loader)
 * [underscore](https://github.com/emaphp/underscore-template-loader)
 * [handlebars](https://github.com/pcardune/handlebars-loader)
@@ -19,19 +19,18 @@ There are three ways to set the loader:
 
 ## 1) Don't set any loader
 
-By default (if you don't specify any loader in any way) a [fallback lodash loader](https://github.com/ampedandwired/html-webpack-plugin/blob/master/lib/loader.js) kicks in.
+By default (if you don't specify any loader in any way) a [fallback ejs loader](https://github.com/ampedandwired/html-webpack-plugin/blob/master/lib/loader.js) kicks in.
 
 ```js
 {
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.ejs'
     })
   ]
 }
 ```
-
-Be aware, using `.html` as your template extention may unexpectedly trigger another loader.
+It is a good idea to use `.ejs` instead of `.html` so you do not unexpectedly trigger another loader.
 
 ## 2) Setting a loader directly for the template
 

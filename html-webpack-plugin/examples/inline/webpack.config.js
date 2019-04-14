@@ -1,6 +1,6 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('../..');
-var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpackMajorVersion = require('webpack/package.json').version.split('.')[0];
 
 module.exports = {
@@ -12,20 +12,20 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    rules: [
-      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
-      { test: /\.pug$/, loader: 'pug-loader' }
+    loaders: [
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
+      { test: /\.jade$/, loader: 'jade-loader' }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       inject: false,
       cache: false,
-      template: 'template.pug',
+      template: 'template.jade',
       filename: 'index.html',
       favicon: 'favicon.ico',
-      title: 'pug demo'
+      title: 'Jade demo'
     }),
-    new MiniCssExtractPlugin({ filename: 'styles.css' })
+    new ExtractTextPlugin('styles.css')
   ]
 };
