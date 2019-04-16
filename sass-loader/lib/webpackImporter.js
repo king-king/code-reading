@@ -36,41 +36,41 @@ const matchCss = /\.css$/;
  * @returns {Importer}
  */
 function webpackImporter(resourcePath, resolve, addNormalizedDependency) {
-  function dirContextFrom(fileContext) {
-    return path.dirname(
-      // The first file is 'stdin' when we're using the data option
-      fileContext === 'stdin' ? resourcePath : fileContext
-    );
-  }
-
-  // eslint-disable-next-line no-shadow
-  function startResolving(dir, importsToResolve) {
-    return importsToResolve.length === 0
-      ? Promise.reject()
-      : resolve(dir, importsToResolve[0]).then(
-          (resolvedFile) => {
-            // Add the resolvedFilename as dependency. Although we're also using stats.includedFiles, this might come
-            // in handy when an error occurs. In this case, we don't get stats.includedFiles from node-sass.
-            addNormalizedDependency(resolvedFile);
-            return {
-              // By removing the CSS file extension, we trigger node-sass to include the CSS file instead of just linking it.
-              file: resolvedFile.replace(matchCss, ''),
-            };
-          },
-          () => startResolving(dir, tail(importsToResolve))
+    function dirContextFrom(fileContext) {
+        return path.dirname(
+            // The first file is 'stdin' when we're using the data option
+            fileContext === 'stdin' ? resourcePath : fileContext
         );
-  }
+    }
 
-  return (url, prev, done) => {
-    startResolving(dirContextFrom(prev), importsToResolve(url))
-      // Catch all resolving errors, return the original file and pass responsibility back to other custom importers
-      .catch(() => {
-        return {
-          file: url,
-        };
-      })
-      .then(done);
-  };
+    // eslint-disable-next-line no-shadow
+    function startResolving(dir, importsToResolve) {
+        return importsToResolve.length === 0 ?
+            Promise.reject() :
+            resolve(dir, importsToResolve[0]).then(
+                (resolvedFile) => {
+                    // Add the resolvedFilename as dependency. Although we're also using stats.includedFiles, this might come
+                    // in handy when an error occurs. In this case, we don't get stats.includedFiles from node-sass.
+                    addNormalizedDependency(resolvedFile);
+                    return {
+                        // By removing the CSS file extension, we trigger node-sass to include the CSS file instead of just linking it.
+                        file: resolvedFile.replace(matchCss, ''),
+                    };
+                },
+                () => startResolving(dir, tail(importsToResolve))
+            );
+    }
+
+    return (url, prev, done) => {
+        startResolving(dirContextFrom(prev), importsToResolve(url))
+            // Catch all resolving errors, return the original file and pass responsibility back to other custom importers
+            .catch(() => {
+                return {
+                    file: url,
+                };
+            })
+            .then(done);
+    };
 }
 
 module.exports = webpackImporter;
