@@ -64,6 +64,7 @@ function sassLoader(content) {
         options.implementation || getDefaultSassImpl()
     );
 
+    //  WQ 这段代码是核心的代码，是sass编译的代码
     render(options, (err, result) => {
         if (err) {
             formatSassError(err, this.resourcePath);
