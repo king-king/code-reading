@@ -149,5 +149,3 @@ module.exports = {
     //undocumented
     assetsDir: path.resolve(__dirname, 'lib', 'assets')
 };
-
-
