@@ -1,0 +1,393 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table matches class components to maximum depth at thead 1`] = `
+<thead>
+  <tr>
+    <th>
+      <button
+        onClick={[Function]}
+        title="add row"
+      >
+        +
+      </button>
+    </th>
+    <th
+      key="who"
+      scope="col"
+    >
+      qui
+    </th>
+    <th
+      key="where"
+      scope="col"
+    >
+      où
+    </th>
+    <th
+      key="which"
+      scope="col"
+    >
+      lequel
+    </th>
+  </tr>
+</thead>
+`;
+
+exports[`Table matches class components to maximum depth at tr 1`] = `
+<tr>
+  <td>
+    <button
+      onClick={[Function]}
+      title="delete row"
+    >
+      -
+    </button>
+  </td>
+  <td
+    key="who"
+  >
+    Peacock
+  </td>
+  <td
+    key="where"
+  >
+    library
+  </td>
+  <td
+    key="which"
+  >
+    rope
+  </td>
+</tr>
+`;
+
+exports[`Table matches class components to minimum depth at table 1`] = `
+<table>
+  <TableHead
+    addRow={[Function]}
+    fields={
+      Array [
+        Object {
+          "key": "who",
+          "label": "qui",
+        },
+        Object {
+          "key": "where",
+          "label": "où",
+        },
+        Object {
+          "key": "which",
+          "label": "lequel",
+        },
+      ]
+    }
+  />
+  <tbody>
+    <TableRow
+      deleteRow={[Function]}
+      fields={
+        Array [
+          Object {
+            "key": "who",
+            "label": "qui",
+          },
+          Object {
+            "key": "where",
+            "label": "où",
+          },
+          Object {
+            "key": "which",
+            "label": "lequel",
+          },
+        ]
+      }
+      key="3"
+      record={
+        Object {
+          "id": 3,
+          "where": "study",
+          "which": "spanner",
+          "who": "Plum",
+        }
+      }
+    />
+    <TableRow
+      deleteRow={[Function]}
+      fields={
+        Array [
+          Object {
+            "key": "who",
+            "label": "qui",
+          },
+          Object {
+            "key": "where",
+            "label": "où",
+          },
+          Object {
+            "key": "which",
+            "label": "lequel",
+          },
+        ]
+      }
+      key="2"
+      record={
+        Object {
+          "id": 2,
+          "where": "library",
+          "which": "rope",
+          "who": "Peacock",
+        }
+      }
+    />
+    <TableRow
+      deleteRow={[Function]}
+      fields={
+        Array [
+          Object {
+            "key": "who",
+            "label": "qui",
+          },
+          Object {
+            "key": "where",
+            "label": "où",
+          },
+          Object {
+            "key": "which",
+            "label": "lequel",
+          },
+        ]
+      }
+      key="1"
+      record={
+        Object {
+          "id": 1,
+          "where": "conservatory",
+          "which": "pipe",
+          "who": "Green",
+        }
+      }
+    />
+  </tbody>
+</table>
+`;
+
+exports[`Table matches class components to minimum depth at tbody 1`] = `
+<tbody>
+  <TableRow
+    deleteRow={[Function]}
+    fields={
+      Array [
+        Object {
+          "key": "who",
+          "label": "qui",
+        },
+        Object {
+          "key": "where",
+          "label": "où",
+        },
+        Object {
+          "key": "which",
+          "label": "lequel",
+        },
+      ]
+    }
+    key="3"
+    record={
+      Object {
+        "id": 3,
+        "where": "study",
+        "which": "spanner",
+        "who": "Plum",
+      }
+    }
+  />
+  <TableRow
+    deleteRow={[Function]}
+    fields={
+      Array [
+        Object {
+          "key": "who",
+          "label": "qui",
+        },
+        Object {
+          "key": "where",
+          "label": "où",
+        },
+        Object {
+          "key": "which",
+          "label": "lequel",
+        },
+      ]
+    }
+    key="2"
+    record={
+      Object {
+        "id": 2,
+        "where": "library",
+        "which": "rope",
+        "who": "Peacock",
+      }
+    }
+  />
+  <TableRow
+    deleteRow={[Function]}
+    fields={
+      Array [
+        Object {
+          "key": "who",
+          "label": "qui",
+        },
+        Object {
+          "key": "where",
+          "label": "où",
+        },
+        Object {
+          "key": "which",
+          "label": "lequel",
+        },
+      ]
+    }
+    key="1"
+    record={
+      Object {
+        "id": 1,
+        "where": "conservatory",
+        "which": "pipe",
+        "who": "Green",
+      }
+    }
+  />
+</tbody>
+`;
+
+exports[`Table matches class components to minimum depth at thead 1`] = `
+<thead>
+  <tr>
+    <th>
+      <Button
+        onClick={[Function]}
+        text="+"
+        title="add row"
+      />
+    </th>
+    <th
+      key="who"
+      scope="col"
+    >
+      qui
+    </th>
+    <th
+      key="where"
+      scope="col"
+    >
+      où
+    </th>
+    <th
+      key="which"
+      scope="col"
+    >
+      lequel
+    </th>
+  </tr>
+</thead>
+`;
+
+exports[`Table matches class components to minimum depth at tr 1`] = `
+<tr>
+  <td>
+    <Button
+      onClick={[Function]}
+      text="-"
+      title="delete row"
+    />
+  </td>
+  <td
+    key="who"
+  >
+    Peacock
+  </td>
+  <td
+    key="where"
+  >
+    library
+  </td>
+  <td
+    key="which"
+  >
+    rope
+  </td>
+</tr>
+`;
+
+exports[`TobeList matches functional components to either depth at a descendant 1`] = `
+<li
+  style={
+    Object {
+      "textDecoration": "none",
+    }
+  }
+>
+  more is less
+</li>
+`;
+
+exports[`TobeList matches functional components to either depth at a descendant 2`] = `
+<li
+  style={
+    Object {
+      "textDecoration": "none",
+    }
+  }
+>
+  more is less
+</li>
+`;
+
+exports[`TobeList matches functional components to maximum depth 1`] = `
+<ul>
+  <li
+    style={
+      Object {
+        "textDecoration": "line-through",
+      }
+    }
+  >
+    testing is painless
+  </li>
+  <li
+    style={
+      Object {
+        "textDecoration": "none",
+      }
+    }
+  >
+    more is less
+  </li>
+  <li
+    style={
+      Object {
+        "textDecoration": "none",
+      }
+    }
+  >
+    less is more
+  </li>
+</ul>
+`;
+
+exports[`TobeList matches functional components to minimum depth at a descendant 1`] = `
+<ul>
+  <TobeItem
+    is={false}
+    text="testing is painless"
+  />
+  <TobeItem
+    is={true}
+    text="more is less"
+  />
+  <TobeItem
+    is={true}
+    text="less is more"
+  />
+</ul>
+`;
