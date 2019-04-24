@@ -1,4 +1,14 @@
 {
+    "eslint.autoFixOnSave": true,
+    "beautify.config": {
+        "newline_between_rules": false,
+        "selector_separator_newline": false
+    },
+    "files.associations": {
+        "*.js": "javascriptreact"
+    },
+    "files.eol": "\n",
+    "editor.fontFamily": "Source Code Pro,Consolas, 'Courier New', monospace",
     "commentAnchors.tags.list": [{
             "tag": "ANCHOR",
             "enabled": false,

@@ -1,9 +1,9 @@
 /// <reference types="cheerio" />
-import {CommonWrapper, ShallowWrapper, ReactWrapper} from 'enzyme';
+import { CommonWrapper, ShallowWrapper, ReactWrapper } from 'enzyme';
 
 export interface Json {
   type: string;
-  props: {[key: string]: any};
+  props: { [key: string]: any };
   children: Array<Json>;
   $$typeof: Symbol;
 }
@@ -36,8 +36,8 @@ export declare function toJson<P, S>(wrapper: CommonWrapper<P, S> | Cheerio, opt
  * @param wrapper an Enzyme shallow wrapper
  * @param [options] an option object which accepts `map`, `noKey` and `mode` as keys
  */
-export declare function shallowToJson(wrapper: ShallowWrapper, options?: Options,): Json;
-export declare function shallowToJson<P, S>(wrapper: ShallowWrapper<P, S>, options?: Options,): Json;
+export declare function shallowToJson(wrapper: ShallowWrapper, options?: Options, ): Json;
+export declare function shallowToJson<P, S>(wrapper: ShallowWrapper<P, S>, options?: Options, ): Json;
 
 /**
  * mountToJson helper is used to convert Enzyme mount wrappers to a format compatible with Jest snapshot
