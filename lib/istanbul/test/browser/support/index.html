@@ -1,48 +1,72 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset='utf-8'>
-<title>Instrumentation test on the browser</title>
-<script src='/_esprima.js'></script>
-<script src='/_escodegen.js'></script>
-<script src='/_instrumenter.js'></script>
-<script src="/_yui.js"></script>
-<style type="text/css">
-    body { font-family: verdana; font-size: 10pt; margin: 2em; }
-    h1 { font-family: arial; font-size: 12pt; }
-    pre, textarea { font-family: consolas, monaco, monospace; font-size: 14px; }
-    pre { padding: 1em; background: #eee; border: 1px solid #ccc;}
-    pre.error { background: #fc8c84; }
-</style>
+    <meta charset='utf-8'>
+    <title>Instrumentation test on the browser</title>
+    <script src='/_esprima.js'></script>
+    <script src='/_escodegen.js'></script>
+    <script src='/_instrumenter.js'></script>
+    <script src="/_yui.js"></script>
+    <style type="text/css">
+        body {
+            font-family: verdana;
+            font-size: 10pt;
+            margin: 2em;
+        }
+        h1 {
+            font-family: arial;
+            font-size: 12pt;
+        }
+        pre, textarea {
+            font-family: consolas, monaco, monospace;
+            font-size: 14px;
+        }
+        pre {
+            padding: 1em;
+            background: #eee;
+            border: 1px solid #ccc;
+        }
+        pre.error {
+            background: #fc8c84;
+        }
+    </style>
 </head>
+
 <body>
-{{#if demo}}
-    <h1>Instrumentation tests</h1>
-    <form>
-        <input type='checkbox' id="debug" > Pretty printed coverage object
-        <input type='checkbox' id="compact"> Compact code
-        <br>
-        <textarea id="code" rows='10' cols='80'>function meaningOfLife() {
+    {{#if demo}}
+        <h1>Instrumentation tests</h1>
+        <form>
+            <input type='checkbox' id="debug"> Pretty printed coverage object
+            <input type='checkbox' id="compact"> Compact code
+            <br>
+            <textarea id="code" rows='10' cols='80'>function meaningOfLife() {
   return 42;
 }
         </textarea>
-        <br>
-        <input type='submit' value='Instrument!'>
-    </form>
-    <pre id="instrumented"></pre>
-{{/if}}
+            <br>
+            <input type='submit' value='Instrument!'>
+        </form>
+        <pre id="instrumented"></pre>
+    {{/if}}
 </body>
-<script>window.demoMode = '{{demo}}' === 'yes';</script>
 <script>
-    YUI().use('*', function (Y) {
+    window.demoMode = '{{demo}}' === 'yes';
+</script>
+<script>
+    YUI().use('*', function(Y) {
 
         var files,
-            testInstrumenter = new Instrumenter({ backdoor: { omitTrackerSuffix: true } }),
+            testInstrumenter = new Instrumenter({
+                backdoor: {
+                    omitTrackerSuffix: true
+                }
+            }),
             instrumented;
 
         function done() {
             var coverage = window.__coverage__ || {};
-            postResults('/', JSON.stringify(coverage), function (err, data) {
+            postResults('/', JSON.stringify(coverage), function(err, data) {
                 console.log('Server returned: ' + data);
                 document.done = true;
             });
@@ -52,10 +76,10 @@
             var cfg = {
                 method: 'GET',
                 on: {
-                    success: function (id, response) {
+                    success: function(id, response) {
                         callback(null, response.responseText);
                     },
-                    failure: function (id, response) {
+                    failure: function(id, response) {
                         callback('Failed GET: ' + response.status);
                     }
                 }
@@ -71,10 +95,10 @@
                 },
                 data: data,
                 on: {
-                    success: function (id, response) {
+                    success: function(id, response) {
                         callback(null, response.responseText);
                     },
-                    failure: function (id, response) {
+                    failure: function(id, response) {
                         callback('Failed POST: ' + response.status);
                     }
                 }
@@ -83,7 +107,7 @@
         }
 
         function instrument(file, callback) {
-            getCode(file, function (err, code) {
+            getCode(file, function(err, code) {
                 if (err) {
                     console.log('Error getting code for: ' + file);
                     return callback(err);
@@ -94,7 +118,7 @@
                     console.log('Error instrumenting: ' + file);
                     instrumented = code;
                 }
-                postResults('/' + file, instrumented, function (err, data) {
+                postResults('/' + file, instrumented, function(err, data) {
                     console.log('Server returned: ' + data);
                     callback(err, data);
                 });
@@ -120,8 +144,8 @@
         }
 
         if (window.demoMode) {
-            Y.on('domready', function () {
-                Y.one('form').on('submit', function (e) {
+            Y.on('domready', function() {
+                Y.one('form').on('submit', function(e) {
                     e.halt();
                     var instrumenter = new Instrumenter({
                         debug: !!Y.one('#debug').get('checked'),
@@ -143,11 +167,11 @@
                     }
                 });
             });
-        }
-        else {
+        } else {
             Y.log('YUI loaded; expose runTests function');
             document.runTests = runTests;
         }
     });
 </script>
+
 </html>
