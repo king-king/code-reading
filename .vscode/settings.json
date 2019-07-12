@@ -72,5 +72,6 @@
             "highlightColor": "#A8C023",
             "styleComment": true
         }
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
