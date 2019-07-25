@@ -1,3 +1,5 @@
 node_modules
 /ignore
 stats.json
+.DS_STORE
+.idea
