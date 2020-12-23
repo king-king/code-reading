@@ -1,0 +1,33 @@
+{
+  "name": "@istanbuljs/nyc-config-babel",
+  "version": "1.2.3",
+  "description": "nyc configuration that works with babel-plugin-istanbul",
+  "main": "index.json",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+  },
+  "keywords": [
+    "babel-plugin-istanbul",
+    "config",
+    "nyc",
+    "test",
+    "coverage"
+  ],
+  "author": "Ben Coe <ben@npmjs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
+  },
+  "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "babel-plugin-istanbul": "*",
+    "babel-register": "*"
+  }
+}
