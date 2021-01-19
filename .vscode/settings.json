@@ -1,5 +1,4 @@
 {
-    "eslint.autoFixOnSave": true,
     "javascript.validate.enable": false,
     "beautify.config": {
         "newline_between_rules": false,
