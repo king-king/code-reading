@@ -9,67 +9,26 @@
     },
     "files.eol": "\n",
     "editor.fontFamily": "Source Code Pro,Consolas, 'Courier New', monospace",
-    "commentAnchors.tags.list": [{
-            "tag": "ANCHOR",
-            "enabled": false,
-            "iconColor": "default",
-            "highlightColor": "#A8C023",
-            "backgroundColor": "#49511d",
-            "scope": "file"
+    "todohighlight.keywords": [
+        "DEBUG:",
+        "REVIEW:",
+        {
+            "text": "NOTE:",
+            "color": "red",
+            "border": "0",
+            "backgroundColor": "yellow"
         },
         {
-            "tag": "TODO",
-            "enabled": false,
-            "iconColor": "blue",
-            "highlightColor": "#3ea8ff",
-            "backgroundColor": "#0052a5",
-            "scope": "workspace"
+            "text": "HACK:",
+            "color": "red",
+            "border": "0",
+            "backgroundColor": "yellow"
         },
         {
-            "tag": "FIXME",
-            "enabled": false,
-            "iconColor": "red",
-            "highlightColor": "#F44336",
-            "backgroundColor": "#592c2c",
-            "scope": "workspace"
-        },
-        {
-            "tag": "STUB",
-            "enabled": false,
-            "iconColor": "purple",
-            "highlightColor": "#BA68C8",
-            "backgroundColor": "#48309a",
-            "scope": "file"
-        },
-        {
-            "tag": "NOTE",
-            "enabled": false,
-            "iconColor": "orange",
-            "highlightColor": "#FFB300",
-            "backgroundColor": "#806900",
-            "scope": "file"
-        },
-        {
-            "tag": "REVIEW",
-            "enabled": false,
-            "iconColor": "orange",
-            "highlightColor": "#64DD17",
-            "backgroundColor": "#3c7c10",
-            "scope": "workspace"
-        },
-        {
-            "tag": "SECTION",
-            "enabled": false,
-            "iconColor": "blurple",
-            "highlightColor": "#896afc",
-            "backgroundColor": "#2a186b",
-            "scope": "workspace"
-        }, {
-            "tag": "WQ",
-            "scope": "workspace",
-            "iconColor": "default",
-            "highlightColor": "#A8C023",
-            "styleComment": true
+            "text": "TODO:",
+            "color": "red",
+            "border": "0",
+            "backgroundColor": "yellow"
         }
     ],
     "git.ignoreLimitWarning": true,
