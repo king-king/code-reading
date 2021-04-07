@@ -64,7 +64,7 @@ export function isBoundedFunction(fn: CallableFunction) {
     boundedMap.set(fn, bounded);
     return bounded;
 }
-
+// TODO:作用不明
 export function getDefaultTplWrapper(id: string, name: string) {
     return (tpl: string) => `<div id="${getWrapperId(id)}" data-name="${name}">${tpl}</div>`;
 }

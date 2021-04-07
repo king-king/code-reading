@@ -191,7 +191,7 @@ function getRender(appName: string, appContent: string, legacyRender?: HTMLConte
         }
 
         if (containerElement && !containerElement.contains(element)) {
-            // clear the container
+            // clear the container TODO:这里为何不用innerHTML=‘’的形式
             while (containerElement!.firstChild) {
                 rawRemoveChild.call(containerElement, containerElement!.firstChild);
             }

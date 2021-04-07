@@ -19,41 +19,30 @@ function iter(obj: typeof window, callbackFn: (prop: any) => void) {
  */
 export default class SnapshotSandbox implements SandBox {
     proxy: WindowProxy;
-
     name: string;
-
     type: SandBoxType;
-
     sandboxRunning = true;
-
     private windowSnapshot!: Window;
-
     private modifyPropsMap: Record<any, any> = {};
-
     constructor(name: string) {
         this.name = name;
         this.proxy = window;
         this.type = SandBoxType.Snapshot;
     }
-
     active() {
         // 记录当前快照
         this.windowSnapshot = {} as Window;
         iter(window, (prop) => {
             this.windowSnapshot[prop] = window[prop];
         });
-
         // 恢复之前的变更
         Object.keys(this.modifyPropsMap).forEach((p: any) => {
             window[p] = this.modifyPropsMap[p];
         });
-
         this.sandboxRunning = true;
     }
-
     inactive() {
         this.modifyPropsMap = {};
-
         iter(window, (prop) => {
             if (window[prop] !== this.windowSnapshot[prop]) {
                 // 记录变更，恢复环境
@@ -61,11 +50,9 @@ export default class SnapshotSandbox implements SandBox {
                 window[prop] = this.windowSnapshot[prop];
             }
         });
-
         if (process.env.NODE_ENV === 'development') {
             console.info(`[qiankun:sandbox] ${this.name} origin window restore...`, Object.keys(this.modifyPropsMap));
         }
-
         this.sandboxRunning = false;
     }
 }

@@ -128,29 +128,21 @@ let activeSandboxCount = 0;
 export default class ProxySandbox implements SandBox {
     /** window 值变更记录 */
     private updatedValueSet = new Set<PropertyKey>();
-
     name: string;
-
     type: SandBoxType;
-
     proxy: WindowProxy;
-
     sandboxRunning = true;
-
     latestSetProp: PropertyKey | null = null;
-
     active() {
         if (!this.sandboxRunning) activeSandboxCount++;
         this.sandboxRunning = true;
     }
-
     inactive() {
         if (process.env.NODE_ENV === 'development') {
             console.info(`[qiankun:sandbox] ${this.name} modified global properties restore...`, [
                 ...this.updatedValueSet.keys(),
             ]);
         }
-
         if (--activeSandboxCount === 0) {
             variableWhiteList.forEach((p) => {
                 if (this.proxy.hasOwnProperty(p)) {
@@ -159,21 +151,16 @@ export default class ProxySandbox implements SandBox {
                 }
             });
         }
-
         this.sandboxRunning = false;
     }
-
     constructor(name: string) {
         this.name = name;
         this.type = SandBoxType.Proxy;
         const { updatedValueSet } = this;
-
         const rawWindow = window;
         const { fakeWindow, propertiesWithGetter } = createFakeWindow(rawWindow);
-
         const descriptorTargetMap = new Map<PropertyKey, SymbolTarget>();
         const hasOwnProperty = (key: PropertyKey) => fakeWindow.hasOwnProperty(key) || rawWindow.hasOwnProperty(key);
-
         const proxy = new Proxy(fakeWindow, {
             set: (target: FakeWindow, p: PropertyKey, value: any): boolean => {
                 if (this.sandboxRunning) {
@@ -193,41 +180,31 @@ export default class ProxySandbox implements SandBox {
                         // @ts-ignore
                         target[p] = value;
                     }
-
                     if (variableWhiteList.indexOf(p) !== -1) {
                         // @ts-ignore
                         rawWindow[p] = value;
                     }
-
                     updatedValueSet.add(p);
-
                     this.latestSetProp = p;
-
                     return true;
                 }
-
                 if (process.env.NODE_ENV === 'development') {
                     console.warn(`[qiankun] Set window.${p.toString()} while sandbox destroyed or inactive in ${name}!`);
                 }
-
                 // 在 strict-mode 下，Proxy 的 handler.set 返回 false 会抛出 TypeError，在沙箱卸载的情况下应该忽略错误
                 return true;
             },
-
             get(target: FakeWindow, p: PropertyKey): any {
                 if (p === Symbol.unscopables) return unscopables;
-
                 // avoid who using window.window or window.self to escape the sandbox environment to touch the really window
                 // see https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js#L13
                 if (p === 'window' || p === 'self') {
                     return proxy;
                 }
-
                 // hijack global accessing with globalThis keyword
                 if (p === 'globalThis') {
                     return proxy;
                 }
-
                 if (
                     p === 'top' ||
                     p === 'parent' ||
@@ -239,12 +216,10 @@ export default class ProxySandbox implements SandBox {
                     }
                     return (rawWindow as any)[p];
                 }
-
                 // proxy.hasOwnProperty would invoke getter firstly, then its value represented as rawWindow.hasOwnProperty
                 if (p === 'hasOwnProperty') {
                     return hasOwnProperty;
                 }
-
                 // mark the symbol to document while accessing as document.createElement could know is invoked by which sandbox for dynamic append patcher
                 if (p === 'document' || p === 'eval') {
                     setCurrentRunningSandboxProxy(proxy);
@@ -261,7 +236,6 @@ export default class ProxySandbox implements SandBox {
                         // no default
                     }
                 }
-
                 // eslint-disable-next-line no-nested-ternary
                 const value = propertiesWithGetter.has(p)
                     ? (rawWindow as any)[p]
@@ -270,13 +244,11 @@ export default class ProxySandbox implements SandBox {
                         : (rawWindow as any)[p];
                 return getTargetValue(rawWindow, value);
             },
-
             // trap in operator
             // see https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/constants.js#L12
             has(target: FakeWindow, p: string | number | symbol): boolean {
                 return p in unscopables || p in target || p in rawWindow;
             },
-
             getOwnPropertyDescriptor(target: FakeWindow, p: string | number | symbol): PropertyDescriptor | undefined {
                 /*
                  as the descriptor of top/self/window/mockTop in raw window are configurable but not in proxy target, we need to get it from target to avoid TypeError
@@ -288,7 +260,6 @@ export default class ProxySandbox implements SandBox {
                     descriptorTargetMap.set(p, 'target');
                     return descriptor;
                 }
-
                 if (rawWindow.hasOwnProperty(p)) {
                     const descriptor = Object.getOwnPropertyDescriptor(rawWindow, p);
                     descriptorTargetMap.set(p, 'rawWindow');
@@ -298,15 +269,12 @@ export default class ProxySandbox implements SandBox {
                     }
                     return descriptor;
                 }
-
                 return undefined;
             },
-
             // trap to support iterator with sandbox
             ownKeys(target: FakeWindow): ArrayLike<string | symbol> {
                 return uniq(Reflect.ownKeys(rawWindow).concat(Reflect.ownKeys(target)));
             },
-
             defineProperty(target: Window, p: PropertyKey, attributes: PropertyDescriptor): boolean {
                 const from = descriptorTargetMap.get(p);
                 /*
@@ -320,22 +288,17 @@ export default class ProxySandbox implements SandBox {
                         return Reflect.defineProperty(target, p, attributes);
                 }
             },
-
             deleteProperty(target: FakeWindow, p: string | number | symbol): boolean {
                 if (target.hasOwnProperty(p)) {
                     // @ts-ignore
                     delete target[p];
                     updatedValueSet.delete(p);
-
                     return true;
                 }
-
                 return true;
             },
         });
-
         this.proxy = proxy;
-
         activeSandboxCount++;
     }
 }
