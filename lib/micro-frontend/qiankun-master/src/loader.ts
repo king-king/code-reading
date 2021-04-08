@@ -303,6 +303,7 @@ export async function loadApp<T extends ObjectType>(
     let global = window;
     let mountSandbox = () => Promise.resolve();
     let unmountSandbox = () => Promise.resolve();
+    // TODO:useLooseSandbox的作用是什么未知
     const useLooseSandbox = typeof sandbox === 'object' && !!sandbox.loose;
     let sandboxContainer;
     if (sandbox) {
@@ -375,7 +376,6 @@ export async function loadApp<T extends ObjectType>(
                     if ((await validateSingularMode(singular, app)) && prevAppUnmountedDeferred) {
                         return prevAppUnmountedDeferred.promise;
                     }
-
                     return undefined;
                 },
                 // 添加 mount hook, 确保每次应用加载前容器 dom 结构已经设置完毕
@@ -387,7 +387,6 @@ export async function loadApp<T extends ObjectType>(
                         appWrapperElement = createElement(appContent, strictStyleIsolation, scopedCSS, appName);
                         syncAppWrapperElement2Sandbox(appWrapperElement);
                     }
-
                     render({ element: appWrapperElement, loading: true, container: remountContainer }, 'mounting');
                 },
                 mountSandbox,

@@ -20,22 +20,17 @@ export function registerMicroApps<T extends ObjectType>(
 ) {
     // Each app only needs to be registered once
     const unregisteredApps = apps.filter((app) => !microApps.some((registeredApp) => registeredApp.name === app.name));
-
     microApps = [...microApps, ...unregisteredApps];
-
     unregisteredApps.forEach((app) => {
         const { name, activeRule, loader = noop, props, ...appConfig } = app;
-
         registerApplication({
             name,
             app: async () => {
                 loader(true);
                 await frameworkStartedDefer.promise;
-
                 const { mount, ...otherMicroAppConfigs } = (
                     await loadApp({ name, props, ...appConfig }, frameworkConfiguration, lifeCycles)
                 )();
-
                 return {
                     mount: [async () => loader(true), ...toArray(mount), async () => loader(false)],
                     ...otherMicroAppConfigs,

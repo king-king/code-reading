@@ -66,7 +66,6 @@ function createFakeWindow(global: Window) {
     // see https://jsperf.com/array-indexof-vs-set-has/23
     const propertiesWithGetter = new Map<PropertyKey, boolean>();
     const fakeWindow = {} as FakeWindow;
-
     /*
      copy the non-configurable property of global to fakeWindow
      see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/getOwnPropertyDescriptor
@@ -81,7 +80,6 @@ function createFakeWindow(global: Window) {
             const descriptor = Object.getOwnPropertyDescriptor(global, p);
             if (descriptor) {
                 const hasGetter = Object.prototype.hasOwnProperty.call(descriptor, 'get');
-
                 /*
                  make top/self/window property configurable and writable, otherwise it will cause TypeError while get trap return.
                  see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/get
@@ -105,9 +103,7 @@ function createFakeWindow(global: Window) {
                         descriptor.writable = true;
                     }
                 }
-
                 if (hasGetter) propertiesWithGetter.set(p, true);
-
                 // freeze the descriptor to avoid being modified by zone.js
                 // see https://github.com/angular/zone.js/blob/a5fe09b0fac27ac5df1fa746042f96f05ccb6a00/lib/browser/define-property.ts#L71
                 rawObjectDefineProperty(fakeWindow, p, Object.freeze(descriptor));
