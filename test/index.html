@@ -1,0 +1,171 @@
+<html>
+
+<head></head>
+
+<body>
+    <script>
+        (() => {
+            const rawObjectDefineProperty = Object.defineProperty;
+
+            function nextTick(cb) {
+                Promise.resolve().then(cb);
+            }
+
+            function createFakeWindow(global) {
+                const propertiesWithGetter = new Map();
+                const fakeWindow = {}
+                const left = Object.getOwnPropertyNames(global).filter((p) => {
+                    const descriptor = Object.getOwnPropertyDescriptor(global, p);
+                    return !descriptor.configurable;
+                });
+                left.forEach((p) => {
+                    const descriptor = Object.getOwnPropertyDescriptor(global, p);
+                    if (descriptor) {
+                        const hasGetter = Object.prototype.hasOwnProperty.call(descriptor, 'get');
+                        if (p === 'top' || p === 'parent' || p === 'self' || p === 'window') {
+                            descriptor.configurable = true;
+                            if (!hasGetter) {
+                                descriptor.writable = true;
+                            }
+                        }
+                        if (hasGetter) {
+                            propertiesWithGetter.set(p, true)
+                        };
+                        rawObjectDefineProperty(fakeWindow, p, Object.freeze(descriptor));
+                    }
+                });
+                return {
+                    fakeWindow,
+                    propertiesWithGetter,
+                };
+            }
+            const rawWindow = window;
+            const {
+                fakeWindow,
+                propertiesWithGetter
+            } = createFakeWindow(rawWindow);
+
+            const proxy = new Proxy(fakeWindow, {
+                set: (target, p, value) => {
+                    console.log('set', target)
+                    if (this.sandboxRunning) {
+                        if (!target.hasOwnProperty(p) && rawWindow.hasOwnProperty(p)) {
+                            const descriptor = Object.getOwnPropertyDescriptor(rawWindow, p);
+                            const {
+                                writable,
+                                configurable,
+                                enumerable
+                            } = descriptor;
+                            if (writable) {
+                                Object.defineProperty(target, p, {
+                                    configurable,
+                                    enumerable,
+                                    writable,
+                                    value,
+                                });
+                            }
+                        } else {
+                            target[p] = value;
+                        }
+                        if (variableWhiteList.indexOf(p) !== -1) {
+                            rawWindow[p] = value;
+                        }
+                        updatedValueSet.add(p);
+                        this.latestSetProp = p;
+                        return true;
+                    }
+                    return true;
+                },
+                get(target, p) {
+                    if (p === Symbol.unscopables) return unscopables;
+                    if (p === 'window' || p === 'self') {
+                        return proxy;
+                    }
+                    if (p === 'globalThis') {
+                        return proxy;
+                    }
+                    if (
+                        p === 'top' ||
+                        p === 'parent' ||
+                        (process.env.NODE_ENV === 'test' && (p === 'mockTop' || p === 'mockSafariTop'))
+                    ) {
+                        if (rawWindow === rawWindow.parent) {
+                            return proxy;
+                        }
+                        return (rawWindow)[p];
+                    }
+                    if (p === 'hasOwnProperty') {
+                        return hasOwnProperty;
+                    }
+                    if (p === 'document' || p === 'eval') {
+                        setCurrentRunningSandboxProxy(proxy);
+                        nextTick(() => setCurrentRunningSandboxProxy(null));
+                        switch (p) {
+                            case 'document':
+                                return document;
+                            case 'eval':
+                                return eval;
+                        }
+                    }
+                    const value = propertiesWithGetter.has(p) ?
+                        rawWindow[p] :
+                        p in target ?
+                        target[p] :
+                        rawWindow[p];
+                    return getTargetValue(rawWindow, value);
+                },
+                has(target, p) {
+                    return p in unscopables || p in target || p in rawWindow;
+                },
+                getOwnPropertyDescriptor(target, p) {
+                    if (target.hasOwnProperty(p)) {
+                        const descriptor = Object.getOwnPropertyDescriptor(target, p);
+                        descriptorTargetMap.set(p, 'target');
+                        return descriptor;
+                    }
+                    if (rawWindow.hasOwnProperty(p)) {
+                        const descriptor = Object.getOwnPropertyDescriptor(rawWindow, p);
+                        descriptorTargetMap.set(p, 'rawWindow');
+                        // A property cannot be reported as non-configurable, if it does not exists as an own property of the target object
+                        if (descriptor && !descriptor.configurable) {
+                            descriptor.configurable = true;
+                        }
+                        return descriptor;
+                    }
+                    return undefined;
+                },
+                ownKeys(target) {
+                    return uniq(Reflect.ownKeys(rawWindow).concat(Reflect.ownKeys(target)));
+                },
+                defineProperty(target, p, attributes) {
+                    const from = descriptorTargetMap.get(p);
+                    switch (from) {
+                        case 'rawWindow':
+                            return Reflect.defineProperty(rawWindow, p, attributes);
+                        default:
+                            return Reflect.defineProperty(target, p, attributes);
+                    }
+                },
+                deleteProperty(target, p) {
+                    if (target.hasOwnProperty(p)) {
+                        // @ts-ignore
+                        delete target[p];
+                        updatedValueSet.delete(p);
+                        return true;
+                    }
+                    return true;
+                },
+            });
+
+            window.name = 'wq'
+
+            console.log(proxy)
+            console.log(window)
+
+            proxy.name = 'wq'
+
+        })()
+    </script>
+</body>
+
+</html>

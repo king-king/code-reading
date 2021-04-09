@@ -130,11 +130,9 @@ export function isEnableScopedCSS(sandbox: FrameworkConfiguration['sandbox']) {
     if (typeof sandbox !== 'object') {
         return false;
     }
-
     if (sandbox.strictStyleIsolation) {
         return false;
     }
-
     return !!sandbox.experimentalStyleIsolation;
 }
 

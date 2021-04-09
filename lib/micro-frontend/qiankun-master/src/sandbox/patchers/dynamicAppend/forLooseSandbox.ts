@@ -22,69 +22,69 @@ let mountingPatchCount = 0;
  * @param excludeAssetFilter
  */
 export function patchLooseSandbox(
-  appName: string,
-  appWrapperGetter: () => HTMLElement | ShadowRoot,
-  proxy: Window,
-  mounting = true,
-  scopedCSS = false,
-  excludeAssetFilter?: CallableFunction,
+    appName: string,
+    appWrapperGetter: () => HTMLElement | ShadowRoot,
+    proxy: Window,
+    mounting = true,
+    scopedCSS = false,
+    excludeAssetFilter?: CallableFunction,
 ): Freer {
-  let dynamicStyleSheetElements: Array<HTMLLinkElement | HTMLStyleElement> = [];
+    let dynamicStyleSheetElements: Array<HTMLLinkElement | HTMLStyleElement> = [];
 
-  const unpatchDynamicAppendPrototypeFunctions = patchHTMLDynamicAppendPrototypeFunctions(
-    /*
-      check if the currently specified application is active
-      While we switch page from qiankun app to a normal react routing page, the normal one may load stylesheet dynamically while page rendering,
-      but the url change listener must to wait until the current call stack is flushed.
-      This scenario may cause we record the stylesheet from react routing page dynamic injection,
-      and remove them after the url change triggered and qiankun app is unmouting
-      see https://github.com/ReactTraining/history/blob/master/modules/createHashHistory.js#L222-L230
-     */
-    () => checkActivityFunctions(window.location).some((name) => name === appName),
-    () => ({
-      appName,
-      appWrapperGetter,
-      proxy,
-      strictGlobal: false,
-      scopedCSS,
-      dynamicStyleSheetElements,
-      excludeAssetFilter,
-    }),
-  );
+    const unpatchDynamicAppendPrototypeFunctions = patchHTMLDynamicAppendPrototypeFunctions(
+        /*
+          check if the currently specified application is active
+          While we switch page from qiankun app to a normal react routing page, the normal one may load stylesheet dynamically while page rendering,
+          but the url change listener must to wait until the current call stack is flushed.
+          This scenario may cause we record the stylesheet from react routing page dynamic injection,
+          and remove them after the url change triggered and qiankun app is unmouting
+          see https://github.com/ReactTraining/history/blob/master/modules/createHashHistory.js#L222-L230
+         */
+        () => checkActivityFunctions(window.location).some((name) => name === appName),
+        () => ({
+            appName,
+            appWrapperGetter,
+            proxy,
+            strictGlobal: false,
+            scopedCSS,
+            dynamicStyleSheetElements,
+            excludeAssetFilter,
+        }),
+    );
 
-  if (!mounting) bootstrappingPatchCount++;
-  if (mounting) mountingPatchCount++;
+    if (!mounting) bootstrappingPatchCount++;
+    if (mounting) mountingPatchCount++;
 
-  return function free() {
-    // bootstrap patch just called once but its freer will be called multiple times
-    if (!mounting && bootstrappingPatchCount !== 0) bootstrappingPatchCount--;
-    if (mounting) mountingPatchCount--;
+    return function free() {
+        // bootstrap patch just called once but its freer will be called multiple times
+        if (!mounting && bootstrappingPatchCount !== 0) bootstrappingPatchCount--;
+        if (mounting) mountingPatchCount--;
 
-    const allMicroAppUnmounted = mountingPatchCount === 0 && bootstrappingPatchCount === 0;
-    // release the overwrite prototype after all the micro apps unmounted
-    if (allMicroAppUnmounted) unpatchDynamicAppendPrototypeFunctions();
+        const allMicroAppUnmounted = mountingPatchCount === 0 && bootstrappingPatchCount === 0;
+        // release the overwrite prototype after all the micro apps unmounted
+        if (allMicroAppUnmounted) unpatchDynamicAppendPrototypeFunctions();
 
-    recordStyledComponentsCSSRules(dynamicStyleSheetElements);
+        recordStyledComponentsCSSRules(dynamicStyleSheetElements);
 
-    // As now the sub app content all wrapped with a special id container,
-    // the dynamic style sheet would be removed automatically while unmoutting
+        // As now the sub app content all wrapped with a special id container,
+        // the dynamic style sheet would be removed automatically while unmoutting
 
-    return function rebuild() {
-      rebuildCSSRules(dynamicStyleSheetElements, (stylesheetElement) => {
-        const appWrapper = appWrapperGetter();
-        if (!appWrapper.contains(stylesheetElement)) {
-          // Using document.head.appendChild ensures that appendChild invocation can also directly use the HTMLHeadElement.prototype.appendChild method which is overwritten at mounting phase
-          document.head.appendChild.call(appWrapper, stylesheetElement);
-          return true;
-        }
+        return function rebuild() {
+            rebuildCSSRules(dynamicStyleSheetElements, (stylesheetElement) => {
+                const appWrapper = appWrapperGetter();
+                if (!appWrapper.contains(stylesheetElement)) {
+                    // Using document.head.appendChild ensures that appendChild invocation can also directly use the HTMLHeadElement.prototype.appendChild method which is overwritten at mounting phase
+                    document.head.appendChild.call(appWrapper, stylesheetElement);
+                    return true;
+                }
 
-        return false;
-      });
+                return false;
+            });
 
-      // As the patcher will be invoked every mounting phase, we could release the cache for gc after rebuilding
-      if (mounting) {
-        dynamicStyleSheetElements = [];
-      }
+            // As the patcher will be invoked every mounting phase, we could release the cache for gc after rebuilding
+            if (mounting) {
+                dynamicStyleSheetElements = [];
+            }
+        };
     };
-  };
 }

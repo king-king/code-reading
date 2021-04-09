@@ -81,7 +81,6 @@ function createElement(
             const { innerHTML } = appElement;
             appElement.innerHTML = '';
             let shadow: ShadowRoot;
-
             if (appElement.attachShadow) {
                 shadow = appElement.attachShadow({ mode: 'open' });
             } else {
@@ -97,7 +96,6 @@ function createElement(
         if (!attr) {
             appElement.setAttribute(css.QiankunCSSRewriteAttr, appName);
         }
-
         const styleNodes = appElement.querySelectorAll('style') || [];
         forEach(styleNodes, (stylesheetElement: HTMLStyleElement) => {
             css.process(appElement!, stylesheetElement, appName);
@@ -120,7 +118,6 @@ function getAppWrapperGetter(
         if (useLegacyRender) {
             if (strictStyleIsolation) throw new Error('[qiankun]: strictStyleIsolation can not be used with legacy render!');
             if (scopedCSS) throw new Error('[qiankun]: experimentalStyleIsolation can not be used with legacy render!');
-
             const appWrapper = document.getElementById(getWrapperId(appInstanceId));
             assertElementExist(
                 appWrapper,
@@ -128,17 +125,14 @@ function getAppWrapperGetter(
             );
             return appWrapper!;
         }
-
         const element = elementGetter();
         assertElementExist(
             element,
             `[qiankun] Wrapper element for ${appName} with instance ${appInstanceId} is not existed!`,
         );
-
         if (strictStyleIsolation) {
             return element!.shadowRoot!;
         }
-
         return element!;
     };
 }
@@ -165,12 +159,9 @@ function getRender(appName: string, appContent: string, legacyRender?: HTMLConte
                     '[qiankun] Custom rendering function is deprecated, you can use the container element setting instead!',
                 );
             }
-
             return legacyRender({ loading, appContent: element ? appContent : '' });
         }
-
         const containerElement = getContainer(container!);
-
         // The container might have be removed after micro app unmounted.
         // Such as the micro app unmount lifecycle called by a react componentWillUnmount lifecycle, after micro app unmounted, the react component might also be removed
         if (phase !== 'unmounted') {
@@ -189,13 +180,11 @@ function getRender(appName: string, appContent: string, legacyRender?: HTMLConte
             })();
             assertElementExist(containerElement, errorMsg);
         }
-
         if (containerElement && !containerElement.contains(element)) {
             // clear the container TODO:这里为何不用innerHTML=‘’的形式
             while (containerElement!.firstChild) {
                 rawRemoveChild.call(containerElement, containerElement!.firstChild);
             }
-
             // append the element to container if it exist
             if (element) {
                 rawAppendChild.call(containerElement, element);
@@ -253,26 +242,20 @@ export async function loadApp<T extends ObjectType>(
 ): Promise<ParcelConfigObjectGetter> {
     const { entry, name: appName } = app;
     const appInstanceId = `${appName}_${+new Date()}_${Math.floor(Math.random() * 1000)}`;
-
     const markName = `[qiankun] App ${appInstanceId} Loading`;
     if (process.env.NODE_ENV === 'development') {
         performanceMark(markName);
     }
-
     const { singular = false, sandbox = true, excludeAssetFilter, ...importEntryOpts } = configuration;
-
     // get the entry html content and script executor
     const { template, execScripts, assetPublicPath } = await importEntry(entry, importEntryOpts);
-
     // as single-spa load and bootstrap new app parallel with other apps unmounting
     // (see https://github.com/CanopyTax/single-spa/blob/master/src/navigation/reroute.js#L74)
     // we need wait to load the app until all apps are finishing unmount in singular mode
     if (await validateSingularMode(singular, app)) {
         await (prevAppUnmountedDeferred && prevAppUnmountedDeferred.promise);
     }
-
     const appContent = getDefaultTplWrapper(appInstanceId, appName)(template);
-
     const strictStyleIsolation = typeof sandbox === 'object' && !!sandbox.strictStyleIsolation;
     const scopedCSS = isEnableScopedCSS(sandbox);
     let initialAppWrapperElement: HTMLElement | null = createElement(
@@ -331,6 +314,7 @@ export async function loadApp<T extends ObjectType>(
     await execHooksChain(toArray(beforeLoad), app, global);
 
     // get the lifecycle hooks from module exports
+    // 下面这句代码执行完毕后initialAppWrapperElement就包含了css代码
     const scriptExports: any = await execScripts(global, !useLooseSandbox);
     const { bootstrap, mount, unmount, update } = getLifecyclesFromExports(
         scriptExports,
@@ -358,7 +342,6 @@ export async function loadApp<T extends ObjectType>(
             scopedCSS,
             () => appWrapperElement,
         );
-
         const parcelConfig: ParcelConfigObject = {
             name: appInstanceId,
             bootstrap,
