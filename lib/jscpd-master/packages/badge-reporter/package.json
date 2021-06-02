@@ -1,0 +1,45 @@
+{
+  "name": "@jscpd/badge-reporter",
+  "version": "3.3.23",
+  "description": "Reporter for jscpd. Generate a badges with copy/paste level.",
+  "keywords": [
+    "jscpd",
+    "cpd",
+    "reporter",
+    "jscpd-reporter"
+  ],
+  "author": "Andrey Kucherenko <kucherenko.andrey@gmail.com>",
+  "homepage": "https://github.com/kucherenko/jscpd#readme",
+  "license": "MIT",
+  "main": "src/index",
+  "types": "src/index",
+  "directories": {
+    "src": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kucherenko/jscpd.git"
+  },
+  "scripts": {
+    "build": "yarn clean && yarn compile",
+    "clean": "rm -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepare": "ts-node ../../build-utils/publish-util.ts ./package.json dist/index",
+    "postpublish": "ts-node ../../build-utils/publish-util.ts ./package.json src/index",
+    "prepublishOnly": "yarn build"
+  },
+  "bugs": {
+    "url": "https://github.com/kucherenko/jscpd/issues"
+  },
+  "dependencies": {
+    "badgen": "^3.2.2",
+    "fs-extra": "^9.0.1"
+  }
+}
