@@ -8,8 +8,8 @@ export const COMMAND_PROXY = 'wakatime.proxy';
 export const COMMAND_STATUS_BAR_CODING_ACTIVITY = 'wakatime.status_bar_coding_activity';
 export const COMMAND_STATUS_BAR_ENABLED = 'wakatime.status_bar_enabled';
 export enum LogLevel {
-  DEBUG = 0,
-  INFO,
-  WARN,
-  ERROR,
+    DEBUG = 0,
+    INFO,
+    WARN,
+    ERROR,
 }
