@@ -14,69 +14,69 @@
  * limitations under the License.
  */
 
-import {bindReporter} from './lib/bindReporter.js';
-import {finalMetrics} from './lib/finalMetrics.js';
-import {getVisibilityWatcher} from './lib/getVisibilityWatcher.js';
-import {initMetric} from './lib/initMetric.js';
-import {observe, PerformanceEntryHandler} from './lib/observe.js';
-import {onBFCacheRestore} from './lib/onBFCacheRestore.js';
-import {onHidden} from './lib/onHidden.js';
-import {ReportHandler} from './types.js';
+import { bindReporter } from './lib/bindReporter.js';
+import { finalMetrics } from './lib/finalMetrics.js';
+import { getVisibilityWatcher } from './lib/getVisibilityWatcher.js';
+import { initMetric } from './lib/initMetric.js';
+import { observe, PerformanceEntryHandler } from './lib/observe.js';
+import { onBFCacheRestore } from './lib/onBFCacheRestore.js';
+import { onHidden } from './lib/onHidden.js';
+import { ReportHandler } from './types.js';
 
 
 export const getLCP = (onReport: ReportHandler, reportAllChanges?: boolean) => {
-  const visibilityWatcher = getVisibilityWatcher();
-  let metric = initMetric('LCP');
-  let report: ReturnType<typeof bindReporter>;
+    const visibilityWatcher = getVisibilityWatcher();
+    let metric = initMetric('LCP');
+    let report: ReturnType<typeof bindReporter>;
 
-  const entryHandler = (entry: PerformanceEntry) => {
-    // The startTime attribute returns the value of the renderTime if it is not 0,
-    // and the value of the loadTime otherwise.
-    const value = entry.startTime;
+    const entryHandler = (entry: PerformanceEntry) => {
+        // The startTime attribute returns the value of the renderTime if it is not 0,
+        // and the value of the loadTime otherwise.
+        const value = entry.startTime;
 
-    // If the page was hidden prior to paint time of the entry,
-    // ignore it and mark the metric as final, otherwise add the entry.
-    if (value < visibilityWatcher.firstHiddenTime) {
-      metric.value = value;
-      metric.entries.push(entry);
-    }
+        // If the page was hidden prior to paint time of the entry,
+        // ignore it and mark the metric as final, otherwise add the entry.
+        if (value < visibilityWatcher.firstHiddenTime) {
+            metric.value = value;
+            metric.entries.push(entry);
+        }
 
-    report();
-  };
-
-  const po = observe('largest-contentful-paint', entryHandler);
-
-  if (po) {
-    report = bindReporter(onReport, metric, reportAllChanges);
-
-    const stopListening = () => {
-      if (!finalMetrics.has(metric)) {
-        po.takeRecords().map(entryHandler as PerformanceEntryHandler);
-        po.disconnect();
-        finalMetrics.add(metric);
         report();
-      }
-    }
+    };
 
-    // Stop listening after input. Note: while scrolling is an input that
-    // stop LCP observation, it's unreliable since it can be programmatically
-    // generated. See: https://github.com/GoogleChrome/web-vitals/issues/75
-    ['keydown', 'click'].forEach((type) => {
-      addEventListener(type, stopListening, {once: true, capture: true});
-    });
+    const po = observe('largest-contentful-paint', entryHandler);
 
-    onHidden(stopListening, true);
+    if (po) {
+        report = bindReporter(onReport, metric, reportAllChanges);
 
-    onBFCacheRestore((event) => {
-      metric = initMetric('LCP');
-      report = bindReporter(onReport, metric, reportAllChanges);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          metric.value = performance.now() - event.timeStamp;
-          finalMetrics.add(metric);
-          report();
+        const stopListening = () => {
+            if (!finalMetrics.has(metric)) {
+                po.takeRecords().map(entryHandler as PerformanceEntryHandler);
+                po.disconnect();
+                finalMetrics.add(metric);
+                report();
+            }
+        }
+
+        // Stop listening after input. Note: while scrolling is an input that
+        // stop LCP observation, it's unreliable since it can be programmatically
+        // generated. See: https://github.com/GoogleChrome/web-vitals/issues/75
+        ['keydown', 'click'].forEach((type) => {
+            addEventListener(type, stopListening, { once: true, capture: true });
         });
-      });
-    });
-  }
+
+        onHidden(stopListening, true);
+
+        onBFCacheRestore((event) => {
+            metric = initMetric('LCP');
+            report = bindReporter(onReport, metric, reportAllChanges);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    metric.value = performance.now() - event.timeStamp;
+                    finalMetrics.add(metric);
+                    report();
+                });
+            });
+        });
+    }
 };
