@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+ Copyright 2020 Google LLC
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Web Vitals Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      const params = new URL(location.href).searchParams;
+
+      self.__reportAllChanges = params.has('reportAllChanges');
+
+      if (params.has('hidden')) {
+        // Stub the page being loaded in the hidden state, but defer to the
+        // native state if the `visibilitychange` event fires.
+        Object.defineProperty(document, 'visibilityState', {
+          value: 'hidden',
+          configurable: true,
+        });
+        addEventListener('visibilitychange', (event) => {
+          if (event.isTrusted) {
+            delete document.visibilityState;
+          }
+        }, true);
+      }
+    }());
+  </script>
+  {% if polyfill %}
+    <script>{{ webVitalsPolyfill | safe }}</script>
+  {% endif %}
+  {% block head %}{% endblock %}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    *[hidden] {
+      visibility: hidden;
+    }
+    body {
+      font: 1em/1.5 sans-serif;
+      margin: 0;
+    }
+    main {
+      border: 1px solid transparent; /* Prevent margin collapsing */
+      min-height: 100vh;
+      padding: 0 1em;
+      position: relative;
+      width: 100%;
+    }
+  </style>
+</head>
+<body {% if invisible or hidden %}hidden{% endif %}>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
