@@ -9,25 +9,25 @@ import { GitHubClient } from '../clients/githubClient';
 
 export interface INpmContainerMap {
 
-  // config
-  npmConfig: NpmConfig,
+    // config
+    npmConfig: NpmConfig,
 
-  // options
-  npmCachingOpts: ICachingOptions,
+    // options
+    npmCachingOpts: ICachingOptions,
 
-  npmHttpOpts: IHttpOptions,
+    npmHttpOpts: IHttpOptions,
 
-  npmGitHubOpts: GitHubOptions,
+    npmGitHubOpts: GitHubOptions,
 
-  // clients
-  githubJsonClient: IJsonHttpClient,
+    // clients
+    githubJsonClient: IJsonHttpClient,
 
-  pacoteClient: PacoteClient,
+    pacoteClient: PacoteClient,
 
-  githubClient: GitHubClient,
+    githubClient: GitHubClient,
 
-  npmClient: NpmPackageClient,
+    npmClient: NpmPackageClient,
 
-  // provider
-  npmProvider: NpmSuggestionProvider
+    // provider
+    npmProvider: NpmSuggestionProvider
 }

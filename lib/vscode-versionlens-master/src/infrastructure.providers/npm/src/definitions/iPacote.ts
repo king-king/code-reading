@@ -1,5 +1,5 @@
 export interface IPacote {
 
-  packument: (spec, opts) => Promise<any>
+    packument: (spec, opts) => Promise<any>
 
 }

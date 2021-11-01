@@ -9,18 +9,18 @@ import { TPackageResponseStatus } from '../definitions/tPackageResponseStatus';
 import { TPackageDependencyRange } from '../definitions/tPackageDependencyRange';
 
 export class PackageResponse {
-  providerName: string;
-  requested: TPackageIdentifier;
+    providerName: string;
+    requested: TPackageIdentifier;
 
-  nameRange: TPackageDependencyRange;
-  versionRange: TPackageDependencyRange;
-  order: number;
+    nameRange: TPackageDependencyRange;
+    versionRange: TPackageDependencyRange;
+    order: number;
 
-  error?: PackageResponseErrors;
-  errorMessage?: string;
-  source?: PackageSourceTypes;
-  response?: TPackageResponseStatus;
-  type?: PackageVersionTypes;
-  resolved?: TPackageNameVersion;
-  suggestion?: TPackageSuggestion;
+    error?: PackageResponseErrors;
+    errorMessage?: string;
+    source?: PackageSourceTypes;
+    response?: TPackageResponseStatus;
+    type?: PackageVersionTypes;
+    resolved?: TPackageNameVersion;
+    suggestion?: TPackageSuggestion;
 }

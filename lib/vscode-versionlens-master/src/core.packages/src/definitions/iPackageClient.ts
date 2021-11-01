@@ -6,11 +6,11 @@ import { TPackageDocument } from "./tPackageDocument";
 
 export interface IPackageClient<TClientData> {
 
-  logger: ILogger;
+    logger: ILogger;
 
-  config: IProviderConfig,
+    config: IProviderConfig,
 
-  fetchPackage: (request: TPackageRequest<TClientData>)
-    => Promise<TPackageDocument>;
+    fetchPackage: (request: TPackageRequest<TClientData>)
+        => Promise<TPackageDocument>;
 
 }

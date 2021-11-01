@@ -3,10 +3,10 @@ import { TPackageNameVersion } from "./tPackageNameVersion";
 
 export interface IPackageDependency {
 
-  nameRange: TPackageDependencyRange;
+    nameRange: TPackageDependencyRange;
 
-  versionRange: TPackageDependencyRange;
+    versionRange: TPackageDependencyRange;
 
-  packageInfo: TPackageNameVersion;
+    packageInfo: TPackageNameVersion;
 
 };

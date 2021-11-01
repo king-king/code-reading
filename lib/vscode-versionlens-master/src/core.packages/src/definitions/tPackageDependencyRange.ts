@@ -1,7 +1,7 @@
 export type TPackageDependencyRange = {
 
-  start: number;
+    start: number;
 
-  end: number;
+    end: number;
 
 };

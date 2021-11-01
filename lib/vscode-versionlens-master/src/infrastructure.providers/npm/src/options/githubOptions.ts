@@ -4,19 +4,19 @@ import { GitHubContributions } from '../definitions/eGitHubContributions';
 
 export class GitHubOptions extends OptionsWithFallback {
 
-  constructor(
-    config: IFrozenOptions,
-    section: string,
-    fallbackSection: Nullable<string> = null
-  ) {
-    super(config, section, fallbackSection);
-  }
+    constructor(
+        config: IFrozenOptions,
+        section: string,
+        fallbackSection: Nullable<string> = null
+    ) {
+        super(config, section, fallbackSection);
+    }
 
-  get accessToken(): string {
-    return this.getOrDefault<string>(
-      GitHubContributions.AccessToken,
-      null
-    );
-  }
+    get accessToken(): string {
+        return this.getOrDefault<string>(
+            GitHubContributions.AccessToken,
+            null
+        );
+    }
 
 }

@@ -1,8 +1,8 @@
 export enum PackageResponseErrors {
-  None,
-  NotFound,
-  NotSupported,
-  GitNotFound,
-  InvalidVersion,
-  Unexpected
+    None,
+    NotFound,
+    NotSupported,
+    GitNotFound,
+    InvalidVersion,
+    Unexpected
 };

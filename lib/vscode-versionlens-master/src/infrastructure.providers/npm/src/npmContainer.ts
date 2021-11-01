@@ -15,93 +15,93 @@ import { NpmSuggestionProvider } from './npmSuggestionProvider'
 import { NpmConfig } from './npmConfig';
 
 export function configureContainer(
-  container: AwilixContainer<INpmContainerMap>
+    container: AwilixContainer<INpmContainerMap>
 ): ISuggestionProvider {
 
-  const containerMap = {
+    const containerMap = {
 
-    // options
-    npmCachingOpts: asFunction(
-      rootConfig => new CachingOptions(
-        rootConfig,
-        NpmContributions.Caching,
-        'caching'
-      )
-    ).singleton(),
+        // options
+        npmCachingOpts: asFunction(
+            rootConfig => new CachingOptions(
+                rootConfig,
+                NpmContributions.Caching,
+                'caching'
+            )
+        ).singleton(),
 
-    npmHttpOpts: asFunction(
-      rootConfig => new HttpOptions(
-        rootConfig,
-        NpmContributions.Http,
-        'http'
-      )
-    ).singleton(),
+        npmHttpOpts: asFunction(
+            rootConfig => new HttpOptions(
+                rootConfig,
+                NpmContributions.Http,
+                'http'
+            )
+        ).singleton(),
 
-    npmGitHubOpts: asFunction(
-      rootConfig => new GitHubOptions(
-        rootConfig,
-        NpmContributions.Github,
-        'github'
-      )
-    ).singleton(),
+        npmGitHubOpts: asFunction(
+            rootConfig => new GitHubOptions(
+                rootConfig,
+                NpmContributions.Github,
+                'github'
+            )
+        ).singleton(),
 
-    // config
-    npmConfig: asFunction(
-      (rootConfig, npmCachingOpts, npmHttpOpts, npmGitHubOpts) =>
-        new NpmConfig(rootConfig, npmCachingOpts, npmHttpOpts, npmGitHubOpts)
-    ).singleton(),
+        // config
+        npmConfig: asFunction(
+            (rootConfig, npmCachingOpts, npmHttpOpts, npmGitHubOpts) =>
+                new NpmConfig(rootConfig, npmCachingOpts, npmHttpOpts, npmGitHubOpts)
+        ).singleton(),
 
-    // clients
-    githubJsonClient: asFunction(
-      (npmCachingOpts, npmHttpOpts, logger) =>
-        createJsonClient(
-          {
-            caching: npmCachingOpts,
-            http: npmHttpOpts
-          },
-          logger.child({ namespace: 'npm request' })
-        )
-    ).singleton(),
+        // clients
+        githubJsonClient: asFunction(
+            (npmCachingOpts, npmHttpOpts, logger) =>
+                createJsonClient(
+                    {
+                        caching: npmCachingOpts,
+                        http: npmHttpOpts
+                    },
+                    logger.child({ namespace: 'npm request' })
+                )
+        ).singleton(),
 
-    githubClient: asFunction(
-      (npmConfig, githubJsonClient, logger) =>
-        new GitHubClient(
-          npmConfig,
-          githubJsonClient,
-          logger.child({ namespace: 'npm github' })
-        )
-    ).singleton(),
+        githubClient: asFunction(
+            (npmConfig, githubJsonClient, logger) =>
+                new GitHubClient(
+                    npmConfig,
+                    githubJsonClient,
+                    logger.child({ namespace: 'npm github' })
+                )
+        ).singleton(),
 
-    pacoteClient: asFunction(
-      (npmConfig, logger) =>
-        new PacoteClient(
-          npmConfig,
-          logger.child({ namespace: 'npm pacote' })
-        )
-    ).singleton(),
+        pacoteClient: asFunction(
+            (npmConfig, logger) =>
+                new PacoteClient(
+                    npmConfig,
+                    logger.child({ namespace: 'npm pacote' })
+                )
+        ).singleton(),
 
-    npmClient: asFunction(
-      (npmConfig, githubClient, pacoteClient, logger) =>
-        new NpmPackageClient(
-          npmConfig,
-          pacoteClient,
-          githubClient,
-          logger.child({ namespace: 'npm client' })
-        )
-    ).singleton(),
+        npmClient: asFunction(
+            (npmConfig, githubClient, pacoteClient, logger) =>
+                new NpmPackageClient(
+                    npmConfig,
+                    pacoteClient,
+                    githubClient,
+                    logger.child({ namespace: 'npm client' })
+                )
+        ).singleton(),
 
-    // provider
-    npmProvider: asFunction(
-      (npmClient, logger) =>
-        new NpmSuggestionProvider(
-          npmClient,
-          logger.child({ namespace: 'npm provider' })
-        )
-    ).singleton(),
+        // provider
+        npmProvider: asFunction(
+            (npmClient, logger) =>
+                new NpmSuggestionProvider(
+                    npmClient,
+                    logger.child({ namespace: 'npm provider' })
+                )
+        ).singleton(),
 
-  };
+    };
 
-  container.register(containerMap);
+    container.register(containerMap);
 
-  return container.cradle.npmProvider;
+    return container.cradle.npmProvider;
 }

@@ -1,7 +1,7 @@
 export type TPackageNameVersion = {
 
-  name: string;
+    name: string;
 
-  version: string;
+    version: string;
 
 };

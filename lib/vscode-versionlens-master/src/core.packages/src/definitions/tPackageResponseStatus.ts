@@ -2,8 +2,8 @@ import { ClientResponseSource } from 'core.clients';
 
 export type TPackageResponseStatus = {
 
-  source: ClientResponseSource;
+    source: ClientResponseSource;
 
-  status: number;
+    status: number;
 
 };

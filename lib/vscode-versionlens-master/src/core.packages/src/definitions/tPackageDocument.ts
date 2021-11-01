@@ -8,20 +8,20 @@ import { TPackageNameVersion } from './tPackageNameVersion';
 
 export type TPackageDocument = {
 
-  providerName: string;
+    providerName: string;
 
-  source: PackageSourceTypes;
+    source: PackageSourceTypes;
 
-  response?: TPackageResponseStatus;
+    response?: TPackageResponseStatus;
 
-  type: PackageVersionTypes;
+    type: PackageVersionTypes;
 
-  requested: TPackageIdentifier;
+    requested: TPackageIdentifier;
 
-  resolved: TPackageNameVersion;
+    resolved: TPackageNameVersion;
 
-  suggestions: Array<TPackageSuggestion>;
+    suggestions: Array<TPackageSuggestion>;
 
-  gitSpec?: any;
+    gitSpec?: any;
 
 };
