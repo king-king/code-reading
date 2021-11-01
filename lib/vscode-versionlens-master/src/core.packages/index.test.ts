@@ -10,14 +10,14 @@ import isFixedVersion from './test/helpers/versionHelpers/isFixedVersion.tests';
 import lteFromArray from './test/helpers/versionHelpers/lteFromArray.tests'
 
 export const VersionHelperTests = {
-  extractTaggedVersions,
-  rollupPrereleases,
-  splitReleasesFromArray,
-  removeFourSegmentVersionsFromArray,
-  friendlifyPrereleaseName,
-  filterSemverVersions,
-  isFixedVersion,
-  lteFromArray,
+    extractTaggedVersions,
+    rollupPrereleases,
+    splitReleasesFromArray,
+    removeFourSegmentVersionsFromArray,
+    friendlifyPrereleaseName,
+    filterSemverVersions,
+    isFixedVersion,
+    lteFromArray,
 }
 
 // Package Parser Tests
@@ -25,6 +25,6 @@ import extractPackageDependenciesFromJson from './test/parsers/jsonPackageParser
 import extractPackageDependenciesFromYaml from './test/parsers/yamlPackageParser/extractPackageDependenciesFromYaml.tests';
 
 export const PackageParserTests = {
-  extractPackageDependenciesFromJson,
-  extractPackageDependenciesFromYaml,
+    extractPackageDependenciesFromJson,
+    extractPackageDependenciesFromYaml,
 }

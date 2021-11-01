@@ -8,94 +8,94 @@ import { TPackageResponseStatus } from "../definitions/tPackageResponseStatus";
 import { TPackageRequest } from '../definitions/tPackageRequest';
 
 export function create(
-  source: PackageSourceTypes,
-  request: TPackageRequest<any>,
-  response: TPackageResponseStatus,
-  suggestions: Array<TPackageSuggestion>
+    source: PackageSourceTypes,
+    request: TPackageRequest<any>,
+    response: TPackageResponseStatus,
+    suggestions: Array<TPackageSuggestion>
 ): TPackageDocument {
 
-  const { providerName, package: requested } = request;
+    const { providerName, package: requested } = request;
 
-  return {
-    providerName,
-    source,
-    type: null,
-    requested,
-    resolved: null,
-    response,
-    suggestions
-  };
+    return {
+        providerName,
+        source,
+        type: null,
+        requested,
+        resolved: null,
+        response,
+        suggestions
+    };
 
 }
 
 export function createInvalidVersion(
-  providerName: string,
-  requested: TPackageIdentifier,
-  response: TPackageResponseStatus,
-  type: PackageVersionTypes
+    providerName: string,
+    requested: TPackageIdentifier,
+    response: TPackageResponseStatus,
+    type: PackageVersionTypes
 ): TPackageDocument {
-  const source: PackageSourceTypes = PackageSourceTypes.Registry;
-  const suggestions: Array<TPackageSuggestion> = [
-    SuggestionFactory.createInvalid(''),
-    SuggestionFactory.createLatest(),
-  ];
+    const source: PackageSourceTypes = PackageSourceTypes.Registry;
+    const suggestions: Array<TPackageSuggestion> = [
+        SuggestionFactory.createInvalid(''),
+        SuggestionFactory.createLatest(),
+    ];
 
-  return {
-    providerName,
-    source,
-    type,
-    requested,
-    response,
-    resolved: null,
-    suggestions
-  };
+    return {
+        providerName,
+        source,
+        type,
+        requested,
+        response,
+        resolved: null,
+        suggestions
+    };
 }
 
 export function createNoMatch(
-  providerName: string,
-  source: PackageSourceTypes,
-  type: PackageVersionTypes,
-  requested: TPackageIdentifier,
-  response: TPackageResponseStatus,
-  latestVersion?: string
+    providerName: string,
+    source: PackageSourceTypes,
+    type: PackageVersionTypes,
+    requested: TPackageIdentifier,
+    response: TPackageResponseStatus,
+    latestVersion?: string
 ): TPackageDocument {
 
-  const suggestions: Array<TPackageSuggestion> = [
-    SuggestionFactory.createNoMatch(),
-    SuggestionFactory.createLatest(latestVersion),
-  ];
+    const suggestions: Array<TPackageSuggestion> = [
+        SuggestionFactory.createNoMatch(),
+        SuggestionFactory.createLatest(latestVersion),
+    ];
 
-  return {
-    providerName,
-    source,
-    type,
-    requested,
-    response,
-    resolved: null,
-    suggestions
-  };
+    return {
+        providerName,
+        source,
+        type,
+        requested,
+        response,
+        resolved: null,
+        suggestions
+    };
 }
 
 export function createFixed(
-  providerName: string,
-  source: PackageSourceTypes,
-  requested: TPackageIdentifier,
-  response: TPackageResponseStatus,
-  type: PackageVersionTypes,
-  fixedVersion: string
+    providerName: string,
+    source: PackageSourceTypes,
+    requested: TPackageIdentifier,
+    response: TPackageResponseStatus,
+    type: PackageVersionTypes,
+    fixedVersion: string
 ): TPackageDocument {
 
-  const suggestions: Array<TPackageSuggestion> = [
-    SuggestionFactory.createFixedStatus(fixedVersion)
-  ];
+    const suggestions: Array<TPackageSuggestion> = [
+        SuggestionFactory.createFixedStatus(fixedVersion)
+    ];
 
-  return {
-    providerName,
-    source,
-    type,
-    requested,
-    response,
-    resolved: null,
-    suggestions
-  };
+    return {
+        providerName,
+        source,
+        type,
+        requested,
+        response,
+        resolved: null,
+        suggestions
+    };
 }
