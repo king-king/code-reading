@@ -1,5 +1,6 @@
 {
     "javascript.validate.enable": false,
+    "typescript.validate.enable": false,
     "beautify.config": {
         "newline_between_rules": false,
         "selector_separator_newline": false
