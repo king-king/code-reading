@@ -1,4 +1,11 @@
 {
   "sourceType": "module",
-  "moduleIds": true
+  "plugins": [
+    [
+      "transform-modules-umd",
+      {
+        "moduleIds": true
+      }
+    ]
+  ]
 }

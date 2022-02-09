@@ -2,28 +2,24 @@
  * Basic declarations for the npm modules we use.
  */
 
-declare module "resolve" {
-  declare export default {
-    sync: (string, {| basedir: string |}) => string;
-  };
+ declare module "module" {
+   declare export function createRequire(url: any): any;
+ }
+
+declare module "debug" {
+  declare export default (namespace: string) => (formatter: string, ...args: any[]) => void;
 }
+
+declare var require: {
+  resolve(specifier: string, opts?: {
+    paths: string[]
+  }): string,
+};
 
 declare module "json5" {
   declare export default {
     parse: (string) => mixed,
   };
-}
-
-declare module "lodash/defaults" {
-  declare export default <T: Object>(T, Object) =>  T;
-}
-
-declare module "lodash/clone" {
-  declare export default <T>(obj: T) => T;
-}
-
-declare module "lodash/merge" {
-  declare export default <T: Object>(T, Object) => T;
 }
 
 declare module "semver" {
@@ -165,7 +161,7 @@ declare module "source-map" {
 }
 
 declare module "convert-source-map" {
-  import type { SourceMap } from "source-map";
+  import type { SourceMap, SourceMapGenerator } from "source-map";
 
   declare class Converter {
     toJSON(): string;
@@ -177,11 +173,11 @@ declare module "convert-source-map" {
   declare module.exports: {
     SourceMap: SourceMap,
     Converter: Converter,
-    fromObject(obj: SourceMap): Converter,
-    fromJSON(str: string): Converter,
+    fromObject(obj: SourceMap | SourceMapGenerator): Converter,
+    fromJSON(str: string | Buffer): Converter,
     fromBase64(str: string): Converter,
     fromComment(str: string): Converter,
-    fromMapFileComment(str: string): Converter,
+    fromMapFileComment(str: string, dir: string): Converter,
     fromSource(str: string): Converter,
     fromMapFileSource(str: string, dir: string): Converter,
     removeComments(str: string): string,
@@ -190,14 +186,8 @@ declare module "convert-source-map" {
   };
 }
 
-declare module "js-levenshtein" {
-  declare module.exports: {
-    (string, string): number,
-  };
-}
-
 declare module "core-js-compat/data" {
-  declare type Target = "node" | "chrome" | "opera" | "edge" | "firefox" | "safari" | "ie" | "ios" | "android" | "electron" | "samsung";
+  declare type Target = "node" | "chrome" | "opera" | "edge" | "firefox" | "safari" | "ie" | "ios" | "android" | "electron" | "samsung" | "rhino";
 
   declare module.exports: {
     [key: string]: {

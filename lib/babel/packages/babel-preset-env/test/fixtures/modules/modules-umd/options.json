@@ -1,7 +1,8 @@
 {
+  "validateLogs": true,
   "presets": [
     [
-      "../../../../lib",
+      "env",
       {
         "modules": "umd"
       }

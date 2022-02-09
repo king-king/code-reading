@@ -1,4 +1,4 @@
 {
   "sourceType": "module",
-  "moduleIds": true
+  "plugins": [["transform-modules-amd", { "moduleIds": true }]]
 }

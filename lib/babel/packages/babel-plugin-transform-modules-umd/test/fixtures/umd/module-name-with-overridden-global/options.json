@@ -1,15 +1,14 @@
 {
   "plugins": [
-    "external-helpers",
     [
       "transform-modules-umd",
       {
         "globals": {
           "umd/module-name-with-overridden-global/expected": "baz"
         },
-        "exactGlobals": true
+        "exactGlobals": true,
+        "moduleIds": true
       }
     ]
-  ],
-  "moduleIds": true
+  ]
 }
