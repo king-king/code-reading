@@ -1,1 +1,0 @@
-`markdown:docs/common/annotations/text.zh.md`

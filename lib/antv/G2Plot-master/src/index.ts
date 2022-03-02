@@ -182,12 +182,12 @@ export { flow, measureTextWidth } from './utils';
 /** 各个 geometry 的 adaptor，可以让开发者更快的构造图形 */
 export { line, interval, area, point, polygon, schema } from './adaptor/geometries';
 export type {
-  LineGeometryOptions,
-  IntervalGeometryOptions,
-  AreaGeometryOptions,
-  PointGeometryOptions,
-  PolygonGeometryOptions,
-  SchemaGeometryOptions,
+    LineGeometryOptions,
+    IntervalGeometryOptions,
+    AreaGeometryOptions,
+    PointGeometryOptions,
+    PolygonGeometryOptions,
+    SchemaGeometryOptions,
 } from './adaptor/geometries';
 /** 开放一些通用的 adaptor 通道方法，实验阶段：不保证稳定性 */
 import { scale, legend, tooltip, annotation, interaction, theme, animation } from './adaptor/common';
