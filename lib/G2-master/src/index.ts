@@ -235,8 +235,8 @@ registerAction('element-highlight-by-color', ElementHighlightByColor);
 registerAction('element-single-highlight', ElementSingleHighlight);
 registerAction('element-range-highlight', ElementRangeHighlight);
 registerAction('element-sibling-highlight', ElementRangeHighlight, {
-  effectSiblings: true,
-  effectByRecord: true,
+    effectSiblings: true,
+    effectByRecord: true,
 });
 
 registerAction('element-selected', ElementSelected);
@@ -254,11 +254,11 @@ registerAction('list-focus', ListFocus);
 registerAction('list-radio', ListRadio);
 
 registerAction('legend-item-highlight', ListHighlight, {
-  componentNames: ['legend'],
+    componentNames: ['legend'],
 });
 
 registerAction('axis-label-highlight', ListHighlight, {
-  componentNames: ['axis'],
+    componentNames: ['axis'],
 });
 
 registerAction('rect-mask', RectMask);
@@ -288,8 +288,8 @@ registerAction('view-move', ViewMove);
 registerAction('scale-translate', ScaleTranslate);
 registerAction('scale-zoom', ScaleZoom);
 registerAction('reset-button', ButtonAction, {
-  name: 'reset-button',
-  text: 'reset',
+    name: 'reset-button',
+    text: 'reset',
 });
 
 registerAction('mousewheel-scroll', MousewheelScroll);
@@ -298,355 +298,355 @@ registerAction('mousewheel-scroll', MousewheelScroll);
 import { registerInteraction } from './core';
 
 function isPointInView(context: IInteractionContext) {
-  return context.isInPlot();
+    return context.isInPlot();
 }
 
 // 注册 tooltip 的 interaction
 registerInteraction('tooltip', {
-  start: [
-    { trigger: 'plot:mousemove', action: 'tooltip:show', throttle: { wait: 50, leading: true, trailing: false } },
-    { trigger: 'plot:touchmove', action: 'tooltip:show', throttle: { wait: 50, leading: true, trailing: false } },
-  ],
-  end: [
-    { trigger: 'plot:mouseleave', action: 'tooltip:hide' },
-    { trigger: 'plot:leave', action: 'tooltip:hide' },
-    { trigger: 'plot:touchend', action: 'tooltip:hide' },
-  ],
+    start: [
+        { trigger: 'plot:mousemove', action: 'tooltip:show', throttle: { wait: 50, leading: true, trailing: false } },
+        { trigger: 'plot:touchmove', action: 'tooltip:show', throttle: { wait: 50, leading: true, trailing: false } },
+    ],
+    end: [
+        { trigger: 'plot:mouseleave', action: 'tooltip:hide' },
+        { trigger: 'plot:leave', action: 'tooltip:hide' },
+        { trigger: 'plot:touchend', action: 'tooltip:hide' },
+    ],
 });
 
 registerInteraction('ellipsis-text', {
-  start: [
-    {
-      trigger: 'legend-item-name:mousemove',
-      action: 'ellipsis-text:show',
-      throttle: { wait: 50, leading: true, trailing: false },
-    },
-    {
-      trigger: 'legend-item-name:touchstart',
-      action: 'ellipsis-text:show',
-      throttle: { wait: 50, leading: true, trailing: false },
-    },
-    {
-      trigger: 'axis-label:mousemove',
-      action: 'ellipsis-text:show',
-      throttle: { wait: 50, leading: true, trailing: false },
-    },
-    {
-      trigger: 'axis-label:touchstart',
-      action: 'ellipsis-text:show',
-      throttle: { wait: 50, leading: true, trailing: false },
-    },
-  ],
-  end: [
-    { trigger: 'legend-item-name:mouseleave', action: 'ellipsis-text:hide' },
-    { trigger: 'legend-item-name:touchend', action: 'ellipsis-text:hide' },
-    { trigger: 'axis-label:mouseleave', action: 'ellipsis-text:hide' },
-    { trigger: 'axis-label:touchend', action: 'ellipsis-text:hide' },
-  ],
+    start: [
+        {
+            trigger: 'legend-item-name:mousemove',
+            action: 'ellipsis-text:show',
+            throttle: { wait: 50, leading: true, trailing: false },
+        },
+        {
+            trigger: 'legend-item-name:touchstart',
+            action: 'ellipsis-text:show',
+            throttle: { wait: 50, leading: true, trailing: false },
+        },
+        {
+            trigger: 'axis-label:mousemove',
+            action: 'ellipsis-text:show',
+            throttle: { wait: 50, leading: true, trailing: false },
+        },
+        {
+            trigger: 'axis-label:touchstart',
+            action: 'ellipsis-text:show',
+            throttle: { wait: 50, leading: true, trailing: false },
+        },
+    ],
+    end: [
+        { trigger: 'legend-item-name:mouseleave', action: 'ellipsis-text:hide' },
+        { trigger: 'legend-item-name:touchend', action: 'ellipsis-text:hide' },
+        { trigger: 'axis-label:mouseleave', action: 'ellipsis-text:hide' },
+        { trigger: 'axis-label:touchend', action: 'ellipsis-text:hide' },
+    ],
 });
 
 // 移动到 element 上 active
 registerInteraction('element-active', {
-  start: [{ trigger: 'element:mouseenter', action: 'element-active:active' }],
-  end: [{ trigger: 'element:mouseleave', action: 'element-active:reset' }],
+    start: [{ trigger: 'element:mouseenter', action: 'element-active:active' }],
+    end: [{ trigger: 'element:mouseleave', action: 'element-active:reset' }],
 });
 
 // 点击选中，允许取消
 registerInteraction('element-selected', {
-  start: [{ trigger: 'element:click', action: 'element-selected:toggle' }],
+    start: [{ trigger: 'element:click', action: 'element-selected:toggle' }],
 });
 
 // hover highlight，允许取消
 registerInteraction('element-highlight', {
-  start: [{ trigger: 'element:mouseenter', action: 'element-highlight:highlight' }],
-  end: [{ trigger: 'element:mouseleave', action: 'element-highlight:reset' }],
+    start: [{ trigger: 'element:mouseenter', action: 'element-highlight:highlight' }],
+    end: [{ trigger: 'element:mouseleave', action: 'element-highlight:reset' }],
 });
 
 // hover highlight by x，允许取消
 registerInteraction('element-highlight-by-x', {
-  start: [{ trigger: 'element:mouseenter', action: 'element-highlight-by-x:highlight' }],
-  end: [{ trigger: 'element:mouseleave', action: 'element-highlight-by-x:reset' }],
+    start: [{ trigger: 'element:mouseenter', action: 'element-highlight-by-x:highlight' }],
+    end: [{ trigger: 'element:mouseleave', action: 'element-highlight-by-x:reset' }],
 });
 
 // hover highlight by y，允许取消
 registerInteraction('element-highlight-by-color', {
-  start: [{ trigger: 'element:mouseenter', action: 'element-highlight-by-color:highlight' }],
-  end: [{ trigger: 'element:mouseleave', action: 'element-highlight-by-color:reset' }],
+    start: [{ trigger: 'element:mouseenter', action: 'element-highlight-by-color:highlight' }],
+    end: [{ trigger: 'element:mouseleave', action: 'element-highlight-by-color:reset' }],
 });
 
 // legend hover，element active
 registerInteraction('legend-active', {
-  start: [{ trigger: 'legend-item:mouseenter', action: ['list-active:active', 'element-active:active'] }],
-  end: [{ trigger: 'legend-item:mouseleave', action: ['list-active:reset', 'element-active:reset'] }],
+    start: [{ trigger: 'legend-item:mouseenter', action: ['list-active:active', 'element-active:active'] }],
+    end: [{ trigger: 'legend-item:mouseleave', action: ['list-active:reset', 'element-active:reset'] }],
 });
 
 // legend hover，element active
 registerInteraction('legend-highlight', {
-  start: [
-    { trigger: 'legend-item:mouseenter', action: ['legend-item-highlight:highlight', 'element-highlight:highlight'] },
-  ],
-  end: [{ trigger: 'legend-item:mouseleave', action: ['legend-item-highlight:reset', 'element-highlight:reset'] }],
+    start: [
+        { trigger: 'legend-item:mouseenter', action: ['legend-item-highlight:highlight', 'element-highlight:highlight'] },
+    ],
+    end: [{ trigger: 'legend-item:mouseleave', action: ['legend-item-highlight:reset', 'element-highlight:reset'] }],
 });
 
 // legend hover，element active
 registerInteraction('axis-label-highlight', {
-  start: [
-    { trigger: 'axis-label:mouseenter', action: ['axis-label-highlight:highlight', 'element-highlight:highlight'] },
-  ],
-  end: [{ trigger: 'axis-label:mouseleave', action: ['axis-label-highlight:reset', 'element-highlight:reset'] }],
+    start: [
+        { trigger: 'axis-label:mouseenter', action: ['axis-label-highlight:highlight', 'element-highlight:highlight'] },
+    ],
+    end: [{ trigger: 'axis-label:mouseleave', action: ['axis-label-highlight:reset', 'element-highlight:reset'] }],
 });
 
 // legend hover，element active
 registerInteraction('element-list-highlight', {
-  start: [{ trigger: 'element:mouseenter', action: ['list-highlight:highlight', 'element-highlight:highlight'] }],
-  end: [{ trigger: 'element:mouseleave', action: ['list-highlight:reset', 'element-highlight:reset'] }],
+    start: [{ trigger: 'element:mouseenter', action: ['list-highlight:highlight', 'element-highlight:highlight'] }],
+    end: [{ trigger: 'element:mouseleave', action: ['list-highlight:reset', 'element-highlight:reset'] }],
 });
 
 // 框选
 registerInteraction('element-range-highlight', {
-  showEnable: [
-    { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
-    { trigger: 'mask:mouseenter', action: 'cursor:move' },
-    { trigger: 'plot:mouseleave', action: 'cursor:default' },
-    { trigger: 'mask:mouseleave', action: 'cursor:crosshair' },
-  ],
-  start: [
-    {
-      trigger: 'plot:mousedown',
-      isEnable(context) {
-        // 不要点击在 mask 上重新开始
-        return !context.isInShape('mask');
-      },
-      action: ['rect-mask:start', 'rect-mask:show'],
-    },
-    {
-      trigger: 'mask:dragstart',
-      action: ['rect-mask:moveStart'],
-    },
-  ],
-  processing: [
-    {
-      trigger: 'plot:mousemove',
-      action: ['rect-mask:resize'],
-    },
-    {
-      trigger: 'mask:drag',
-      action: ['rect-mask:move'],
-    },
-    {
-      trigger: 'mask:change',
-      action: ['element-range-highlight:highlight'],
-    },
-  ],
-  end: [
-    { trigger: 'plot:mouseup', action: ['rect-mask:end'] },
-    { trigger: 'mask:dragend', action: ['rect-mask:moveEnd'] },
-    {
-      trigger: 'document:mouseup',
-      isEnable(context) {
-        return !context.isInPlot();
-      },
-      action: ['element-range-highlight:clear', 'rect-mask:end', 'rect-mask:hide'],
-    },
-  ],
-  rollback: [{ trigger: 'dblclick', action: ['element-range-highlight:clear', 'rect-mask:hide'] }],
+    showEnable: [
+        { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
+        { trigger: 'mask:mouseenter', action: 'cursor:move' },
+        { trigger: 'plot:mouseleave', action: 'cursor:default' },
+        { trigger: 'mask:mouseleave', action: 'cursor:crosshair' },
+    ],
+    start: [
+        {
+            trigger: 'plot:mousedown',
+            isEnable(context) {
+                // 不要点击在 mask 上重新开始
+                return !context.isInShape('mask');
+            },
+            action: ['rect-mask:start', 'rect-mask:show'],
+        },
+        {
+            trigger: 'mask:dragstart',
+            action: ['rect-mask:moveStart'],
+        },
+    ],
+    processing: [
+        {
+            trigger: 'plot:mousemove',
+            action: ['rect-mask:resize'],
+        },
+        {
+            trigger: 'mask:drag',
+            action: ['rect-mask:move'],
+        },
+        {
+            trigger: 'mask:change',
+            action: ['element-range-highlight:highlight'],
+        },
+    ],
+    end: [
+        { trigger: 'plot:mouseup', action: ['rect-mask:end'] },
+        { trigger: 'mask:dragend', action: ['rect-mask:moveEnd'] },
+        {
+            trigger: 'document:mouseup',
+            isEnable(context) {
+                return !context.isInPlot();
+            },
+            action: ['element-range-highlight:clear', 'rect-mask:end', 'rect-mask:hide'],
+        },
+    ],
+    rollback: [{ trigger: 'dblclick', action: ['element-range-highlight:clear', 'rect-mask:hide'] }],
 });
 
 registerInteraction('brush', {
-  showEnable: [
-    { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
-    { trigger: 'plot:mouseleave', action: 'cursor:default' },
-  ],
-  start: [
-    {
-      trigger: 'mousedown',
-      isEnable: isPointInView,
-      action: ['brush:start', 'rect-mask:start', 'rect-mask:show'],
-    },
-  ],
-  processing: [
-    {
-      trigger: 'mousemove',
-      isEnable: isPointInView,
-      action: ['rect-mask:resize'],
-    },
-  ],
-  end: [
-    {
-      trigger: 'mouseup',
-      isEnable: isPointInView,
-      action: ['brush:filter', 'brush:end', 'rect-mask:end', 'rect-mask:hide', 'reset-button:show'],
-    },
-  ],
-  rollback: [{ trigger: 'reset-button:click', action: ['brush:reset', 'reset-button:hide', 'cursor:crosshair'] }],
+    showEnable: [
+        { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
+        { trigger: 'plot:mouseleave', action: 'cursor:default' },
+    ],
+    start: [
+        {
+            trigger: 'mousedown',
+            isEnable: isPointInView,
+            action: ['brush:start', 'rect-mask:start', 'rect-mask:show'],
+        },
+    ],
+    processing: [
+        {
+            trigger: 'mousemove',
+            isEnable: isPointInView,
+            action: ['rect-mask:resize'],
+        },
+    ],
+    end: [
+        {
+            trigger: 'mouseup',
+            isEnable: isPointInView,
+            action: ['brush:filter', 'brush:end', 'rect-mask:end', 'rect-mask:hide', 'reset-button:show'],
+        },
+    ],
+    rollback: [{ trigger: 'reset-button:click', action: ['brush:reset', 'reset-button:hide', 'cursor:crosshair'] }],
 });
 
 registerInteraction('brush-visible', {
-  showEnable: [
-    { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
-    { trigger: 'plot:mouseleave', action: 'cursor:default' },
-  ],
-  start: [
-    {
-      trigger: 'plot:mousedown',
-      action: ['rect-mask:start', 'rect-mask:show'],
-    },
-  ],
-  processing: [
-    {
-      trigger: 'plot:mousemove',
-      action: ['rect-mask:resize'],
-    },
-    { trigger: 'mask:change', action: ['element-range-highlight:highlight'] },
-  ],
-  end: [
-    {
-      trigger: 'plot:mouseup',
-      action: ['rect-mask:end', 'rect-mask:hide', 'element-filter:filter', 'element-range-highlight:clear'],
-    },
-  ],
-  rollback: [
-    {
-      trigger: 'dblclick',
-      action: ['element-filter:clear'],
-    },
-  ],
+    showEnable: [
+        { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
+        { trigger: 'plot:mouseleave', action: 'cursor:default' },
+    ],
+    start: [
+        {
+            trigger: 'plot:mousedown',
+            action: ['rect-mask:start', 'rect-mask:show'],
+        },
+    ],
+    processing: [
+        {
+            trigger: 'plot:mousemove',
+            action: ['rect-mask:resize'],
+        },
+        { trigger: 'mask:change', action: ['element-range-highlight:highlight'] },
+    ],
+    end: [
+        {
+            trigger: 'plot:mouseup',
+            action: ['rect-mask:end', 'rect-mask:hide', 'element-filter:filter', 'element-range-highlight:clear'],
+        },
+    ],
+    rollback: [
+        {
+            trigger: 'dblclick',
+            action: ['element-filter:clear'],
+        },
+    ],
 });
 
 registerInteraction('brush-x', {
-  showEnable: [
-    { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
-    { trigger: 'plot:mouseleave', action: 'cursor:default' },
-  ],
-  start: [
-    {
-      trigger: 'mousedown',
-      isEnable: isPointInView,
-      action: ['brush-x:start', 'x-rect-mask:start', 'x-rect-mask:show'],
-    },
-  ],
-  processing: [
-    {
-      trigger: 'mousemove',
-      isEnable: isPointInView,
-      action: ['x-rect-mask:resize'],
-    },
-  ],
-  end: [
-    {
-      trigger: 'mouseup',
-      isEnable: isPointInView,
-      action: ['brush-x:filter', 'brush-x:end', 'x-rect-mask:end', 'x-rect-mask:hide'],
-    },
-  ],
-  rollback: [{ trigger: 'dblclick', action: ['brush-x:reset'] }],
+    showEnable: [
+        { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
+        { trigger: 'plot:mouseleave', action: 'cursor:default' },
+    ],
+    start: [
+        {
+            trigger: 'mousedown',
+            isEnable: isPointInView,
+            action: ['brush-x:start', 'x-rect-mask:start', 'x-rect-mask:show'],
+        },
+    ],
+    processing: [
+        {
+            trigger: 'mousemove',
+            isEnable: isPointInView,
+            action: ['x-rect-mask:resize'],
+        },
+    ],
+    end: [
+        {
+            trigger: 'mouseup',
+            isEnable: isPointInView,
+            action: ['brush-x:filter', 'brush-x:end', 'x-rect-mask:end', 'x-rect-mask:hide'],
+        },
+    ],
+    rollback: [{ trigger: 'dblclick', action: ['brush-x:reset'] }],
 });
 
 registerInteraction('element-path-highlight', {
-  showEnable: [
-    { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
-    { trigger: 'plot:mouseleave', action: 'cursor:default' },
-  ],
-  start: [
-    { trigger: 'mousedown', isEnable: isPointInView, action: 'path-mask:start' },
-    { trigger: 'mousedown', isEnable: isPointInView, action: 'path-mask:show' },
-  ],
-  processing: [{ trigger: 'mousemove', action: 'path-mask:addPoint' }],
-  end: [{ trigger: 'mouseup', action: 'path-mask:end' }],
-  rollback: [{ trigger: 'dblclick', action: 'path-mask:hide' }],
+    showEnable: [
+        { trigger: 'plot:mouseenter', action: 'cursor:crosshair' },
+        { trigger: 'plot:mouseleave', action: 'cursor:default' },
+    ],
+    start: [
+        { trigger: 'mousedown', isEnable: isPointInView, action: 'path-mask:start' },
+        { trigger: 'mousedown', isEnable: isPointInView, action: 'path-mask:show' },
+    ],
+    processing: [{ trigger: 'mousemove', action: 'path-mask:addPoint' }],
+    end: [{ trigger: 'mouseup', action: 'path-mask:end' }],
+    rollback: [{ trigger: 'dblclick', action: 'path-mask:hide' }],
 });
 
 // 点击选中，允许取消
 registerInteraction('element-single-selected', {
-  start: [{ trigger: 'element:click', action: 'element-single-selected:toggle' }],
+    start: [{ trigger: 'element:click', action: 'element-single-selected:toggle' }],
 });
 
 // 筛选数据
 registerInteraction('legend-filter', {
-  showEnable: [
-    { trigger: 'legend-item:mouseenter', action: ['cursor:pointer', 'list-radio:show'] },
-    { trigger: 'legend-item:mouseleave', action: ['cursor:default', 'list-radio:hide'] },
-  ],
-  start: [
-    {
-      trigger: 'legend-item:click',
-      isEnable: (context) => {
-        return !context.isInShape('legend-item-radio');
-      },
-      action: ['list-unchecked:toggle', 'data-filter:filter', 'list-radio:show'],
-    },
-    //  正反选数据: 只有当 radio === truthy 的时候才会有 legend-item-radio 这个元素
-    {
-      trigger: 'legend-item-radio:mouseenter',
-      action: ['list-radio:showTip'],
-    },
-    {
-      trigger: 'legend-item-radio:mouseleave',
-      action: ['list-radio:hideTip'],
-    },
-    {
-      trigger: 'legend-item-radio:click',
-      action: ['list-focus:toggle', 'data-filter:filter', 'list-radio:show'],
-    },
-  ],
+    showEnable: [
+        { trigger: 'legend-item:mouseenter', action: ['cursor:pointer', 'list-radio:show'] },
+        { trigger: 'legend-item:mouseleave', action: ['cursor:default', 'list-radio:hide'] },
+    ],
+    start: [
+        {
+            trigger: 'legend-item:click',
+            isEnable: (context) => {
+                return !context.isInShape('legend-item-radio');
+            },
+            action: ['list-unchecked:toggle', 'data-filter:filter', 'list-radio:show'],
+        },
+        //  正反选数据: 只有当 radio === truthy 的时候才会有 legend-item-radio 这个元素
+        {
+            trigger: 'legend-item-radio:mouseenter',
+            action: ['list-radio:showTip'],
+        },
+        {
+            trigger: 'legend-item-radio:mouseleave',
+            action: ['list-radio:hideTip'],
+        },
+        {
+            trigger: 'legend-item-radio:click',
+            action: ['list-focus:toggle', 'data-filter:filter', 'list-radio:show'],
+        },
+    ],
 });
 
 // 筛选数据
 registerInteraction('continuous-filter', {
-  start: [{ trigger: 'legend:valuechanged', action: 'data-filter:filter' }],
+    start: [{ trigger: 'legend:valuechanged', action: 'data-filter:filter' }],
 });
 // 筛选数据
 registerInteraction('continuous-visible-filter', {
-  start: [{ trigger: 'legend:valuechanged', action: 'element-filter:filter' }],
+    start: [{ trigger: 'legend:valuechanged', action: 'element-filter:filter' }],
 });
 
 // 筛选图形
 registerInteraction('legend-visible-filter', {
-  showEnable: [
-    { trigger: 'legend-item:mouseenter', action: 'cursor:pointer' },
-    { trigger: 'legend-item:mouseleave', action: 'cursor:default' },
-  ],
-  start: [{ trigger: 'legend-item:click', action: ['list-unchecked:toggle', 'element-filter:filter'] }],
+    showEnable: [
+        { trigger: 'legend-item:mouseenter', action: 'cursor:pointer' },
+        { trigger: 'legend-item:mouseleave', action: 'cursor:default' },
+    ],
+    start: [{ trigger: 'legend-item:click', action: ['list-unchecked:toggle', 'element-filter:filter'] }],
 });
 
 // 出现背景框
 registerInteraction('active-region', {
-  start: [{ trigger: 'plot:mousemove', action: 'active-region:show' }],
-  end: [{ trigger: 'plot:mouseleave', action: 'active-region:hide' }],
+    start: [{ trigger: 'plot:mousemove', action: 'active-region:show' }],
+    end: [{ trigger: 'plot:mouseleave', action: 'active-region:hide' }],
 });
 
 function isWheelDown(event) {
-  event.gEvent.preventDefault();
-  return event.gEvent.originalEvent.deltaY > 0;
+    event.gEvent.preventDefault();
+    return event.gEvent.originalEvent.deltaY > 0;
 }
 registerInteraction('view-zoom', {
-  start: [
-    {
-      trigger: 'plot:mousewheel',
-      isEnable(context) {
-        return isWheelDown(context.event);
-      },
-      action: 'scale-zoom:zoomOut',
-      throttle: { wait: 100, leading: true, trailing: false },
-    },
-    {
-      trigger: 'plot:mousewheel',
-      isEnable(context) {
-        return !isWheelDown(context.event);
-      },
-      action: 'scale-zoom:zoomIn',
-      throttle: { wait: 100, leading: true, trailing: false },
-    },
-  ],
+    start: [
+        {
+            trigger: 'plot:mousewheel',
+            isEnable(context) {
+                return isWheelDown(context.event);
+            },
+            action: 'scale-zoom:zoomOut',
+            throttle: { wait: 100, leading: true, trailing: false },
+        },
+        {
+            trigger: 'plot:mousewheel',
+            isEnable(context) {
+                return !isWheelDown(context.event);
+            },
+            action: 'scale-zoom:zoomIn',
+            throttle: { wait: 100, leading: true, trailing: false },
+        },
+    ],
 });
 
 registerInteraction('sibling-tooltip', {
-  start: [{ trigger: 'plot:mousemove', action: 'sibling-tooltip:show' }],
-  end: [{ trigger: 'plot:mouseleave', action: 'sibling-tooltip:hide' }],
+    start: [{ trigger: 'plot:mousemove', action: 'sibling-tooltip:show' }],
+    end: [{ trigger: 'plot:mouseleave', action: 'sibling-tooltip:hide' }],
 });
 
 registerInteraction('plot-mousewheel-scroll', {
-  start: [{ trigger: 'plot:mousewheel', action: 'mousewheel-scroll:scroll' }],
+    start: [{ trigger: 'plot:mousewheel', action: 'mousewheel-scroll:scroll' }],
 });
 
 // 让 TS 支持 View 原型上添加的创建 Geometry 方法的智能提示
@@ -657,68 +657,68 @@ registerInteraction('plot-mousewheel-scroll', {
  * view module augmentation, detail: http://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation
  */
 declare module './chart/view' {
-  interface View {
-    /**
-     * 创建 Polygon 几何标记。
-     * @param [cfg] 传入 Polygon 构造函数的配置。
-     * @returns polygon 返回 Polygon 实例。
-     */
-    polygon(cfg?: Partial<GeometryCfg>): Polygon;
-    /**
-     * 创建 Point 几何标记。
-     * @param [cfg] 传入 Point 构造函数的配置。
-     * @returns point 返回 Point 实例。
-     */
-    point(cfg?: Partial<GeometryCfg>): Point;
-    /**
-     * 创建 Interval 几何标记。
-     * @param [cfg] 传入 Interval 构造函数的配置。
-     * @returns interval 返回 Interval 实例。
-     */
-    interval(cfg?: Partial<IntervalCfg>): Interval;
-    /**
-     * 创建 Schema 几何标记。
-     * @param [cfg] 传入 Schema 构造函数的配置。
-     * @returns schema 返回 Schema 实例。
-     */
-    schema(cfg?: Partial<GeometryCfg>): Schema;
-    /**
-     * 创建 Path 几何标记。
-     * @param [cfg] 传入 Path 构造函数的配置。
-     * @returns path 返回 Path 实例。
-     */
-    path(cfg?: Partial<PathCfg>): Path;
-    /**
-     * 创建 Line 几何标记。
-     * @param [cfg] 传入 Line 构造函数的配置。
-     * @returns line 返回 Line 实例。
-     */
-    line(cfg?: Partial<PathCfg>): Line;
-    /**
-     * 创建 Area 几何标记。
-     * @param [cfg] 传入 Area 构造函数的配置。
-     * @returns area 返回 Area 实例。
-     */
-    area(cfg?: Partial<AreaCfg>): Area;
-    /**
-     * 创建 Edge 几何标记。
-     * @param [cfg] 传入 Edge 构造函数的配置。
-     * @returns schema 返回 Edge 实例。
-     */
-    edge(cfg?: Partial<GeometryCfg>): Edge;
-    /**
-     * 创建 Heatmap 几何标记。
-     * @param [cfg] 传入 Heatmap 构造函数的配置。
-     * @returns heatmap 返回 Heatmap 实例。
-     */
-    heatmap(cfg?: Partial<GeometryCfg>): Heatmap;
-    /**
-     * 创建 Violin 几何标记。
-     * @param [cfg] 传入 Violin 构造函数的配置。
-     * @returns violin 返回 Violin 实例。
-     */
-    violin(cfg?: Partial<GeometryCfg>): Violin;
-  }
+    interface View {
+        /**
+         * 创建 Polygon 几何标记。
+         * @param [cfg] 传入 Polygon 构造函数的配置。
+         * @returns polygon 返回 Polygon 实例。
+         */
+        polygon(cfg?: Partial<GeometryCfg>): Polygon;
+        /**
+         * 创建 Point 几何标记。
+         * @param [cfg] 传入 Point 构造函数的配置。
+         * @returns point 返回 Point 实例。
+         */
+        point(cfg?: Partial<GeometryCfg>): Point;
+        /**
+         * 创建 Interval 几何标记。
+         * @param [cfg] 传入 Interval 构造函数的配置。
+         * @returns interval 返回 Interval 实例。
+         */
+        interval(cfg?: Partial<IntervalCfg>): Interval;
+        /**
+         * 创建 Schema 几何标记。
+         * @param [cfg] 传入 Schema 构造函数的配置。
+         * @returns schema 返回 Schema 实例。
+         */
+        schema(cfg?: Partial<GeometryCfg>): Schema;
+        /**
+         * 创建 Path 几何标记。
+         * @param [cfg] 传入 Path 构造函数的配置。
+         * @returns path 返回 Path 实例。
+         */
+        path(cfg?: Partial<PathCfg>): Path;
+        /**
+         * 创建 Line 几何标记。
+         * @param [cfg] 传入 Line 构造函数的配置。
+         * @returns line 返回 Line 实例。
+         */
+        line(cfg?: Partial<PathCfg>): Line;
+        /**
+         * 创建 Area 几何标记。
+         * @param [cfg] 传入 Area 构造函数的配置。
+         * @returns area 返回 Area 实例。
+         */
+        area(cfg?: Partial<AreaCfg>): Area;
+        /**
+         * 创建 Edge 几何标记。
+         * @param [cfg] 传入 Edge 构造函数的配置。
+         * @returns schema 返回 Edge 实例。
+         */
+        edge(cfg?: Partial<GeometryCfg>): Edge;
+        /**
+         * 创建 Heatmap 几何标记。
+         * @param [cfg] 传入 Heatmap 构造函数的配置。
+         * @returns heatmap 返回 Heatmap 实例。
+         */
+        heatmap(cfg?: Partial<GeometryCfg>): Heatmap;
+        /**
+         * 创建 Violin 几何标记。
+         * @param [cfg] 传入 Violin 构造函数的配置。
+         * @returns violin 返回 Violin 实例。
+         */
+        violin(cfg?: Partial<GeometryCfg>): Violin;
+    }
 }
 
 // 暴露一些常量
