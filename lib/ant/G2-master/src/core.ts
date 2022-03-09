@@ -24,10 +24,10 @@ export { registerShape, registerShapeFactory, getShapeFactory } from './geometry
 
 // 注册 Geometry label 以及 Geometry Label 布局函数
 export {
-  registerGeometryLabel,
-  registerGeometryLabelLayout,
-  getGeometryLabel,
-  getGeometryLabelLayout,
+    registerGeometryLabel,
+    registerGeometryLabelLayout,
+    getGeometryLabel,
+    getGeometryLabelLayout,
 } from './geometry/label';
 
 // 注册 interaction
@@ -64,18 +64,18 @@ import { getPathPoints } from './geometry/shape/util/get-path-points';
 import { getPath } from './geometry/shape/line';
 
 export const Util = {
-  getLegendItems,
-  translate,
-  rotate,
-  zoom,
-  transform,
-  getAngle,
-  getSectorPath,
-  polarToCartesian,
-  getDelegationObject,
-  getTooltipItems,
-  getMappingValue,
-  // shape 的一些操作方法
-  getPath,
-  getPathPoints,
+    getLegendItems,
+    translate,
+    rotate,
+    zoom,
+    transform,
+    getAngle,
+    getSectorPath,
+    polarToCartesian,
+    getDelegationObject,
+    getTooltipItems,
+    getMappingValue,
+    // shape 的一些操作方法
+    getPath,
+    getPathPoints,
 };
