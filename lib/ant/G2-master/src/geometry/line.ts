@@ -7,12 +7,12 @@ import './shape/line';
  * 常用于折线图的绘制。
  */
 export default class Line extends Path {
-  public type: string = 'line';
+    public type: string = 'line';
 
-  constructor(cfg: PathCfg) {
-    super(cfg);
+    constructor(cfg: PathCfg) {
+        super(cfg);
 
-    const { sortable = false } = cfg; // 关闭默认的 X 轴数据排序
-    this.sortable = sortable;
-  }
+        const { sortable = false } = cfg; // 关闭默认的 X 轴数据排序
+        this.sortable = sortable;
+    }
 }

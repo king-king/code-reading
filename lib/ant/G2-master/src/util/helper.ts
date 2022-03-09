@@ -9,10 +9,10 @@ import { isArray, isString } from '@antv/util';
  * @returns true if between
  */
 export function isBetween(value: number, start: number, end: number): boolean {
-  const min = Math.min(start, end);
-  const max = Math.max(start, end);
+    const min = Math.min(start, end);
+    const max = Math.max(start, end);
 
-  return value >= min && value <= max;
+    return value >= min && value <= max;
 }
 
 /**
@@ -26,19 +26,19 @@ export function isBetween(value: number, start: number, end: number): boolean {
  * @returns
  */
 export function padEnd(source: string | any[], targetLength: number, padValue: any) {
-  if (isString(source)) {
-    return source.padEnd(targetLength, padValue);
-  } else if (isArray(source)) {
-    const sourceLength = source.length;
-    if (sourceLength < targetLength) {
-      const diff = targetLength - sourceLength;
-      for (let i = 0; i < diff; i++) {
-        source.push(padValue);
-      }
+    if (isString(source)) {
+        return source.padEnd(targetLength, padValue);
+    } else if (isArray(source)) {
+        const sourceLength = source.length;
+        if (sourceLength < targetLength) {
+            const diff = targetLength - sourceLength;
+            for (let i = 0; i < diff; i++) {
+                source.push(padValue);
+            }
+        }
     }
-  }
 
-  return source;
+    return source;
 }
 
 /**
@@ -48,13 +48,13 @@ export function padEnd(source: string | any[], targetLength: number, padValue: a
  * @param keys
  */
 export function omit<T = any>(obj: T, keys: string[]): T {
-  if (typeof obj === 'object') {
-    keys.forEach((key: string) => {
-      delete obj[key];
-    });
-  }
+    if (typeof obj === 'object') {
+        keys.forEach((key: string) => {
+            delete obj[key];
+        });
+    }
 
-  return obj;
+    return obj;
 }
 
 /**
@@ -64,11 +64,11 @@ export function omit<T = any>(obj: T, keys: string[]): T {
  * @param map
  */
 export function uniq(sourceArray: any[], targetArray: any[] = [], map: Map<any, boolean> = new Map()) {
-  for (const source of sourceArray) {
-    if (!map.has(source)) {
-      targetArray.push(source);
-      map.set(source, true);
+    for (const source of sourceArray) {
+        if (!map.has(source)) {
+            targetArray.push(source);
+            map.set(source, true);
+        }
     }
-  }
-  return targetArray;
+    return targetArray;
 }

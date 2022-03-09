@@ -12,7 +12,7 @@ const Facets: Record<string, FacetCtor> = {};
  * @param type 分面类型
  */
 export const getFacet = (type: string): FacetCtor => {
-  return Facets[lowerCase(type)];
+    return Facets[lowerCase(type)];
 };
 
 /**
@@ -21,5 +21,5 @@ export const getFacet = (type: string): FacetCtor => {
  * @param ctor 分面类
  */
 export const registerFacet = (type: string, ctor: FacetCtor) => {
-  Facets[lowerCase(type)] = ctor;
+    Facets[lowerCase(type)] = ctor;
 };

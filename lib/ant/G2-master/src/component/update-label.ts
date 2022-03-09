@@ -6,10 +6,10 @@ import { getReplaceAttrs } from '../util/graphics';
 
 /** label 的必要配置 */
 type Cfg = {
-  data: any;
-  origin: any;
-  animateCfg: any;
-  coordinate: Coordinate;
+    data: any;
+    origin: any;
+    animateCfg: any;
+    coordinate: Coordinate;
 };
 
 /**
@@ -23,47 +23,47 @@ type Cfg = {
  * @param cfg
  */
 export function updateLabel(fromShape: IGroup, toShape: IGroup, cfg: Cfg): void {
-  const { data, origin, animateCfg, coordinate } = cfg;
-  const updateAnimateCfg = get(animateCfg, 'update');
+    const { data, origin, animateCfg, coordinate } = cfg;
+    const updateAnimateCfg = get(animateCfg, 'update');
 
-  fromShape.set('data', data);
-  fromShape.set('origin', origin);
-  fromShape.set('animateCfg', animateCfg);
-  fromShape.set('coordinate', coordinate);
-  fromShape.set('visible', toShape.get('visible'));
+    fromShape.set('data', data);
+    fromShape.set('origin', origin);
+    fromShape.set('animateCfg', animateCfg);
+    fromShape.set('coordinate', coordinate);
+    fromShape.set('visible', toShape.get('visible'));
 
-  fromShape.getChildren().forEach((fromChild, idx) => {
-    const toChild = toShape.getChildByIndex(idx) as IShape;
-    if (!toChild) {
-      fromShape.removeChild(fromChild);
-      fromChild.remove(true);
-    } else {
-      fromChild.set('data', data);
-      fromChild.set('origin', origin);
-      fromChild.set('animateCfg', animateCfg);
-      fromChild.set('coordinate', coordinate);
+    fromShape.getChildren().forEach((fromChild, idx) => {
+        const toChild = toShape.getChildByIndex(idx) as IShape;
+        if (!toChild) {
+            fromShape.removeChild(fromChild);
+            fromChild.remove(true);
+        } else {
+            fromChild.set('data', data);
+            fromChild.set('origin', origin);
+            fromChild.set('animateCfg', animateCfg);
+            fromChild.set('coordinate', coordinate);
 
-      const newAttrs = getReplaceAttrs(fromChild as IShape, toChild);
-      if (updateAnimateCfg) {
-        doAnimate(fromChild as IShape, updateAnimateCfg, {
-          toAttrs: newAttrs,
-          coordinate,
-        });
-      } else {
-        fromChild.attr(newAttrs);
-      }
-      if (toChild.isGroup()) {
-        updateLabel(fromChild as any, toChild as any, cfg);
-      }
-    }
-  });
+            const newAttrs = getReplaceAttrs(fromChild as IShape, toChild);
+            if (updateAnimateCfg) {
+                doAnimate(fromChild as IShape, updateAnimateCfg, {
+                    toAttrs: newAttrs,
+                    coordinate,
+                });
+            } else {
+                fromChild.attr(newAttrs);
+            }
+            if (toChild.isGroup()) {
+                updateLabel(fromChild as any, toChild as any, cfg);
+            }
+        }
+    });
 
-  // append
-  each(toShape.getChildren(), (child, idx) => {
-    if (idx >= fromShape.getCount()) {
-      if (!child.destroyed) {
-        fromShape.add(child);
-      }
-    }
-  });
+    // append
+    each(toShape.getChildren(), (child, idx) => {
+        if (idx >= fromShape.getCount()) {
+            if (!child.destroyed) {
+                fromShape.add(child);
+            }
+        }
+    });
 }

@@ -8,13 +8,13 @@ const ENGINES: Record<string, IG> = {};
  * @returns G engine
  */
 export function getEngine(name: string): IG {
-  const G = ENGINES[name];
+    const G = ENGINES[name];
 
-  if (!G) {
-    throw new Error(`G engine '${name}' is not exist, please register it at first.`);
-  }
+    if (!G) {
+        throw new Error(`G engine '${name}' is not exist, please register it at first.`);
+    }
 
-  return G;
+    return G;
 }
 
 /**
@@ -23,5 +23,5 @@ export function getEngine(name: string): IG {
  * @param engine
  */
 export function registerEngine(name: string, engine: IG) {
-  ENGINES[name] = engine;
+    ENGINES[name] = engine;
 }
