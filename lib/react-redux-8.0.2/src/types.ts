@@ -13,15 +13,15 @@ export type EqualityFn<T> = (a: T, b: T) => boolean
 export type AnyIfEmpty<T extends object> = keyof T extends never ? any : T
 
 export type DistributiveOmit<T, K extends keyof T> = T extends unknown
-  ? Omit<T, K>
-  : never
+    ? Omit<T, K>
+    : never
 
 export interface DispatchProp<A extends Action = AnyAction> {
-  dispatch: Dispatch<A>
+    dispatch: Dispatch<A>
 }
 
 export type AdvancedComponentDecorator<TProps, TOwnProps> = (
-  component: ComponentType<TProps>
+    component: ComponentType<TProps>
 ) => ComponentType<TOwnProps>
 
 /**
@@ -37,10 +37,10 @@ export type AdvancedComponentDecorator<TProps, TOwnProps> = (
  *   DecorationTargetProps[P] definition, its definition will be that of InjectedProps[P]
  */
 export type Matching<InjectedProps, DecorationTargetProps> = {
-  [P in keyof DecorationTargetProps]: P extends keyof InjectedProps
+    [P in keyof DecorationTargetProps]: P extends keyof InjectedProps
     ? InjectedProps[P] extends DecorationTargetProps[P]
-      ? DecorationTargetProps[P]
-      : InjectedProps[P]
+    ? DecorationTargetProps[P]
+    : InjectedProps[P]
     : DecorationTargetProps[P]
 }
 
@@ -55,52 +55,52 @@ export type Matching<InjectedProps, DecorationTargetProps> = {
  * But any property required by the decorated component must be satisfied by the injected property.
  */
 export type Shared<InjectedProps, DecorationTargetProps> = {
-  [P in Extract<
-    keyof InjectedProps,
-    keyof DecorationTargetProps
-  >]?: InjectedProps[P] extends DecorationTargetProps[P]
+    [P in Extract<
+        keyof InjectedProps,
+        keyof DecorationTargetProps
+    >]?: InjectedProps[P] extends DecorationTargetProps[P]
     ? DecorationTargetProps[P]
     : never
 }
 
 // Infers prop type from component C
 export type GetProps<C> = C extends ComponentType<infer P>
-  ? C extends ComponentClass<P>
+    ? C extends ComponentClass<P>
     ? ClassAttributes<InstanceType<C>> & P
     : P
-  : never
+    : never
 
 // Applies LibraryManagedAttributes (proper handling of defaultProps
 // and propTypes).
 export type GetLibraryManagedProps<C> = JSX.LibraryManagedAttributes<
-  C,
-  GetProps<C>
+    C,
+    GetProps<C>
 >
 
 // Applies LibraryManagedAttributes (proper handling of defaultProps
 // and propTypes), as well as defines WrappedComponent.
 export type ConnectedComponent<
-  C extends ComponentType<any>,
-  P
-> = ComponentType<P> &
-  NonReactStatics<C> & {
-    WrappedComponent: C
-  }
+    C extends ComponentType<any>,
+    P
+    > = ComponentType<P> &
+    NonReactStatics<C> & {
+        WrappedComponent: C
+    }
 
 // Injects props and removes them from the prop requirements.
 // Will not pass through the injected props if they are passed in during
 // render. Also adds new prop requirements from TNeedsProps.
 // Uses distributive omit to preserve discriminated unions part of original prop type
 export type InferableComponentEnhancerWithProps<TInjectedProps, TNeedsProps> = <
-  C extends ComponentType<Matching<TInjectedProps, GetProps<C>>>
->(
-  component: C
+    C extends ComponentType<Matching<TInjectedProps, GetProps<C>>>
+    >(
+    component: C
 ) => ConnectedComponent<
-  C,
-  DistributiveOmit<
-    GetLibraryManagedProps<C>,
-    keyof Shared<TInjectedProps, GetLibraryManagedProps<C>>
-  > &
+    C,
+    DistributiveOmit<
+        GetLibraryManagedProps<C>,
+        keyof Shared<TInjectedProps, GetLibraryManagedProps<C>>
+    > &
     TNeedsProps &
     ConnectProps
 >
@@ -109,31 +109,31 @@ export type InferableComponentEnhancerWithProps<TInjectedProps, TNeedsProps> = <
 // Will not pass through the injected props if they are passed in during
 // render.
 export type InferableComponentEnhancer<TInjectedProps> =
-  InferableComponentEnhancerWithProps<TInjectedProps, {}>
+    InferableComponentEnhancerWithProps<TInjectedProps, {}>
 
 export type InferThunkActionCreatorType<
-  TActionCreator extends (...args: any[]) => any
-> = TActionCreator extends (
-  ...args: infer TParams
-) => (...args: any[]) => infer TReturn
-  ? (...args: TParams) => TReturn
-  : TActionCreator
+    TActionCreator extends (...args: any[]) => any
+    > = TActionCreator extends (
+        ...args: infer TParams
+    ) => (...args: any[]) => infer TReturn
+    ? (...args: TParams) => TReturn
+    : TActionCreator
 
 export type HandleThunkActionCreator<TActionCreator> = TActionCreator extends (
-  ...args: any[]
+    ...args: any[]
 ) => any
-  ? InferThunkActionCreatorType<TActionCreator>
-  : TActionCreator
+    ? InferThunkActionCreatorType<TActionCreator>
+    : TActionCreator
 
 // redux-thunk middleware returns thunk's return value from dispatch call
 // https://github.com/reduxjs/redux-thunk#composition
 export type ResolveThunks<TDispatchProps> = TDispatchProps extends {
-  [key: string]: any
+    [key: string]: any
 }
-  ? {
-      [C in keyof TDispatchProps]: HandleThunkActionCreator<TDispatchProps[C]>
+    ? {
+        [C in keyof TDispatchProps]: HandleThunkActionCreator<TDispatchProps[C]>
     }
-  : TDispatchProps
+    : TDispatchProps
 
 /**
  * This interface allows you to easily create a hook that is properly typed for your
@@ -148,8 +148,8 @@ export type ResolveThunks<TDispatchProps> = TDispatchProps extends {
  * const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
  */
 export interface TypedUseSelectorHook<TState> {
-  <TSelected>(
-    selector: (state: TState) => TSelected,
-    equalityFn?: EqualityFn<TSelected>
-  ): TSelected
+    <TSelected>(
+        selector: (state: TState) => TSelected,
+        equalityFn?: EqualityFn<TSelected>
+    ): TSelected
 }

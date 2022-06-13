@@ -2,8 +2,8 @@ import { Action, AnyAction, Dispatch } from 'redux'
 import { Context } from 'react'
 
 import {
-  ReactReduxContext,
-  ReactReduxContextValue,
+    ReactReduxContext,
+    ReactReduxContextValue,
 } from '../components/Context'
 import { useStore as useDefaultStore, createStoreHook } from './useStore'
 
@@ -14,21 +14,21 @@ import { useStore as useDefaultStore, createStoreHook } from './useStore'
  * @returns {Function} A `useDispatch` hook bound to the specified context.
  */
 export function createDispatchHook<
-  S = unknown,
-  A extends Action = AnyAction
-  // @ts-ignore
+    S = unknown,
+    A extends Action = AnyAction
+// @ts-ignore
 >(context?: Context<ReactReduxContextValue<S, A>> = ReactReduxContext) {
-  const useStore =
-    // @ts-ignore
-    context === ReactReduxContext ? useDefaultStore : createStoreHook(context)
+    const useStore =
+        // @ts-ignore
+        context === ReactReduxContext ? useDefaultStore : createStoreHook(context)
 
-  return function useDispatch<
-    AppDispatch extends Dispatch<A> = Dispatch<A>
-  >(): AppDispatch {
-    const store = useStore()
-    // @ts-ignore
-    return store.dispatch
-  }
+    return function useDispatch<
+        AppDispatch extends Dispatch<A> = Dispatch<A>
+    >(): AppDispatch {
+        const store = useStore()
+        // @ts-ignore
+        return store.dispatch
+    }
 }
 
 /**

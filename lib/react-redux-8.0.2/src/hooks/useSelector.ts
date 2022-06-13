@@ -8,7 +8,7 @@ import { notInitialized } from '../utils/useSyncExternalStore'
 
 let useSyncExternalStoreWithSelector = notInitialized as uSESWS
 export const initializeUseSelector = (fn: uSESWS) => {
-  useSyncExternalStoreWithSelector = fn
+    useSyncExternalStoreWithSelector = fn
 }
 
 const refEquality: EqualityFn<any> = (a, b) => a === b
@@ -20,48 +20,48 @@ const refEquality: EqualityFn<any> = (a, b) => a === b
  * @returns {Function} A `useSelector` hook bound to the specified context.
  */
 export function createSelectorHook(
-  context = ReactReduxContext
+    context = ReactReduxContext
 ): <TState = unknown, Selected = unknown>(
-  selector: (state: TState) => Selected,
-  equalityFn?: EqualityFn<Selected>
-) => Selected {
-  const useReduxContext =
-    context === ReactReduxContext
-      ? useDefaultReduxContext
-      : () => useContext(context)
+        selector: (state: TState) => Selected,
+        equalityFn?: EqualityFn<Selected>
+    ) => Selected {
+    const useReduxContext =
+        context === ReactReduxContext
+            ? useDefaultReduxContext
+            : () => useContext(context)
 
-  return function useSelector<TState, Selected extends unknown>(
-    selector: (state: TState) => Selected,
-    equalityFn: EqualityFn<Selected> = refEquality
-  ): Selected {
-    if (process.env.NODE_ENV !== 'production') {
-      if (!selector) {
-        throw new Error(`You must pass a selector to useSelector`)
-      }
-      if (typeof selector !== 'function') {
-        throw new Error(`You must pass a function as a selector to useSelector`)
-      }
-      if (typeof equalityFn !== 'function') {
-        throw new Error(
-          `You must pass a function as an equality function to useSelector`
+    return function useSelector<TState, Selected extends unknown>(
+        selector: (state: TState) => Selected,
+        equalityFn: EqualityFn<Selected> = refEquality
+    ): Selected {
+        if (process.env.NODE_ENV !== 'production') {
+            if (!selector) {
+                throw new Error(`You must pass a selector to useSelector`)
+            }
+            if (typeof selector !== 'function') {
+                throw new Error(`You must pass a function as a selector to useSelector`)
+            }
+            if (typeof equalityFn !== 'function') {
+                throw new Error(
+                    `You must pass a function as an equality function to useSelector`
+                )
+            }
+        }
+
+        const { store, subscription, getServerState } = useReduxContext()!
+
+        const selectedState = useSyncExternalStoreWithSelector(
+            subscription.addNestedSub,
+            store.getState,
+            getServerState || store.getState,
+            selector,
+            equalityFn
         )
-      }
+
+        useDebugValue(selectedState)
+
+        return selectedState
     }
-
-    const { store, subscription, getServerState } = useReduxContext()!
-
-    const selectedState = useSyncExternalStoreWithSelector(
-      subscription.addNestedSub,
-      store.getState,
-      getServerState || store.getState,
-      selector,
-      equalityFn
-    )
-
-    useDebugValue(selectedState)
-
-    return selectedState
-  }
 }
 
 /**
