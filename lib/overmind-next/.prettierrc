@@ -1,0 +1,18 @@
+{
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "semi": false,
+  
+  "arrowParens": "always",
+  "overrides": [
+    {
+      "files": "packages/node_modules/**/*"
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
+}
