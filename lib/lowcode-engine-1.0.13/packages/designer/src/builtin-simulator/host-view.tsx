@@ -14,108 +14,108 @@ import './host.less';
 */
 
 type SimulatorHostProps = BuiltinSimulatorProps & {
-  project: Project;
-  onMount?: (host: BuiltinSimulatorHost) => void;
+    project: Project;
+    onMount?: (host: BuiltinSimulatorHost) => void;
 };
 
 export class BuiltinSimulatorHostView extends Component<SimulatorHostProps> {
-  readonly host: BuiltinSimulatorHost;
+    readonly host: BuiltinSimulatorHost;
 
-  constructor(props: any) {
-    super(props);
-    const { project, onMount } = this.props;
-    this.host = (project.simulator as BuiltinSimulatorHost) || new BuiltinSimulatorHost(project);
-    this.host.setProps(this.props);
-    onMount?.(this.host);
-  }
+    constructor(props: any) {
+        super(props);
+        const { project, onMount } = this.props;
+        this.host = (project.simulator as BuiltinSimulatorHost) || new BuiltinSimulatorHost(project);
+        this.host.setProps(this.props);
+        onMount?.(this.host);
+    }
 
-  shouldComponentUpdate(nextProps: BuiltinSimulatorProps) {
-    this.host.setProps(nextProps);
-    return false;
-  }
+    shouldComponentUpdate(nextProps: BuiltinSimulatorProps) {
+        this.host.setProps(nextProps);
+        return false;
+    }
 
-  render() {
-    return (
-      <div className="lc-simulator">
-        {/* progressing.visible ? <PreLoaderView /> : null */}
-        <Canvas host={this.host} />
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="lc-simulator">
+                {/* progressing.visible ? <PreLoaderView /> : null */}
+                <Canvas host={this.host} />
+            </div>
+        );
+    }
 }
 
 @observer
 class Canvas extends Component<{ host: BuiltinSimulatorHost }> {
-  render() {
-    const sim = this.props.host;
-    let className = 'lc-simulator-canvas';
-    const { canvas = {}, viewport = {} } = sim.deviceStyle || {};
-    if (sim.deviceClassName) {
-      className += ` ${sim.deviceClassName}`;
-    } else if (sim.device) {
-      className += ` lc-simulator-device-${sim.device}`;
-    }
+    render() {
+        const sim = this.props.host;
+        let className = 'lc-simulator-canvas';
+        const { canvas = {}, viewport = {} } = sim.deviceStyle || {};
+        if (sim.deviceClassName) {
+            className += ` ${sim.deviceClassName}`;
+        } else if (sim.device) {
+            className += ` lc-simulator-device-${sim.device}`;
+        }
 
-    return (
-      <div className={className} style={canvas}>
-        <div ref={(elmt) => sim.mountViewport(elmt)} className="lc-simulator-canvas-viewport" style={viewport}>
-          <BemTools host={sim} />
-          <Content host={sim} />
-        </div>
-      </div>
-    );
-  }
+        return (
+            <div className={className} style={canvas}>
+                <div ref={(elmt) => sim.mountViewport(elmt)} className="lc-simulator-canvas-viewport" style={viewport}>
+                    <BemTools host={sim} />
+                    <Content host={sim} />
+                </div>
+            </div>
+        );
+    }
 }
 
 @observer
 class Content extends Component<{ host: BuiltinSimulatorHost }> {
-  state = {
-    disabledEvents: false,
-  };
-
-  private dispose?: () => void;
-
-  componentDidMount() {
-    const editor = globalContext.get('editor');
-    const onEnableEvents = (type: boolean) => {
-      this.setState({
-        disabledEvents: type,
-      });
+    state = {
+        disabledEvents: false,
     };
 
-    editor.on('designer.builtinSimulator.disabledEvents', onEnableEvents);
+    private dispose?: () => void;
 
-    this.dispose = () => {
-      editor.removeListener('designer.builtinSimulator.disabledEvents', onEnableEvents);
-    };
-  }
+    componentDidMount() {
+        const editor = globalContext.get('editor');
+        const onEnableEvents = (type: boolean) => {
+            this.setState({
+                disabledEvents: type,
+            });
+        };
 
-  componentWillUnmount() {
-    this.dispose?.();
-  }
+        editor.on('designer.builtinSimulator.disabledEvents', onEnableEvents);
 
-  render() {
-    const sim = this.props.host;
-    const { disabledEvents } = this.state;
-    const { viewport } = sim;
-    const frameStyle: any = {
-      transform: `scale(${viewport.scale})`,
-      height: viewport.contentHeight,
-      width: viewport.contentWidth,
-    };
-    if (disabledEvents) {
-      frameStyle.pointerEvents = 'none';
+        this.dispose = () => {
+            editor.removeListener('designer.builtinSimulator.disabledEvents', onEnableEvents);
+        };
     }
 
-    return (
-      <div className="lc-simulator-content">
-        <iframe
-          name="SimulatorRenderer"
-          className="lc-simulator-content-frame"
-          style={frameStyle}
-          ref={(frame) => sim.mountContentFrame(frame)}
-        />
-      </div>
-    );
-  }
+    componentWillUnmount() {
+        this.dispose?.();
+    }
+
+    render() {
+        const sim = this.props.host;
+        const { disabledEvents } = this.state;
+        const { viewport } = sim;
+        const frameStyle: any = {
+            transform: `scale(${viewport.scale})`,
+            height: viewport.contentHeight,
+            width: viewport.contentWidth,
+        };
+        if (disabledEvents) {
+            frameStyle.pointerEvents = 'none';
+        }
+
+        return (
+            <div className="lc-simulator-content">
+                <iframe
+                    name="SimulatorRenderer"
+                    className="lc-simulator-content-frame"
+                    style={frameStyle}
+                    ref={(frame) => sim.mountContentFrame(frame)}
+                />
+            </div>
+        );
+    }
 }
