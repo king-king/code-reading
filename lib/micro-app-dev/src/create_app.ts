@@ -1,0 +1,502 @@
+import type {
+  AppInterface,
+  sourceType,
+  SandBoxInterface,
+  Func,
+} from '@micro-app/types'
+import { HTMLLoader } from './source/loader/html'
+import { extractSourceDom } from './source/index'
+import { execScripts } from './source/scripts'
+import { appStates, lifeCycles, keepAliveStates } from './libs/constants'
+import SandBox from './sandbox'
+import {
+  isFunction,
+  cloneContainer,
+  isPromise,
+  logError,
+  getRootContainer,
+  isObject,
+} from './libs/utils'
+import dispatchLifecyclesEvent, { dispatchCustomEventToMicroApp } from './interact/lifecycles_event'
+import globalEnv from './libs/global_env'
+import { releasePatchSetAttribute } from './source/patch'
+import { getActiveApps } from './micro_app'
+
+// micro app instances
+export const appInstanceMap = new Map<string, AppInterface>()
+
+// params of CreateApp
+export interface CreateAppParam {
+  name: string
+  url: string
+  ssrUrl?: string
+  scopecss: boolean
+  useSandbox: boolean
+  useMemoryRouter: boolean
+  inline?: boolean
+  baseroute?: string
+  keepRouteState?: boolean
+  hiddenRouter?: boolean,
+  container?: HTMLElement | ShadowRoot
+  defaultPage?: string
+  disablePatchRequest?: boolean
+  fiber?: boolean
+  isPrefetch?: boolean
+  esmodule?: boolean
+}
+
+export default class CreateApp implements AppInterface {
+  private state: string = appStates.CREATED
+  private keepAliveState: string | null = null
+  private keepAliveContainer: HTMLElement | null = null
+  private loadSourceLevel: -1|0|1|2 = 0
+  private umdHookMount: Func | null = null
+  private umdHookUnmount: Func | null = null
+  private libraryName: string | null = null
+  umdMode = false
+  isPrefetch = false
+  prefetchResolve: (() => void) | null = null
+  name: string
+  url: string
+  ssrUrl: string
+  container: HTMLElement | ShadowRoot | null = null
+  inline: boolean
+  scopecss: boolean
+  useSandbox: boolean
+  useMemoryRouter: boolean
+  baseroute: string
+  keepRouteState: boolean
+  hiddenRouter: boolean
+  source: sourceType
+  sandBox: SandBoxInterface | null = null
+  defaultPage: string
+  disablePatchRequest: boolean
+  fiber: boolean
+  esmodule: boolean
+
+  constructor ({
+    name,
+    url,
+    ssrUrl,
+    container,
+    inline,
+    scopecss,
+    useSandbox,
+    useMemoryRouter,
+    baseroute,
+    keepRouteState,
+    hiddenRouter,
+    defaultPage,
+    disablePatchRequest,
+    fiber,
+    isPrefetch,
+    esmodule,
+  }: CreateAppParam) {
+    this.name = name
+    this.url = url
+    this.useSandbox = useSandbox
+    this.scopecss = this.useSandbox && scopecss
+    this.useMemoryRouter = this.useSandbox && useMemoryRouter
+    // optional during init base on prefetch 👇
+    this.container = container ?? null
+    this.ssrUrl = ssrUrl ?? ''
+    this.inline = inline ?? false
+    this.baseroute = baseroute ?? ''
+    this.keepRouteState = keepRouteState ?? false
+    this.hiddenRouter = hiddenRouter ?? false
+    this.defaultPage = defaultPage ?? ''
+    this.disablePatchRequest = disablePatchRequest ?? false
+    this.fiber = fiber ?? false
+    this.esmodule = esmodule ?? false
+
+    this.isPrefetch = isPrefetch ?? false
+
+    this.source = { html: null, links: new Set(), scripts: new Set() }
+    this.loadSourceCode()
+    this.useSandbox && (this.sandBox = new SandBox(name, url, this.useMemoryRouter))
+    appInstanceMap.set(this.name, this)
+  }
+
+  // Load resources
+  loadSourceCode (): void {
+    this.state = appStates.LOADING
+    HTMLLoader.getInstance().run(this, extractSourceDom)
+  }
+
+  /**
+   * When resource is loaded, mount app if it is not prefetch or unmount
+   */
+  onLoad (html: HTMLElement): void {
+    if (++this.loadSourceLevel === 2) {
+      this.source.html = html
+
+      if (this.isPrefetch) {
+        this.prefetchResolve?.()
+        this.prefetchResolve = null
+      } else if (appStates.UNMOUNT !== this.state) {
+        this.state = appStates.LOADED
+        this.mount()
+      }
+    }
+  }
+
+  /**
+   * Error loading HTML
+   * @param e Error
+   */
+  onLoadError (e: Error): void {
+    this.loadSourceLevel = -1
+    if (this.prefetchResolve) {
+      this.prefetchResolve()
+      this.prefetchResolve = null
+    }
+
+    if (appStates.UNMOUNT !== this.state) {
+      this.onerror(e)
+      this.state = appStates.LOAD_FAILED
+    }
+  }
+
+  /**
+   * mount app
+   * @param container app container
+   * @param inline js runs in inline mode
+   * @param baseroute route prefix, default is ''
+   * @param keepRouteState keep route state when unmount, default is false
+   * @param disablePatchRequest prevent rewrite request method of child app
+   */
+  mount (
+    container?: HTMLElement | ShadowRoot,
+    inline?: boolean,
+    baseroute?: string,
+    keepRouteState?: boolean,
+    defaultPage?: string,
+    hiddenRouter?: boolean,
+    disablePatchRequest?: boolean,
+    fiber?: boolean,
+    esmodule?: boolean
+  ): void {
+    this.inline = inline ?? this.inline
+    this.keepRouteState = keepRouteState ?? this.keepRouteState
+    this.container = this.container ?? container!
+    this.baseroute = baseroute ?? this.baseroute
+    this.defaultPage = defaultPage ?? this.defaultPage
+    this.hiddenRouter = hiddenRouter ?? this.hiddenRouter
+    this.disablePatchRequest = disablePatchRequest ?? this.disablePatchRequest
+    this.fiber = fiber ?? this.fiber
+    this.esmodule = esmodule ?? this.esmodule
+
+    if (this.loadSourceLevel !== 2) {
+      this.state = appStates.LOADING
+      return
+    }
+
+    dispatchLifecyclesEvent(
+      this.container,
+      this.name,
+      lifeCycles.BEFOREMOUNT,
+    )
+
+    this.state = appStates.MOUNTING
+
+    cloneContainer(this.source.html as Element, this.container as Element, !this.umdMode)
+
+    this.sandBox?.start(
+      this.umdMode,
+      this.baseroute,
+      this.useMemoryRouter,
+      this.defaultPage,
+      this.disablePatchRequest,
+    )
+
+    let umdHookMountResult: any // result of mount function
+
+    if (!this.umdMode) {
+      let hasDispatchMountedEvent = false
+      // if all js are executed, param isFinished will be true
+      execScripts(this, (isFinished: boolean) => {
+        if (!this.umdMode) {
+          const { mount, unmount } = this.getUmdLibraryHooks()
+          /**
+           * umdHookUnmount can works in non UMD mode
+           * register with window.unmount
+           */
+          this.umdHookUnmount = unmount as Func
+          // if mount & unmount is function, the sub app is umd mode
+          if (isFunction(mount) && isFunction(unmount)) {
+            this.umdHookMount = mount as Func
+            this.umdMode = true
+            if (this.sandBox) this.sandBox.proxyWindow.__MICRO_APP_UMD_MODE__ = true
+            // this.sandBox?.recordUmdSnapshot()
+            try {
+              umdHookMountResult = this.umdHookMount()
+            } catch (e) {
+              logError('an error occurred in the mount function \n', this.name, e)
+            }
+          }
+        }
+
+        if (!hasDispatchMountedEvent && (isFinished === true || this.umdMode)) {
+          hasDispatchMountedEvent = true
+          this.handleMounted(umdHookMountResult)
+        }
+      })
+    } else {
+      this.sandBox?.rebuildUmdSnapshot()
+      try {
+        umdHookMountResult = this.umdHookMount!()
+      } catch (e) {
+        logError('an error occurred in the mount function \n', this.name, e)
+      }
+      this.handleMounted(umdHookMountResult)
+    }
+  }
+
+  /**
+   * handle for promise umdHookMount
+   * @param umdHookMountResult result of umdHookMount
+   */
+  private handleMounted (umdHookMountResult: any): void {
+    if (isPromise(umdHookMountResult)) {
+      umdHookMountResult
+        .then(() => this.dispatchMountedEvent())
+        .catch((e: Error) => this.onerror(e))
+    } else {
+      this.dispatchMountedEvent()
+    }
+  }
+
+  /**
+   * dispatch mounted event when app run finished
+   */
+  private dispatchMountedEvent (): void {
+    if (appStates.UNMOUNT !== this.state) {
+      this.state = appStates.MOUNTED
+      dispatchLifecyclesEvent(
+        this.container!,
+        this.name,
+        lifeCycles.MOUNTED,
+      )
+    }
+  }
+
+  /**
+   * unmount app
+   * NOTE: Do not add any params on account of unmountApp
+   * @param destroy completely destroy, delete cache resources
+   * @param unmountcb callback of unmount
+   */
+  unmount (destroy: boolean, unmountcb?: CallableFunction): void {
+    if (this.state === appStates.LOAD_FAILED) {
+      destroy = true
+    }
+
+    this.state = appStates.UNMOUNT
+    this.keepAliveState = null
+    this.keepAliveContainer = null
+
+    // result of unmount function
+    let umdHookUnmountResult: any
+    /**
+     * send an unmount event to the micro app or call umd unmount hook
+     * before the sandbox is cleared
+     */
+    if (isFunction(this.umdHookUnmount)) {
+      try {
+        umdHookUnmountResult = this.umdHookUnmount()
+      } catch (e) {
+        logError('an error occurred in the unmount function \n', this.name, e)
+      }
+    }
+
+    // dispatch unmount event to micro app
+    dispatchCustomEventToMicroApp('unmount', this.name)
+
+    this.handleUnmounted(destroy, umdHookUnmountResult, unmountcb)
+  }
+
+  /**
+   * handle for promise umdHookUnmount
+   * @param destroy completely destroy, delete cache resources
+   * @param umdHookUnmountResult result of umdHookUnmount
+   * @param unmountcb callback of unmount
+   */
+  private handleUnmounted (
+    destroy: boolean,
+    umdHookUnmountResult: any,
+    unmountcb?: CallableFunction,
+  ): void {
+    if (isPromise(umdHookUnmountResult)) {
+      umdHookUnmountResult
+        .then(() => this.actionsForUnmount(destroy, unmountcb))
+        .catch(() => this.actionsForUnmount(destroy, unmountcb))
+    } else {
+      this.actionsForUnmount(destroy, unmountcb)
+    }
+  }
+
+  /**
+   * actions for unmount app
+   * @param destroy completely destroy, delete cache resources
+   * @param unmountcb callback of unmount
+   */
+  private actionsForUnmount (destroy: boolean, unmountcb?: CallableFunction): void {
+    if (destroy) {
+      this.actionsForCompletelyDestroy()
+    } else if (this.umdMode && (this.container as Element).childElementCount) {
+      cloneContainer(this.container as Element, this.source.html as Element, false)
+    }
+
+    if (this.umdMode) {
+      this.sandBox?.recordUmdSnapshot()
+    }
+    /**
+     * this.container maybe contains micro-app element, stop sandbox should exec after cloneContainer
+     * NOTE:
+     * 1. if destroy is true, clear route state
+     * 2. umd mode and keep-alive will not clear EventSource
+     */
+    this.sandBox?.stop(
+      this.umdMode,
+      this.keepRouteState && !destroy,
+      !this.umdMode || destroy,
+    )
+    if (!getActiveApps().length) {
+      releasePatchSetAttribute()
+    }
+
+    // dispatch unmount event to base app
+    dispatchLifecyclesEvent(
+      this.container!,
+      this.name,
+      lifeCycles.UNMOUNT,
+    )
+
+    this.container!.innerHTML = ''
+    this.container = null
+
+    unmountcb && unmountcb()
+  }
+
+  // actions for completely destroy
+  actionsForCompletelyDestroy (): void {
+    if (!this.useSandbox && this.umdMode) {
+      delete window[this.libraryName as any]
+    }
+    appInstanceMap.delete(this.name)
+  }
+
+  // hidden app when disconnectedCallback called with keep-alive
+  hiddenKeepAliveApp (): void {
+    const oldContainer = this.container
+
+    cloneContainer(
+      this.container as Element,
+      this.keepAliveContainer ? this.keepAliveContainer : (this.keepAliveContainer = document.createElement('div')),
+      false,
+    )
+
+    this.container = this.keepAliveContainer
+
+    this.keepAliveState = keepAliveStates.KEEP_ALIVE_HIDDEN
+
+    // event should dispatch before clone node
+    // dispatch afterHidden event to micro-app
+    dispatchCustomEventToMicroApp('appstate-change', this.name, {
+      appState: 'afterhidden',
+    })
+
+    // dispatch afterHidden event to base app
+    dispatchLifecyclesEvent(
+      oldContainer!,
+      this.name,
+      lifeCycles.AFTERHIDDEN,
+    )
+
+    // called after lifeCyclesEvent
+    this.sandBox?.removeRouteInfoForKeepAliveApp()
+  }
+
+  // show app when connectedCallback called with keep-alive
+  showKeepAliveApp (container: HTMLElement | ShadowRoot): void {
+    // dispatch beforeShow event to micro-app
+    dispatchCustomEventToMicroApp('appstate-change', this.name, {
+      appState: 'beforeshow',
+    })
+
+    // dispatch beforeShow event to base app
+    dispatchLifecyclesEvent(
+      container,
+      this.name,
+      lifeCycles.BEFORESHOW,
+    )
+
+    cloneContainer(
+      this.container as Element,
+      container as Element,
+      false,
+    )
+
+    this.container = container
+
+    this.keepAliveState = keepAliveStates.KEEP_ALIVE_SHOW
+
+    // called before lifeCyclesEvent
+    this.sandBox?.setRouteInfoForKeepAliveApp()
+
+    // dispatch afterShow event to micro-app
+    dispatchCustomEventToMicroApp('appstate-change', this.name, {
+      appState: 'aftershow',
+    })
+
+    // dispatch afterShow event to base app
+    dispatchLifecyclesEvent(
+      this.container,
+      this.name,
+      lifeCycles.AFTERSHOW,
+    )
+  }
+
+  /**
+   * app rendering error
+   * @param e Error
+   */
+  onerror (e: Error): void {
+    dispatchLifecyclesEvent(
+      this.container!,
+      this.name,
+      lifeCycles.ERROR,
+      e,
+    )
+  }
+
+  // get app state
+  getAppState (): string {
+    return this.state
+  }
+
+  // get keep-alive state
+  getKeepAliveState (): string | null {
+    return this.keepAliveState
+  }
+
+  // get umd library, if it not exist, return empty object
+  private getUmdLibraryHooks (): Record<string, unknown> {
+    // after execScripts, the app maybe unmounted
+    if (appStates.UNMOUNT !== this.state) {
+      const global = (this.sandBox?.proxyWindow ?? globalEnv.rawWindow) as any
+      this.libraryName = getRootContainer(this.container!).getAttribute('library') || `micro-app-${this.name}`
+
+      if (isObject(global[this.libraryName])) {
+        return global[this.libraryName]
+      }
+
+      return {
+        mount: this.sandBox?.proxyWindow.mount,
+        unmount: this.sandBox?.proxyWindow.unmount,
+      }
+    }
+
+    return {}
+  }
+}
