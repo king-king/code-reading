@@ -1,19 +1,19 @@
 export {
-  default,
-  MicroApp,
-  getActiveApps,
-  getAllApps,
-  unmountApp,
-  unmountAllApps,
+    default,
+    MicroApp,
+    getActiveApps,
+    getAllApps,
+    unmountApp,
+    unmountAllApps,
 } from './micro_app'
 export {
-  default as preFetch,
+    default as preFetch,
 } from './prefetch'
 export {
-  removeDomScope,
-  pureCreateElement,
-  version,
+    removeDomScope,
+    pureCreateElement,
+    version,
 } from './libs/utils'
 export {
-  EventCenterForMicroApp,
+    EventCenterForMicroApp,
 } from './interact'
