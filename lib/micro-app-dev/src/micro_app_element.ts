@@ -32,7 +32,7 @@ import { getNoHashMicroPathFromURL, router } from './sandbox'
 export function defineElement(tagName: string): void {
     class MicroAppElement extends HTMLElement implements MicroAppElementType {
         static get observedAttributes(): string[] {
-            return ['name', 'url']
+            return ['name', 'url'] // 标签的两个属性
         }
 
         constructor() {
