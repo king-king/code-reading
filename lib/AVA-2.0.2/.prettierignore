@@ -1,0 +1,28 @@
+.cache
+package.json
+package-lock.json
+public
+build
+dist
+es
+esm
+lib
+.*
+*.md
+*.png
+*.svg
+**/assets/**
+LICENSE
+
+# don't prettier constance js
+packages/data-wizard/src/random/cn-address-dict.ts
+
+# umi
+**/*.md
+**/*.svg
+**/*.ejs
+**/*.html
+package.json
+.umi
+.umi-production
+.umi-test
