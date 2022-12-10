@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.1.5",
     "@reach/router": "^1.2.1",
     "common-tags": "^1.8.0",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "normalize.css": "^8.0.1",
     "razzle": "^3.0.0-alpha.0",
     "react": "^16.0.0",
